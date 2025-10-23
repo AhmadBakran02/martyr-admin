@@ -51,13 +51,15 @@ const MartyrCard = ({ martyr }: MartyrCardProps) => {
   return (
     <div className="w-full flex justify-center items-center">
       <Link
-        href={`/dashboard/martyrs-section/${martyr._id}`}
+        href={`/martyrs-section/${martyr._id}`}
         className="max-w-200 w-full bg-[#fbfdff] text-[var(--mainBlue)] rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col sm:flex-row justify-between gap-6"
       >
         {/* Left: Image */}
         <div className="w-full sm:w-1/3 flex justify-center items-center">
           {photoUrl ? (
             <Image
+              width={40}
+              height={40}
               src={photoUrl}
               alt={martyr.fullName}
               className="w-40 h-40 object-cover rounded-xl border border-gray-200 shadow-sm"

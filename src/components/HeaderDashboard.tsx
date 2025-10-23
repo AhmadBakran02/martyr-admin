@@ -16,7 +16,7 @@ export default function HeaderDashboard() {
   return (
     <header className="bg-[#1A1A1A] text-white p-8 flex justify-between items-center shadow-md">
       <h1 className="text-2xl font-bold">
-        <Link href={"/dashboard"}>لوحة التحكم</Link>
+        <Link href={"/"}>لوحة التحكم</Link>
       </h1>
       <button
         onClick={() => handleLogOut()}

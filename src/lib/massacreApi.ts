@@ -16,7 +16,7 @@ export interface Massacre {
   governorate?: string;
   location?: string;
   overview?: string;
-  totalOfMaryrs?: number;
+  totalOfMartyrs?: number;
   photoId?: string;
   media?: MediaItem[];
   createdAt?: string;

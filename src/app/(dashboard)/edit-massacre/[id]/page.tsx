@@ -141,7 +141,7 @@ export default function EditMassacrePage() {
       city: massacre?.city,
       location: massacre?.location,
       overview: massacre?.overview,
-      totalOfMaryrs: Number(massacre?.totalOfMaryrs || "0"),
+      totalOfMartyrs: Number(massacre?.totalOfMartyrs || "0"),
       photoID: massacre?.photoId,
       media: mergedMedia,
     };
@@ -246,11 +246,11 @@ export default function EditMassacrePage() {
           <label className="block mb-1 text-gray-700">عدد الشهداء</label>
           <input
             type="number"
-            value={massacre?.totalOfMaryrs ?? 0}
+            value={massacre?.totalOfMartyrs ?? 0}
             onChange={(e) =>
               setMassacre({
                 ...massacre!,
-                totalOfMaryrs: Math.max(0, Number(e.target.value)),
+                totalOfMartyrs: Math.max(0, Number(e.target.value)),
               })
             }
             className="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[var(--mainBlue)]"

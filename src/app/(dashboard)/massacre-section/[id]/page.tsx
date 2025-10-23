@@ -18,6 +18,7 @@ export default function MassacrePage() {
     const fetchData = async () => {
       try {
         const res = await getMassacreById(id);
+        console.log(res.data);
         setMassacre(res.data.massacre);
       } catch (err: unknown) {
         if (err instanceof Error) {

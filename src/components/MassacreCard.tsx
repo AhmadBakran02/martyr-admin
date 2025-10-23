@@ -13,7 +13,7 @@ const MassacreCard = (item: MassacreCardProps) => {
     <div className="w-full flex justify-center items-center">
       {/* Right Section */}
       <Link
-        href={`/dashboard/massacre-section/${item.item._id}`}
+        href={`/massacre-section/${item.item._id}`}
         className="max-w-200 w-full bg-[#fbfdff] text-[var(--mainBlue)] rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col sm:flex-row justify-between gap-6"
       >
         <div className="flex flex-col gap-4 sm:w-1/2 justify-center">
@@ -44,7 +44,7 @@ const MassacreCard = (item: MassacreCardProps) => {
           <div className="flex justify-between items-center text-base sm:text-lg">
             <span>عدد الشهداء الموثق:</span>
             <span className="font-bold text-black">
-              {item.item.totalOfMaryrs || 0}
+              {item.item.totalOfMartyrs || 0}
             </span>
           </div>
           <div className="flex justify-between items-center text-base sm:text-lg">

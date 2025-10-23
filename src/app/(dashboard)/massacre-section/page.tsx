@@ -6,9 +6,9 @@ import { useEffect, useState } from "react";
 
 export default function EditMassacre() {
   const [list, setList] = useState<Massacre[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [query, setQuery] = useState("");
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [query, setQuery] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const fetchMassacres = async () => {
     try {
@@ -39,7 +39,7 @@ export default function EditMassacre() {
       it.name.toLowerCase().includes(query.trim().toLowerCase())
   );
 
-  console.log(error);
+  console.log(filtered);
 
   return (
     <div className="p-5 h-dvh">

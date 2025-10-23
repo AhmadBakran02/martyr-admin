@@ -136,6 +136,8 @@ export default function MediaGallery({ media }: MediaGalleryProps) {
               >
                 {item.type === "image" ? (
                   <Image
+                    width={40}
+                    height={40}
                     src={item.src}
                     alt="media"
                     className="w-full h-40 object-cover"

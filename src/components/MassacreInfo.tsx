@@ -36,6 +36,7 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
       <div className="p-5 text-gray-500">جاري تحميل بيانات المجزرة...</div>
     );
   }
+
   const handleDelete = async (id?: string) => {
     if (!id) return;
 
@@ -75,7 +76,8 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
   };
 
   console.log(item.numberOfMartyrs);
-  console.log(item.totalOfMaryrs);
+  console.log(item.totalOfMartyrs);
+  console.log(item);
 
   return (
     <div className={`${card} card-shadow bg-[#fbfdff]`}>
@@ -122,7 +124,7 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
           </div>
           <div className="flex-1 flex items-center pr-5">
             <div className="w-2/3 text-[#8B0000]">
-              {item.startDate || "1999/9/9"}
+              {item.startDate || "----"}
             </div>
           </div>
         </div>
@@ -137,9 +139,7 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
             <p className="text-gray-700">:</p>
           </div>
           <div className="flex-1 flex items-center pr-5">
-            <div className="w-2/3 text-[#8B0000]">
-              {item.endDate || "1999/9/9"}
-            </div>
+            <div className="w-2/3 text-[#8B0000]">{item.endDate || "----"}</div>
           </div>
         </div>
 
@@ -154,7 +154,7 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
           </div>
           <div className="flex-1 flex items-center pr-5">
             <div className="w-2/3 text-[#8B0000]">
-              {item.governorate || "حماه"}
+              {item.governorate || "----"}
             </div>
           </div>
         </div>
@@ -169,7 +169,7 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
             <p className="text-gray-700">:</p>
           </div>
           <div className="flex-1 flex items-center pr-5">
-            <div className="w-2/3 text-[#8B0000]">{item.city || "حماه"}</div>
+            <div className="w-2/3 text-[#8B0000]">{item.city || "----"}</div>
           </div>
         </div>
 
@@ -184,7 +184,7 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
           </div>
           <div className="flex-1 flex items-center pr-5">
             <div className="w-2/3 text-[#8B0000]">
-              {item.location || "حماه"}
+              {item.location || "----"}
             </div>
           </div>
         </div>
@@ -200,7 +200,7 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
           </div>
           <div className="flex-1 flex items-center pr-5">
             <div className="w-2/3 text-[#8B0000]">
-              {item.totalOfMaryrs || "0"}
+              {item.totalOfMartyrs || "0"}
             </div>
           </div>
         </div>
@@ -231,7 +231,7 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
         </div>
         <div className="pr-8">
           <textarea
-            value={item.overview || "حماه"}
+            value={item.overview || "----"}
             disabled={true}
             // placeholder="اكتب تفاصيل المجزرة..."
             rows={5}

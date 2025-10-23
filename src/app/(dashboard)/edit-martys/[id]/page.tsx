@@ -53,12 +53,9 @@ export default function EditMartyPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
   const [mediaUrls, setMediaUrls] = useState<Record<string, string>>({});
-  // const [newFiles, setNewFiles] = useState<File[]>([]);
   const [uploadedMedia, setUploadedMedia] = useState<MediaInput[]>([]);
   const [showToast, setShowToast] = useState<boolean>(false);
   const [loadingUpdate, setLoadingUpdate] = useState<boolean>(false);
-  // const [dateMartyrdom, setDateMartyrdom] = useState<string>("");
-
   const [personalInfo, setPersonalInfo] = useState<PersonalInfoType>({
     name: "",
     fatherName: "",
@@ -76,9 +73,7 @@ export default function EditMartyPage() {
     ethnicAffiliation: "",
     overview: "",
   });
-
   const [cardValues, setCardValues] = useState<AddCardValues>();
-
   const [citationInfo, setCitationInfo] = useState<CitationInfoType>();
 
   const handleCardChange = (values: AddCardValues) => {
@@ -89,10 +84,10 @@ export default function EditMartyPage() {
     setUploadedMedia(media);
   };
 
-  const handleCitationChange = (values: CitationInfoType) => {
+  const handleCitationChange = useCallback((values: CitationInfoType) => {
     setCitationInfo(values);
     // setDateMartyrdom(values.dateMartyrdom);
-  };
+  }, []);
 
   const handlePersonlChange = useCallback((data: PersonalInfoType) => {
     setPersonalInfo(data);

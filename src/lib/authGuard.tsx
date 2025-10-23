@@ -20,6 +20,8 @@ export default function AuthGuard({ children }: Props) {
       // If both tokens are missing, redirect to login
       if (!access && !refresh) {
         router.replace("/login");
+        setChecking(false);
+
         return;
       }
 

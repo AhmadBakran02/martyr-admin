@@ -54,7 +54,7 @@ const AddCard = ({
       imageFile,
       preview,
     });
-  }, [onChange, anonymous, nationalIdNumber, imageFile, preview]);
+  }, [anonymous, nationalIdNumber, imageFile, preview]);
 
   // ✅ Handle image upload
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {

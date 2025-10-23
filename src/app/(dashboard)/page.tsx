@@ -114,37 +114,37 @@ export default function Dashboard(): JSX.Element {
             <nav className="space-y-2">
               {[
                 {
-                  href: "/dashboard/add-martyr",
+                  href: "/add-martyr",
                   icon: <UserRoundPlus />,
                   text: "اضافة شهيد",
                 },
                 {
-                  href: "/dashboard/add-massacre",
+                  href: "/add-massacre",
                   icon: <HeartCrack />,
                   text: "اضافة مجزرة",
                 },
                 {
-                  href: "/dashboard/soon",
+                  href: "/soon",
                   icon: <MessageSquarePlus />,
                   text: "طلبات الاضافة",
                 },
                 {
-                  href: "/dashboard/soon",
+                  href: "/soon",
                   icon: <FilePenLine />,
                   text: "طلبات التصحيح",
                 },
                 {
-                  href: "/dashboard/soon",
+                  href: "/soon",
                   icon: <LayoutTemplate />,
                   text: "اضافة اقسام جديده",
                 },
                 {
-                  href: "/dashboard/massacre-section",
+                  href: "/massacre-section",
                   icon: <SquarePen />,
                   text: "عرض المجازر وتعديل",
                 },
                 {
-                  href: "/dashboard/martyrs-section",
+                  href: "/martyrs-section",
                   icon: <SquarePen />,
                   text: "عرض الشهداء وتعديل",
                 },

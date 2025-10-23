@@ -14,7 +14,7 @@ import { card } from "@/styles/Card.styles";
 import { useEffect, useState } from "react";
 import MartyrdomPicker from "./MartyrdomPicker";
 import { GetMartyr } from "@/lib/martyrApi";
-import { CitationInfoType } from "@/app/(dashboard)/dashboard/edit-martys/[id]/page";
+import { CitationInfoType } from "@/app/(dashboard)/edit-martys/[id]/page";
 
 interface AddCitationInfoProps {
   onChange: (data: CitationInfoType) => void;
@@ -73,7 +73,6 @@ const AddCitationInfo = ({ onChange, martyr }: AddCitationInfoProps) => {
       massacreId,
     });
   }, [
-    onChange,
     dateMartyrdom,
     burialDate,
     age,

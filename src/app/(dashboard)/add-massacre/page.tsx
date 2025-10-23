@@ -39,7 +39,7 @@ export default function AddMassacre() {
       governorate: massacreInfo.governorate,
       city: massacreInfo.city,
       overview: massacreInfo.note,
-      totalOfMaryrs: Number(massacreInfo.number || "0"),
+      totalOfMartyrs: Number(massacreInfo.number || "0"),
       photoId: uploadedImage,
       media: uploadedMedia,
     };
