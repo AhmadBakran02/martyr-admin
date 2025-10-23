@@ -104,9 +104,7 @@ const Card = ({ item }: MastyrCardProps) => {
             حذف
           </button>
 
-          <Link href={`/dashboard/edit-martys/${item?.data.martyr._id}`}>
-            تعديل
-          </Link>
+          <Link href={`/edit-martys/${item?.data.martyr._id}`}>تعديل</Link>
         </div>
       </div>
       {/* Body */}

@@ -27,7 +27,7 @@ export default function RootLayout({
         <AuthGuard>
           <HeaderDashboard />
           {children}
-          <Footer />
+          {/* <Footer /> */}
         </AuthGuard>
       </body>
     </html>

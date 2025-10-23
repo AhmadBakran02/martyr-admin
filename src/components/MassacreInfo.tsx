@@ -92,7 +92,7 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
             حذف
           </button>
           <p className="cursor-pointer">
-            <Link href={`/dashboard/edit-massacre/${id}`}>تعديل</Link>
+            <Link href={`/edit-massacre/${id}`}>تعديل</Link>
           </p>
         </div>
       </div>

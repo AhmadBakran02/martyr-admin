@@ -21,7 +21,6 @@ export default function AuthGuard({ children }: Props) {
       if (!access && !refresh) {
         router.replace("/login");
         setChecking(false);
-
         return;
       }
 
