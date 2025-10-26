@@ -118,7 +118,7 @@ export default function MartyrdomPicker({ value, onChange, onChange2 }: Props) {
   return (
     <div>
       <div className="card-row mt-5">
-        <div className="flex flex-row justify-between items-center w-1/4">
+        <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
           <div className="flex flex-row gap-2 text-gray-700">
             <Image src={"/kill.svg"} alt="" width={29} height={29} />
             <p>مجزرة</p>
@@ -126,7 +126,7 @@ export default function MartyrdomPicker({ value, onChange, onChange2 }: Props) {
           <p className="text-gray-700">:</p>
         </div>
 
-        <div className="flex-1 flex items-center pr-5">
+        <div className="flex-1 flex items-center">
           <input
             value={value}
             onChange={(e) => onChange(e.target.value)} // still allow typing

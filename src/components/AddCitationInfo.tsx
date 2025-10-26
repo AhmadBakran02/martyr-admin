@@ -241,14 +241,14 @@ const FieldRow = ({
   children: React.ReactNode;
 }) => (
   <div className="card-row mt-5">
-    <div className="flex flex-row justify-between items-center w-1/4">
+    <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
       <div className="flex flex-row gap-2 text-gray-700">
         {icon}
         <p>{label}</p>
       </div>
       <p className="text-gray-700">:</p>
     </div>
-    <div className="flex-1 flex items-center pr-5">{children}</div>
+    <div className="flex-1 flex items-center">{children}</div>
   </div>
 );
 

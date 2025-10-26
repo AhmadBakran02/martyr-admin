@@ -84,7 +84,7 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
       {/* Header */}
       <div className="bg-[var(--mainBlue)] px-7 py-8 sm:text-right text-center text-white flex flex-row justify-between">
         <h2 className="text-xl font-bold">المعلومات المجزرة</h2>
-        <div className="flex gap-5">
+        <div className="flex gap-5 items-center justify-center">
           <button
             onClick={() => handleDelete(id)}
             className="text-red-600 hover:text-red-800 font-semibold"
@@ -101,7 +101,7 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
       <div className="px-7 py-8 text-[#8B0000]">
         {/* Name */}
         <div className="card-row">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <Captions />
               <p>الاسم</p>
@@ -115,7 +115,7 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
 
         {/* Start Date */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <Calendar />
               <p>تاريخ البداية</p>
@@ -131,7 +131,7 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
 
         {/* End Date */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <Calendar />
               <p>تاريخ النهاية</p>
@@ -145,7 +145,7 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
 
         {/* Governorate */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <Earth />
               <p>المحافظة</p>
@@ -161,7 +161,7 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
 
         {/* City */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <Building2 />
               <p>المدينة</p>
@@ -175,7 +175,7 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
 
         {/* Location */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <MapPin />
               <p>الموقع</p>
@@ -191,7 +191,7 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
 
         {/* Total */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <MdFamilyRestroom className="w-6 h-6" />
               <p>عدد الشهداء الموثقين</p>
@@ -206,7 +206,7 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
         </div>
         {/* Number */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <MdFamilyRestroom className="w-6 h-6" />
               <p>الموثقين في الموقع</p>

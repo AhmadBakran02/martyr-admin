@@ -52,14 +52,14 @@ const AddMassacreInfo = ({ onChange }: MassacreInfoProps) => {
       <div className="px-7 py-8 text-[#8B0000]">
         {/* Name */}
         <div className="card-row">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <Captions />
               <p>الاسم</p>
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               onChange={(e) => setName(e.target.value)}
               value={name}
@@ -71,14 +71,14 @@ const AddMassacreInfo = ({ onChange }: MassacreInfoProps) => {
 
         {/* Start Date */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <Calendar />
               <p>تاريخ البداية</p>
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               value={start}
               onChange={(e) => setStart(e.target.value)}
@@ -90,14 +90,14 @@ const AddMassacreInfo = ({ onChange }: MassacreInfoProps) => {
 
         {/* End Date */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <Calendar />
               <p>تاريخ النهاية</p>
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               value={end}
               onChange={(e) => setEnd(e.target.value)}
@@ -109,14 +109,14 @@ const AddMassacreInfo = ({ onChange }: MassacreInfoProps) => {
 
         {/* Governorate */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <Earth />
               <p>المحافظة</p>
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               value={governorate}
               onChange={(e) => setGovernorate(e.target.value)}
@@ -128,14 +128,14 @@ const AddMassacreInfo = ({ onChange }: MassacreInfoProps) => {
 
         {/* City */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <Building2 />
               <p>المدينة</p>
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               value={city}
               onChange={(e) => setCity(e.target.value)}
@@ -147,14 +147,14 @@ const AddMassacreInfo = ({ onChange }: MassacreInfoProps) => {
 
         {/* Location */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <MapPin />
               <p>الموقع</p>
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               value={location}
               onChange={(e) => setLocation(e.target.value)}
@@ -166,14 +166,14 @@ const AddMassacreInfo = ({ onChange }: MassacreInfoProps) => {
 
         {/* Number */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <MdFamilyRestroom className="w-6 h-6" />
               <p>عدد الشهداء الموثقين</p>
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               value={number}
               type="number"

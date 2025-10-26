@@ -18,7 +18,7 @@ interface LoadedMedia {
 }
 
 export default function MediaGallery({ media }: MediaGalleryProps) {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [filterType, setFilterType] = useState<"all" | "image" | "video">(
     "all"
   );

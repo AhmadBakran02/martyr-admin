@@ -131,7 +131,7 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
       <div className="px-7 py-8 text-[#8B0000]">
         {/* Name */}
         <div className="card-row">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <UserRound />
               <p>الاسم</p>
@@ -139,7 +139,7 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -151,14 +151,14 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
 
         {/* Father */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <IoManOutline className="w-6 h-6" />
               <p>اسم الأب</p>
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               value={fatherName}
               onChange={(e) => setFatherName(e.target.value)}
@@ -170,14 +170,14 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
 
         {/* Mother */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <IoWomanOutline className="w-6 h-6" />
               <p>اسم الأم</p>
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               value={motherName}
               onChange={(e) => setMotherName(e.target.value)}
@@ -189,14 +189,14 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
 
         {/* Last Name */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <Users />
               <p>الكنية</p>
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
@@ -208,14 +208,14 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
 
         {/* Birthday */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <Calendar />
               <p>تاريخ الميلاد</p>
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               value={dateOfBirth}
               onChange={(e) => setDateOfBirth(e.target.value)}
@@ -227,7 +227,7 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
 
         {/* Gender */}
         <div className="card-row mt-5 flex items-center">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <VenusAndMars />
               <p>الجنس</p>
@@ -236,7 +236,7 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
           </div>
 
           {/* Radio Buttons */}
-          <div className="flex flex-row gap-6 text-gray-700 pr-5">
+          <div className="flex flex-row gap-6 text-gray-700 ">
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="radio"
@@ -263,14 +263,14 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
 
         {/* Marital Status */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <MdFamilyRestroom className="w-6 h-6" />
               <p>الحالة الاجتماعية</p>
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               value={maritalStatus}
               onChange={(e) => setMaritalStatus(e.target.value)}
@@ -282,14 +282,14 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
 
         {/* Number of Children */}
         <div className="card-row mt-5 flex items-center">
-          <div className="flex flex-row justify-between w-1/4">
+          <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <FaChild className="w-6 h-6" />
               <p>عدد الأطفال</p>
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               value={numberOfChildren}
               onChange={(e) => setNumberOfChildren(e.target.value)}
@@ -301,14 +301,14 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
 
         {/* Profession */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <BriefcaseBusiness />
               <p>المهنة</p>
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               value={profession}
               onChange={(e) => setProfession(e.target.value)}
@@ -320,14 +320,14 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
 
         {/* Country */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <Earth />
               <p>الدولة</p>
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               value={country}
               onChange={(e) => setCountry(e.target.value)}
@@ -339,14 +339,14 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
 
         {/* Governorate */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <Earth />
               <p>المحافظة</p>
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               value={governorate}
               onChange={(e) => setGovernorate(e.target.value)}
@@ -358,14 +358,14 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
 
         {/* City */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <Building2 />
               <p>المدينة</p>
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               value={city}
               onChange={(e) => setCity(e.target.value)}
@@ -377,14 +377,14 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
 
         {/* Neighborhood */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between w-1/4">
+          <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <House />
               <p>الحي</p>
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               value={neighborhood}
               onChange={(e) => setNeighborhood(e.target.value)}
@@ -396,14 +396,14 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
 
         {/* Ethnic Affiliation */}
         <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-1/4">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
             <div className="flex flex-row gap-2 text-gray-700">
               <GrGroup className="w-6 h-6" />
               <p>الإنتماء العرقي</p>
             </div>
             <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center pr-5">
+          <div className="flex-1 flex items-center ">
             <input
               value={ethnicAffiliation}
               onChange={(e) => setEthnicAffiliation(e.target.value)}

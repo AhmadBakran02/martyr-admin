@@ -46,7 +46,7 @@ export default function MassacrePage() {
   if (!massacre) return <div>No data found</div>;
   return (
     <div className="p-4 rounded-md shadow-md flex justify-center items-center">
-      <div className="w-full max-w-10/12 ">
+      <div className="w-full sm:max-w-10/12 ">
         <MassacreInfo key={massacre._id} item={massacre} id={id} />
         <div className="m-10"></div>
         {massacre && <MediaGallery media={massacre.media ?? []} />}

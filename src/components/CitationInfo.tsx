@@ -21,7 +21,7 @@ interface MastyrCardProps {
 }
 
 const CitationInfo = ({ item }: MastyrCardProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <div className={`${card} card-shadow bg-[#fbfdff]`}>
@@ -43,7 +43,7 @@ const CitationInfo = ({ item }: MastyrCardProps) => {
         {/* Body */}
         <div className="px-7 py-8 text-[#8B0000]">
           <div className="card-row">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <Calendar />
                 <p>تاريخ الاستشهاد</p>
@@ -55,7 +55,7 @@ const CitationInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-5">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <Calendar />
                 <p>تاريخ الدفن</p>
@@ -68,7 +68,7 @@ const CitationInfo = ({ item }: MastyrCardProps) => {
           </div>
           {/* Age */}
           <div className="card-row mt-5">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <Hourglass />
                 <p>العمر</p>
@@ -80,7 +80,7 @@ const CitationInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-5">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <SquareActivity />
                 <p>الحالة العمرية</p>
@@ -92,7 +92,7 @@ const CitationInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-5">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <Swords />
                 <p>منشق</p>
@@ -104,7 +104,7 @@ const CitationInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-5">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <HandFist />
                 <p>ما قبل الثورة</p>
@@ -116,7 +116,7 @@ const CitationInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           {/* <div className="card-row mt-5">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4">
               <div className="flex flex-row gap-2 text-gray-700">
                 <Earth />
                 <p>دولة الاستشهاد</p>
@@ -128,7 +128,7 @@ const CitationInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div> */}
           <div className="card-row mt-5">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <Building /> <p>محافظة الاستشهاد</p>
               </div>
@@ -139,7 +139,7 @@ const CitationInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-5">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <Building2 />
                 <p>مدينة الاستشهاد</p>
@@ -151,7 +151,7 @@ const CitationInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-5">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <MapPin />
                 <p>موقع الاستشهاد</p>

@@ -47,7 +47,7 @@ export default function MartyrPage() {
   console.log(martyr.data.martyr.media);
   return (
     <div className="p-4 rounded-md shadow-md flex justify-center items-center">
-      <div className="w-full max-w-10/12 ">
+      <div className="sm:max-w-10/12 w-full">
         {/* <MassacreInfo key={massacre._id} item={massacre} /> */}
         <Card item={martyr} />
         <div className="m-10"></div>

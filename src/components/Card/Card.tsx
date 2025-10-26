@@ -96,7 +96,7 @@ const Card = ({ item }: MastyrCardProps) => {
           <p>تحديث :</p>
           <p>2025-4-1</p>
         </div> */}
-        <div className="flex gap-5">
+        <div className="flex gap-5 items-center justify-center">
           <button
             onClick={() => handleDelete(item?.data.martyr._id)}
             className="text-red-600 hover:text-red-800 font-semibold"
@@ -194,7 +194,7 @@ const Card = ({ item }: MastyrCardProps) => {
         </div>
       </div>
       {/* Footer */}
-      <div className="bg-[#00000003] flex flex-row gap-4 px-7 py-5 border-t border-[#1e283227] sm:justify-start justify-center">
+      {/* <div className="bg-[#00000003] flex flex-row gap-4 px-7 py-5 border-t border-[#1e283227] sm:justify-start justify-center">
         <div className="btn main-btn">
           <SquareCheckBig className="p-0.5 w-5 h-5 rounded-md" />
           <div className="flex flex-row gap-2 ">
@@ -211,7 +211,7 @@ const Card = ({ item }: MastyrCardProps) => {
             <p>1</p>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

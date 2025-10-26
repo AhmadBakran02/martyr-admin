@@ -46,10 +46,9 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
         }`}
       >
         {/* Body */}
-        {/* Body */}
         <div className="px-7 py-8 text-[#8B0000]">
           <div className="card-row">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <IdCard />
                 <p>رقم الهوية الوطنية</p>
@@ -61,7 +60,7 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-2">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <UserRound />
                 <p>الاسم</p>
@@ -73,7 +72,7 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-2">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <IoManOutline className="w-6 h-6" />
                 <p>اسم الأب</p>
@@ -85,7 +84,7 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-2">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <IoWomanOutline className="w-6 h-6" />
                 <p>اسم الأم</p>
@@ -97,7 +96,7 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-2">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <Users />
                 <p>الكنية</p>
@@ -109,7 +108,7 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-2">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <Calendar />
                 <p>تاريخ الميلاد</p>
@@ -121,7 +120,7 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-2">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <VenusAndMars />
                 <p>الجنس</p>
@@ -133,7 +132,7 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-2">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <MdFamilyRestroom className="w-6 h-6" />
                 <p>الحالة الاجتماعية</p>
@@ -145,7 +144,7 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-2">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <FaChild className="w-6 h-6" />
                 <p>عدد الأطفال</p>
@@ -157,7 +156,7 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-2">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <BriefcaseBusiness />
                 <p>المهنة</p>
@@ -169,7 +168,7 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-2">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <Earth />
                 <p>الدولة</p>
@@ -181,7 +180,7 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-2">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <Earth />
                 <p>المحافظة</p>
@@ -193,7 +192,7 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-2">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <Building2 />
                 <p>المدينة</p>
@@ -205,7 +204,7 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-2">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <House />
                 <p>الحي</p>
@@ -217,7 +216,7 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="card-row mt-2">
-            <div className="flex flex-row justify-between w-1/4">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
                 <GrGroup className="w-6 h-6" />
                 <p>الإنتماء العرقي</p>
@@ -229,6 +228,7 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
         </div>
+
         {/* Footer */}
         <div className="px-5 pb-8 flex flex-col">
           <div className="flex flex-row justify-between">
