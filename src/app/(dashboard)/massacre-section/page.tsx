@@ -62,7 +62,11 @@ export default function EditMassacre() {
         {filtered.length === 0 && !loading ? (
           <div className="p-4 text-center text-gray-500">لا توجد نتائج</div>
         ) : (
-          <ul className="flex flex-col gap-5 bg-gray-100 p-5 rounded-xl justify-center items-center">
+          <ul
+            className={`flex flex-col gap-5 ${
+              !loading ? "bg-gray-100" : ""
+            } p-5 rounded-xl justify-center items-center`}
+          >
             {filtered.map((item) => (
               <MassacreCard key={item._id} item={item} />
             ))}

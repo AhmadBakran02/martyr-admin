@@ -12,6 +12,7 @@ import {
 } from "@/lib/massacreApi";
 import Image from "next/image";
 import FileUploader from "@/components/FileUploader";
+import { refreshAccessTokenApi } from "@/lib/auth";
 
 export default function EditMassacrePage() {
   const { id } = useParams<{ id: string }>();
@@ -115,21 +116,113 @@ export default function EditMassacrePage() {
     }
   };
 
-  // const handleNewFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files) {
-  //     setNewFiles((prev) => [...prev, ...Array.from(e.target.files ?? [])]);
-  //   }
-  // };
+  // =====================
+  // Photo (main image)
+  // =====================
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [newPhotoFile, setNewPhotoFile] = useState<File | null>(null);
 
-  // const handleRemoveNewFile = (index: number) => {
-  //   const newList = [...newFiles];
-  //   newList.splice(index, 1);
-  //   setNewFiles(newList);
+  // Fetch old photo from massacre.photoId
+  useEffect(() => {
+    if (!massacre?.photoId) return;
+
+    let cancelled = false;
+    const loadPhoto = async () => {
+      try {
+        const res = await fetch(
+          `${apiUrl}/api/file?fileID=${massacre.photoId}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        if (!res.ok) return;
+
+        const blob = await res.blob();
+        const objectUrl = URL.createObjectURL(blob);
+        if (!cancelled) setPhotoUrl(objectUrl);
+      } catch (err) {
+        console.error("Failed to load photo:", err);
+      }
+    };
+
+    loadPhoto();
+
+    return () => {
+      cancelled = true;
+      if (photoUrl) URL.revokeObjectURL(photoUrl);
+    };
+  }, [massacre?.photoId]);
+
+  // const handleSave = async () => {
+  //   // if (!massacre) return;
+  //   setLoadingUpdate(true);
+
+  //   const mergedMedia = [...(massacre?.media ?? []), ...(uploadedMedia ?? [])];
+
+  //   const massacre2 = {
+  //     name: massacre!.name,
+  //     startDate: massacre?.startDate,
+  //     endDate: massacre?.endDate,
+  //     governorate: massacre?.governorate,
+  //     city: massacre?.city,
+  //     location: massacre?.location,
+  //     overview: massacre?.overview,
+  //     totalOfMartyrs: Number(massacre?.totalOfMartyrs || "0"),
+  //     photoID: massacre?.photoId,
+  //     media: mergedMedia,
+  //   };
+
+  //   const result = await EditMassacreApi(massacre2, id);
+  //   console.log(result);
+  //   if (result.success) {
+  //     console.log("✅ Added successfully:");
+  //     setShowToast(true);
+  //     setTimeout(() => setShowToast(false), 3000); // Hide toast after 3s
+  //   } else {
+  //     console.error("❌ Error:", result.message);
+  //   }
+
+  //   setLoadingUpdate(false);
   // };
 
   const handleSave = async () => {
-    // if (!massacre) return;
     setLoadingUpdate(true);
+
+    let newPhotoId = massacre?.photoId;
+
+    // ✅ Upload new main image if selected
+    if (newPhotoFile) {
+      const formData = new FormData();
+      formData.append("file", newPhotoFile);
+      const token = await refreshAccessTokenApi();
+      console.log(token);
+
+      try {
+        const res = await fetch(`${apiUrl}/api/file`, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
+
+        const data = await res.json();
+        console.log(data);
+        if (data.success && data.data.fileID) {
+          newPhotoId = data.data.fileID;
+          console.log(data.data.fileID);
+          console.log(newPhotoFile);
+        } else {
+          console.error("Failed to upload new photo:", data.error);
+        }
+      } catch (err) {
+        console.error("Error uploading photo:", err);
+      }
+    }
 
     const mergedMedia = [...(massacre?.media ?? []), ...(uploadedMedia ?? [])];
 
@@ -142,16 +235,17 @@ export default function EditMassacrePage() {
       location: massacre?.location,
       overview: massacre?.overview,
       totalOfMartyrs: Number(massacre?.totalOfMartyrs || "0"),
-      photoID: massacre?.photoId,
+      photoId: newPhotoId, // ✅ updated field name
       media: mergedMedia,
     };
 
+    console.log(massacre2);
+
     const result = await EditMassacreApi(massacre2, id);
-    console.log(result);
+
     if (result.success) {
-      console.log("✅ Added successfully:");
       setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000); // Hide toast after 3s
+      setTimeout(() => setShowToast(false), 3000);
     } else {
       console.error("❌ Error:", result.message);
     }
@@ -186,6 +280,69 @@ export default function EditMassacrePage() {
       <h1 className="text-2xl font-bold mb-8 text-[var(--mainBlue)] text-center">
         تعديل المجزرة
       </h1>
+
+      {/* MAIN IMAGE (photoId) */}
+      <h2 className="text-lg font-semibold mb-3 text-gray-700">
+        الصورة الرئيسية
+      </h2>
+      <div className="mb-8 flex flex-col sm:flex-row gap-6 items-start">
+        {/* Old or new preview */}
+        <div className="relative w-full sm:w-1/2">
+          {newPhotoFile ? (
+            <Image
+              src={URL.createObjectURL(newPhotoFile)}
+              alt="new photo preview"
+              width={400}
+              height={250}
+              className="w-full h-64 object-cover rounded-md shadow"
+            />
+          ) : photoUrl ? (
+            <Image
+              src={photoUrl}
+              alt="old photo"
+              width={400}
+              height={250}
+              className="w-full h-64 object-cover rounded-md shadow"
+            />
+          ) : (
+            <div className="w-full h-64 bg-gray-100 flex items-center justify-center text-gray-400 rounded-md">
+              لا توجد صورة رئيسية
+            </div>
+          )}
+
+          {/* Delete or reset button */}
+          {(photoUrl || newPhotoFile) && (
+            <button
+              onClick={() => {
+                if (newPhotoFile) setNewPhotoFile(null);
+                if (photoUrl) setPhotoUrl(null);
+              }}
+              className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 text-xs rounded hover:bg-red-700"
+            >
+              حذف
+            </button>
+          )}
+        </div>
+
+        {/* Upload new photo */}
+        <div className="flex flex-col items-start gap-2">
+          <label className="text-gray-700">تغيير الصورة الرئيسية</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                setNewPhotoFile(file);
+              }
+            }}
+            className="block text-sm text-gray-700"
+          />
+          {newPhotoFile && (
+            <p className="text-sm text-green-600">تم اختيار صورة جديدة ✅</p>
+          )}
+        </div>
+      </div>
 
       {/* FORM FIELDS */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
