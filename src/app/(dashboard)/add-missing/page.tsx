@@ -41,20 +41,21 @@ export default function AddMartyr() {
     });
   const [loading, setLoading] = useState<boolean>(false);
   const [showToast, setShowToast] = useState<boolean>(false);
-  const handleUploadComplete = (media: MediaInput[]) => {
+
+  const handleUploadComplete = useCallback((media: MediaInput[]) => {
     setUploadedMedia(media);
-  };
-  const handleCardChange = (values: AddCardMissingValues) => {
+  }, []);
+  const handleCardChange = useCallback((values: AddCardMissingValues) => {
     setCardMissingValues(values);
-  };
+  }, []);
 
   console.log(cardMissingValues);
   console.log(personalInfoMissing);
 
-  const handleCitationChange = (values: MissingInfoType) => {
+  const handleCitationChange = useCallback((values: MissingInfoType) => {
     setMissingInfo(values);
     setDateMartyrdom(values.dateMartyrdom);
-  };
+  }, []);
 
   const handlePersonlChange = useCallback((data: PersonalInfoType) => {
     setPersonalInfoMissing(data);

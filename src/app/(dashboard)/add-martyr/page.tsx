@@ -40,18 +40,18 @@ export default function AddMartyr() {
   const handleUploadComplete = (media: MediaInput[]) => {
     setUploadedMedia(media);
   };
-  const handleCardChange = (values: AddCardValues) => {
+  const handleCardChange = useCallback((values: AddCardValues) => {
     setCardValues(values);
-  };
+  }, []);
 
   // console.log(cardValues);
   console.log(citationInfo);
   console.log(personalInfo);
 
-  const handleCitationChange = (values: CitationInfoType) => {
+  const handleCitationChange = useCallback((values: CitationInfoType) => {
     setCitationInfo(values);
     setDateMartyrdom(values.dateMartyrdom);
-  };
+  }, []);
 
   const handlePersonlChange = useCallback((data: PersonalInfoType) => {
     setPersonalInfo(data);

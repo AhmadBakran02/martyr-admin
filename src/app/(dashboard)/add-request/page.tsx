@@ -73,8 +73,8 @@ export default function AddRequsetPage() {
 
         {!loadingRequests && requestsList.length > 0 && (
           <ul className="flex flex-col gap-5 bg-gray-100 p-5 rounded-xl justify-center items-center">
-            {requestsList.map((item: RequestMastyrData) => (
-              <MartyrRequsetCard key={item._id} martyr={item} />
+            {requestsList.map((item: RequestMastyrData, i) => (
+              <MartyrRequsetCard key={item._id || i} martyr={item} />
             ))}
           </ul>
         )}
