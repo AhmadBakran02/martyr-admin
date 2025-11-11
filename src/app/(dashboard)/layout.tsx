@@ -1,34 +1,28 @@
 import type { Metadata } from "next";
-import "@/app/globals.css";
 import { Cairo } from "next/font/google";
-import Footer from "@/components/Footer";
-import HeaderDashboard from "@/components/HeaderDashboard";
-import AuthGuard from "@/lib/authGuard";
+import "@/app/globals.css";
+import DashboardLayoutClient from "@/components/DashboardLayoutClient";
 
 const cairo = Cairo({
   subsets: ["arabic"],
-  weight: ["300", "400", "600", "700"], // choose what you need
+  weight: ["300", "400", "600", "700"],
   variable: "--font-cairo",
 });
 
 export const metadata: Metadata = {
-  title: "Dashborad",
-  description: "Dashborad",
+  title: "Dashboard",
+  description: "Dashboard Layout",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="ar" dir="rtl" className={cairo.variable}>
-      <body>
-        <AuthGuard>
-          <HeaderDashboard />
-          {children}
-          {/* <Footer /> */}
-        </AuthGuard>
+      <body className="bg-[#f9f9f9] text-gray-900">
+        <DashboardLayoutClient>{children}</DashboardLayoutClient>
       </body>
     </html>
   );

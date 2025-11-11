@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { card } from "@/styles/Card.styles";
-import { SquareCheckBig, SquarePen, SquareX } from "lucide-react";
+import { SquareCheckBig, SquareX } from "lucide-react";
 import "./style.css";
 import { GetMartyrResponse } from "@/lib/getMastyrById";
 import Link from "next/link";
@@ -90,8 +90,8 @@ const Card = ({ item }: MastyrCardProps) => {
   return (
     <div className={`${card} card-shadow`}>
       {/* Header */}
-      <div className="bg-[var(--mainBlue)] px-7 py-8 text-right text-white flex flex-row justify-between">
-        <h2 className="text-xl font-bold">بطاقة الشهيد</h2>
+      <div className="bg-[var(--mainGreen)] px-7 py-8 text-right text-white flex flex-row justify-between">
+        <h2 className="text-xl font-bold text-white">بطاقة الشهيد</h2>
         {/* <div className="flex flex-row gap-2">
           <p>تحديث :</p>
           <p>2025-4-1</p>
@@ -104,7 +104,7 @@ const Card = ({ item }: MastyrCardProps) => {
             حذف
           </button>
 
-          <Link href={`/edit-martys/${item?.data.martyr._id}`}>تعديل</Link>
+          <Link href={`/edit-martyrs/${item?.data.martyr._id}`}>تعديل</Link>
         </div>
       </div>
       {/* Body */}

@@ -119,11 +119,11 @@ export default function MartyrdomPicker({ value, onChange, onChange2 }: Props) {
     <div>
       <div className="card-row mt-5">
         <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-          <div className="flex flex-row gap-2 text-gray-700">
+          <div className="flex flex-row gap-2 text-[var(--textMain)]">
             <Image src={"/kill.svg"} alt="" width={29} height={29} />
             <p>مجزرة</p>
           </div>
-          <p className="text-gray-700">:</p>
+          <p>:</p>
         </div>
 
         <div className="flex-1 flex items-center">
@@ -142,23 +142,23 @@ export default function MartyrdomPicker({ value, onChange, onChange2 }: Props) {
 
       {/* Modal overlay */}
       {open && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center px-4 py-8 text-gray-700">
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
           {/* translucent backdrop */}
-          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300" />
 
           {/* modal content */}
           <div
             ref={containerRef}
-            className="relative w-full max-w-2xl bg-white rounded-lg shadow-lg z-10 overflow-hidden px-4 py-4"
+            className="relative w-full max-w-2xl bg-white rounded-2xl shadow-2xl z-10 overflow-hidden px-6 py-6 transform transition-all duration-300 scale-100 animate-fadeIn"
             role="dialog"
             aria-modal="true"
           >
-            <div className="flex items-center justify-between py-4 border-b border-gray-400">
+            {/* Header */}
+            <div className="flex items-center justify-between py-4 border-b border-gray-300">
               <h3 className="text-lg font-bold">اختر اسم المجزرة</h3>
               <button
                 onClick={() => setOpen(false)}
-                className="px-3 py-1 rounded-md hover:bg-gray-100 cursor-pointer"
-                aria-label="Close"
+                className="px-3 py-1 rounded-md hover:bg-gray-100"
               >
                 إغلاق
               </button>

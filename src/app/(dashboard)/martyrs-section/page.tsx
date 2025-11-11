@@ -1,65 +1,83 @@
 "use client";
-import Loading2 from "@/components/Loading2/Loading2";
-import MartyrCard from "@/components/MartyrCard";
-import { getAllMartyrs, GetMartyr } from "@/lib/martyrApi";
 import { useEffect, useState } from "react";
+import MartyrCard from "@/components/MartyrCard";
+import MartyrCardSkeleton from "@/components/MartyrCardSkeleton";
+import { getAllMartyrs, GetMartyr } from "@/lib/martyrApi";
+import { motion } from "framer-motion";
 
 export default function EditMartyr() {
   const [list, setList] = useState<GetMartyr[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [query] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  const fetchMassacres = async () => {
+  const fetchMartyrs = async () => {
     try {
       const res = await getAllMartyrs(100, 1);
-      console.log("123213");
       const cleanList = (res.data.martyrs || []).filter(
         (m: GetMartyr) => typeof m.name === "string" && m.name.trim() !== ""
       );
-      console.log(cleanList);
       setList(cleanList);
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("Login failed");
-      }
+      if (err instanceof Error) setError(err.message);
+      else setError("حدث خطأ أثناء تحميل البيانات");
     } finally {
       setLoading(false);
     }
   };
 
-  console.log(error);
   useEffect(() => {
-    fetchMassacres();
+    fetchMartyrs();
   }, []);
 
-  const filtered = list.filter(
-    (it) =>
-      typeof it.name === "string" &&
-      it.name.toLowerCase().includes(query.trim().toLowerCase())
-  );
-
   return (
-    <div className="p-5 h-dvh">
-      {/* List */}
-      <div className="flex flex-col gap-5">
-        {loading && (
-          <div className=" rounded-2xl p-10 flex justify-center items-center">
-            <Loading2 />
-          </div>
-        )}
-        {filtered.length === 0 && !loading ? (
-          <div className="p-4 text-center text-gray-500">لا توجد نتائج</div>
-        ) : (
-          <ul className="flex flex-col gap-5 bg-gray-100 p-5 rounded-xl justify-center items-center">
-            {filtered.map((item) => (
-              <MartyrCard key={item._id} martyr={item} />
-            ))}
-          </ul>
+    <div className=" bg-gray-50 p-6">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-xl font-bold text-gray-800">قائمة الشهداء</h1>
+        {!loading && (
+          <p className="text-sm text-gray-500">{list.length} شهيد</p>
         )}
       </div>
+
+      {/* Loading Skeletons */}
+      {loading && (
+        <motion.ul
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex flex-col gap-5 bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
+        >
+          {[...Array(6)].map((_, i) => (
+            <MartyrCardSkeleton key={i} />
+          ))}
+        </motion.ul>
+      )}
+
+      {/* Error */}
+      {!loading && error && (
+        <div className="text-center text-red-600 mt-10">
+          ❌ حدث خطأ أثناء تحميل البيانات: {error}
+        </div>
+      )}
+
+      {/* Real Cards */}
+      {!loading && !error && (
+        <motion.ul
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="flex flex-col gap-5 bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
+        >
+          {list.map((item, index) => (
+            <motion.li
+              key={item._id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.05, duration: 0.4 }}
+            >
+              <MartyrCard martyr={item} />
+            </motion.li>
+          ))}
+        </motion.ul>
+      )}
     </div>
   );
 }

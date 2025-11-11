@@ -1,0 +1,5 @@
+.avatar {
+  object-fit: cover;
+  border: 6px solid var(--glass);
+  /* box-shadow: 0 8px 18px rgba(20, 30, 40, 0.08); */
+}

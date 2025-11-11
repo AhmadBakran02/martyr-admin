@@ -27,7 +27,7 @@ const CitationInfo = ({ item }: MastyrCardProps) => {
     <div className={`${card} card-shadow bg-[#fbfdff]`}>
       {/* Header */}
       <div
-        className="bg-[var(--mainBlue)] px-7 py-8 sm:text-right text-center text-white flex justify-between items-center cursor-pointer"
+        className="bg-[var(--mainGreen)] px-7 py-8 sm:text-right text-center text-white flex justify-between items-center cursor-pointer"
         onClick={() => setIsOpen(!isOpen)} // 👈 toggle on click
       >
         <h2 className="text-xl font-bold">معلومات الاستشهاد</h2>

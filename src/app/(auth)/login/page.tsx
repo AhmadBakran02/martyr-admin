@@ -17,6 +17,8 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError("");
+    console.log(email);
+    console.log(password);
 
     try {
       const res = await loginApi(email, password);
@@ -35,7 +37,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[var(--lightBlue)] to-blue-100">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[var(--mainGreen)] to-[var(--darkGreen)]">
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
         <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
           تسجيل الدخول
@@ -83,7 +85,9 @@ export default function LoginPage() {
           </button>
 
           {error && (
-            <p className="text-red-500 text-center text-sm mt-2">{error}</p>
+            <p className="text-red-500 text-center text-sm mt-2">
+              حدث خطأ في تسجيل الدخول
+            </p>
           )}
         </form>
       </div>

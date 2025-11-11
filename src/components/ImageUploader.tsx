@@ -56,7 +56,7 @@ export default function ImageUploader({ onUploadComplete }: FileUploaderProps) {
 
   return (
     <div className={`${card} card-shadow bg-[#fbfdff]`}>
-      <div className="p-5 bg-[var(--mainBlue)]">
+      <div className="p-5 bg-[var(--mainGreen)]">
         <h2 className="font-bold text-white ">
           اختر صورة غلاف الخاصة بالمجزره
         </h2>

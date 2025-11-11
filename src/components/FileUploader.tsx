@@ -67,7 +67,7 @@ export default function FileUploader({ onUploadComplete }: FileUploaderProps) {
 
   return (
     <div className={`${card} card-shadow bg-[#fbfdff]`}>
-      <div className="flex p-5 justify-between items-center mb-4 bg-[var(--mainBlue)]">
+      <div className="flex p-5 justify-between items-center mb-4 bg-[var(--mainGreen)]">
         <h2 className="font-bold text-white ">اختر الصور والفيديوهات</h2>
         <button
           onClick={() => inputRef.current?.click()}

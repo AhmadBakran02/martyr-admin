@@ -34,6 +34,7 @@ interface PersonalInfoProps {
     governorate: string;
     neighborhood: string;
     ethnicAffiliation: string;
+    organizationalAffiliation: string;
     overview: string;
   }) => void;
   martyr?: GetMartyr;
@@ -41,21 +42,23 @@ interface PersonalInfoProps {
 
 const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
   // 🧩 State setup
-  const [name, setName] = useState("");
-  const [fatherName, setFatherName] = useState("");
-  const [motherName, setMotherName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
-  const [gender, setGender] = useState("male");
-  const [maritalStatus, setMaritalStatus] = useState("");
-  const [numberOfChildren, setNumberOfChildren] = useState("");
-  const [profession, setProfession] = useState("");
-  const [country, setCountry] = useState("");
-  const [city, setCity] = useState("");
-  const [governorate, setGovernorate] = useState("");
-  const [neighborhood, setNeighborhood] = useState("");
-  const [ethnicAffiliation, setEthnicAffiliation] = useState("");
-  const [overview, setOverview] = useState("");
+  const [name, setName] = useState<string>("");
+  const [fatherName, setFatherName] = useState<string>("");
+  const [motherName, setMotherName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [dateOfBirth, setDateOfBirth] = useState<string>("");
+  const [gender, setGender] = useState<string>("male");
+  const [maritalStatus, setMaritalStatus] = useState<string>("");
+  const [numberOfChildren, setNumberOfChildren] = useState<string>("");
+  const [profession, setProfession] = useState<string>("");
+  const [country, setCountry] = useState<string>("");
+  const [city, setCity] = useState<string>("");
+  const [governorate, setGovernorate] = useState<string>("");
+  const [neighborhood, setNeighborhood] = useState<string>("");
+  const [ethnicAffiliation, setEthnicAffiliation] = useState<string>("");
+  const [overview, setOverview] = useState<string>("");
+  const [organizationalAffiliation, setOrganizationalAffiliation] =
+    useState<string>("");
 
   // ✅ Initialize fields when martyr data is available (edit mode)
   useEffect(() => {
@@ -79,6 +82,7 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
       setCity(martyr.city ?? "");
       setNeighborhood(martyr.neighborhood ?? "");
       setEthnicAffiliation(martyr.ethnicAffiliation ?? "");
+      setOrganizationalAffiliation(martyr.organizationalAffiliation ?? "");
       setOverview(martyr.overview ?? "");
     }
   }, [martyr]);
@@ -99,6 +103,7 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
       governorate,
       neighborhood,
       ethnicAffiliation,
+      organizationalAffiliation,
       overview,
     });
   }, [
@@ -117,13 +122,14 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
     governorate,
     neighborhood,
     ethnicAffiliation,
+    organizationalAffiliation,
     overview,
   ]);
 
   return (
     <div className={`${card} card-shadow bg-[#fbfdff]`}>
       {/* Header */}
-      <div className="bg-[var(--mainBlue)] px-7 py-8 sm:text-right text-center text-white">
+      <div className="bg-[var(--mainGreen)] px-7 py-8 sm:text-right text-center text-white">
         <h2 className="text-xl font-bold">المعلومات الشخصية</h2>
       </div>
 
@@ -407,6 +413,25 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
             <input
               value={ethnicAffiliation}
               onChange={(e) => setEthnicAffiliation(e.target.value)}
+              type="text"
+              className="bg-gray-100 w-full p-2 rounded-md"
+            />
+          </div>
+        </div>
+
+        {/* Organizational Affiliation */}
+        <div className="card-row mt-5">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
+            <div className="flex flex-row gap-2 text-gray-700">
+              <GrGroup className="w-6 h-6" />
+              <p>الإنتماء التنظيمي</p>
+            </div>
+            <p className="text-gray-700">:</p>
+          </div>
+          <div className="flex-1 flex items-center ">
+            <input
+              value={organizationalAffiliation}
+              onChange={(e) => setOrganizationalAffiliation(e.target.value)}
               type="text"
               className="bg-gray-100 w-full p-2 rounded-md"
             />

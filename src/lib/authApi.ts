@@ -1,4 +1,4 @@
-import { LoginResponse } from "@/app/type/loginType";
+import { LoginResponse } from "@/types/loginType";
 import { apiUrl } from "@/config/apiUrl";
 
 export async function loginApi(

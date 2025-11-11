@@ -7,7 +7,8 @@ import { addMartyr, AddMartyrType } from "@/lib/martyrApi";
 import FileUploader from "@/components/FileUploader";
 import { MediaInput } from "@/lib/massacreApi";
 import { uploadImage } from "@/lib/uploadImage";
-import { CitationInfoType, PersonalInfoType } from "../edit-martys/[id]/page";
+import { CitationInfoType } from "@/types/CitationInfoIDType";
+import { PersonalInfoType } from "@/types/PersonalInfoIDType";
 
 export default function AddMartyr() {
   const [fullName, setFullName] = useState<string>("");

@@ -14,12 +14,12 @@ const MassacreCard = (item: MassacreCardProps) => {
       {/* Right Section */}
       <Link
         href={`/massacre-section/${item.item._id}`}
-        className="max-w-200 w-full bg-[#fbfdff] text-[var(--mainBlue)] rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col sm:flex-row justify-between gap-6"
+        className="max-w-200 w-full bg-[#fbfdff] text-[var(--mainGreen)] rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col sm:flex-row justify-between gap-6"
       >
         <div className="flex flex-col gap-4 sm:w-1/2 justify-center">
           {/* Name */}
           <div className="flex flex-wrap items-center gap-2 text-xl font-semibold">
-            <Captions className="w-6 h-6 text-[var(--mainBlue)]" />
+            <Captions className="w-6 h-6 text-[var(--mainGreen)]" />
             <span>اسم المجزرة:</span>
             <span className="text-black font-bold">{item.item.name}</span>
           </div>

@@ -38,6 +38,7 @@ export async function loginApi(email: string, password: string) {
   if (!res.ok || !data.success) throw new Error(data.message || "Login failed");
 
   saveTokens(data.data.accessToken, data.data.refreshToken);
+  localStorage.setItem("userName", data.data.name);
 
   return data;
 }

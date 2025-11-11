@@ -63,7 +63,7 @@ export default function AddMassacre() {
   }, []);
 
   return (
-    <div className="relative p-10 flex justify-center items-center">
+    <div className="relative p-10 flex justify-center items-center bg-[#eeeeee]">
       {/* ✅ Floating success toast */}
       {showToast && (
         <div className="fixed top-5 right-5 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg transition-all duration-500 animate-fadeInOut z-50">
@@ -91,8 +91,8 @@ export default function AddMassacre() {
             ${loading ? "cursor-wait" : ""}
             ${
               !massacreInfo?.name || massacreInfo.name.length < 1 || loading
-                ? "bg-blue-300 cursor-not-allowed opacity-70"
-                : "bg-blue-600 hover:bg-blue-700 active:scale-[0.97] shadow-md hover:shadow-lg"
+                ? "bg-[var(--lightGold)] cursor-not-allowed opacity-70"
+                : "bg-[var(--mainGold)] hover:bg-[var(--darkGold)] active:scale-[0.97] shadow-md hover:shadow-lg"
             }`}
         >
           {loading ? (

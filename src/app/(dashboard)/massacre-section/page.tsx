@@ -1,14 +1,15 @@
 "use client";
 import Loading2 from "@/components/Loading2/Loading2";
 import MassacreCard from "@/components/MassacreCard";
+import MassacreCardSkeleton from "@/components/MassacreCardSkeleton";
 import { getAllMassacres, Massacre } from "@/lib/massacreApi";
 import { useEffect, useState } from "react";
 
 export default function EditMassacre() {
-  const [list, setList] = useState<Massacre[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [massacreslist, setMassacresList] = useState<Massacre[]>([]);
+  const [loadingMassacres, setLoadingMassacres] = useState<boolean>(true);
   const [query, setQuery] = useState<string>("");
-  const [error, setError] = useState<string>("");
+  const [errorMassacres, setErrorMassacres] = useState<string>("");
 
   const fetchMassacres = async () => {
     try {
@@ -17,15 +18,15 @@ export default function EditMassacre() {
       const cleanList = (res.data.massacres || []).filter(
         (m: Massacre) => typeof m.name === "string" && m.name.trim() !== ""
       );
-      setList(cleanList);
+      setMassacresList(cleanList);
     } catch (err: unknown) {
       if (err instanceof Error) {
-        setError(err.message);
+        setErrorMassacres(err.message);
       } else {
-        setError("Login failed");
+        setErrorMassacres("Login failed");
       }
     } finally {
-      setLoading(false);
+      setLoadingMassacres(false);
     }
   };
 
@@ -33,7 +34,7 @@ export default function EditMassacre() {
     fetchMassacres();
   }, []);
 
-  const filtered = list.filter(
+  const filtered = massacreslist.filter(
     (it) =>
       typeof it.name === "string" &&
       it.name.toLowerCase().includes(query.trim().toLowerCase())
@@ -54,17 +55,20 @@ export default function EditMassacre() {
       <div className="m-5"></div>
       {/* List */}
       <div className="flex flex-col gap-5">
-        {loading && (
-          <div className=" rounded-2xl p-10 flex justify-center items-center">
-            <Loading2 />
-          </div>
+        {loadingMassacres && (
+          <ul className="flex flex-col gap-5 p-5 rounded-xl">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <MassacreCardSkeleton key={i} />
+            ))}
+          </ul>
         )}
-        {filtered.length === 0 && !loading ? (
+
+        {filtered.length === 0 && !loadingMassacres ? (
           <div className="p-4 text-center text-gray-500">لا توجد نتائج</div>
         ) : (
           <ul
             className={`flex flex-col gap-5 ${
-              !loading ? "bg-gray-100" : ""
+              !loadingMassacres ? "bg-gray-100" : ""
             } p-5 rounded-xl justify-center items-center`}
           >
             {filtered.map((item) => (
@@ -73,6 +77,7 @@ export default function EditMassacre() {
           </ul>
         )}
       </div>
+      {errorMassacres && <div>{errorMassacres}</div>}
     </div>
   );
 }

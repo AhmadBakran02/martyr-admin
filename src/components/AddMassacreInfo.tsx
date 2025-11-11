@@ -42,22 +42,22 @@ const AddMassacreInfo = ({ onChange }: MassacreInfoProps) => {
   }, [name, start, end, governorate, city, location, number, note, onChange]);
 
   return (
-    <div className={`${card} card-shadow bg-[#fbfdff]`}>
+    <div className={`${card} card-shadow bg-[#fbfdff] text-[var(--textMain)]`}>
       {/* Header */}
-      <div className="bg-[var(--mainBlue)] px-7 py-8 sm:text-right text-center text-white">
+      <div className="bg-[var(--mainGreen)] px-7 py-8 sm:text-right text-center text-white">
         <h2 className="text-xl font-bold">المعلومات المجزرة</h2>
       </div>
 
       {/* Body */}
-      <div className="px-7 py-8 text-[#8B0000]">
+      <div className="px-7 py-8">
         {/* Name */}
         <div className="card-row">
           <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
+            <div className="flex flex-row gap-2 ">
               <Captions />
               <p>الاسم</p>
             </div>
-            <p className="text-gray-700">:</p>
+            <p className="">:</p>
           </div>
           <div className="flex-1 flex items-center ">
             <input
@@ -72,11 +72,11 @@ const AddMassacreInfo = ({ onChange }: MassacreInfoProps) => {
         {/* Start Date */}
         <div className="card-row mt-5">
           <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
+            <div className="flex flex-row gap-2 ">
               <Calendar />
               <p>تاريخ البداية</p>
             </div>
-            <p className="text-gray-700">:</p>
+            <p className="">:</p>
           </div>
           <div className="flex-1 flex items-center ">
             <input
@@ -91,11 +91,11 @@ const AddMassacreInfo = ({ onChange }: MassacreInfoProps) => {
         {/* End Date */}
         <div className="card-row mt-5">
           <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
+            <div className="flex flex-row gap-2 text-[var(--textMain)]">
               <Calendar />
               <p>تاريخ النهاية</p>
             </div>
-            <p className="text-gray-700">:</p>
+            <p className="">:</p>
           </div>
           <div className="flex-1 flex items-center ">
             <input
@@ -110,30 +110,45 @@ const AddMassacreInfo = ({ onChange }: MassacreInfoProps) => {
         {/* Governorate */}
         <div className="card-row mt-5">
           <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
+            <div className="flex flex-row gap-2 ">
               <Earth />
               <p>المحافظة</p>
             </div>
-            <p className="text-gray-700">:</p>
+            <p className="">:</p>
           </div>
-          <div className="flex-1 flex items-center ">
-            <input
+          <div className="flex-1 flex items-center">
+            <select
               value={governorate}
               onChange={(e) => setGovernorate(e.target.value)}
-              type="text"
               className="bg-gray-100 w-full p-2 rounded-md"
-            />
+            >
+              <option value="">اختر المحافظة</option>
+              <option value="إدلب">إدلب</option>
+              <option value="الحسكة">الحسكة</option>
+              <option value="الرقة">الرقة</option>
+              <option value="السويداء">السويداء</option>
+              <option value="دمشق">دمشق</option>
+              <option value="القنيطرة">القنيطرة</option>
+              <option value="اللاذقية">اللاذقية</option>
+              <option value="حلب">حلب</option>
+              <option value="حمص">حمص</option>
+              <option value="حماة">حماة</option>
+              <option value="دير الزور">دير الزور</option>
+              <option value="ريف دمشق">ريف دمشق</option>
+              <option value="طرطوس">طرطوس</option>
+              <option value="درعا">درعا</option>
+            </select>
           </div>
         </div>
 
         {/* City */}
         <div className="card-row mt-5">
           <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
+            <div className="flex flex-row gap-2 ">
               <Building2 />
               <p>المدينة</p>
             </div>
-            <p className="text-gray-700">:</p>
+            <p className="">:</p>
           </div>
           <div className="flex-1 flex items-center ">
             <input
@@ -148,11 +163,11 @@ const AddMassacreInfo = ({ onChange }: MassacreInfoProps) => {
         {/* Location */}
         <div className="card-row mt-5">
           <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
+            <div className="flex flex-row gap-2 ">
               <MapPin />
               <p>الموقع</p>
             </div>
-            <p className="text-gray-700">:</p>
+            <p className="">:</p>
           </div>
           <div className="flex-1 flex items-center ">
             <input
@@ -167,11 +182,11 @@ const AddMassacreInfo = ({ onChange }: MassacreInfoProps) => {
         {/* Number */}
         <div className="card-row mt-5">
           <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
+            <div className="flex flex-row gap-2 ">
               <MdFamilyRestroom className="w-6 h-6" />
               <p>عدد الشهداء الموثقين</p>
             </div>
-            <p className="text-gray-700">:</p>
+            <p className="">:</p>
           </div>
           <div className="flex-1 flex items-center ">
             <input
@@ -187,7 +202,7 @@ const AddMassacreInfo = ({ onChange }: MassacreInfoProps) => {
       {/* Footer (Description) */}
       <div className="px-5 pb-8 flex flex-col">
         <div className="flex flex-row justify-between mb-2">
-          <div className="flex flex-row gap-2 text-gray-700">
+          <div className="flex flex-row gap-2 ">
             <NotepadText />
             <p>تفاصيل المجزرة</p>
           </div>

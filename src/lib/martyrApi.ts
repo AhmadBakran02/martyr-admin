@@ -1,6 +1,7 @@
 import { apiUrl } from "@/config/apiUrl";
 import { getAccessToken, refreshAccessTokenApi } from "./auth";
 import { MediaInput } from "./massacreApi";
+import { AddRequestResponse } from "./getRequestApi";
 
 // ===============================
 // Martyrs API Response Interfaces
@@ -33,6 +34,7 @@ export interface GetMartyr {
   city?: string;
   neighborhood?: string;
   ethnicAffiliation?: string;
+  organizationalAffiliation?: string;
   age?: string;
   overview: string;
   ageStatus?: string;
@@ -52,6 +54,7 @@ export interface GetMartyr {
   updatedAt: string;
   seq: number;
   __v: number;
+  isMissing?: boolean;
 }
 
 export interface AddMartyrType {
@@ -90,10 +93,24 @@ export interface AddMartyrType {
   preRevolution?: string;
   massacreId?: string | null;
 
+  isMissing?: boolean;
+
   // Media & Description
   overview: string;
   photoId?: string | null;
   media: MediaInput[];
+}
+
+export interface MartyrInfoResponse {
+  success: boolean;
+  message: string;
+  data: {
+    numberOfMartyrs: number;
+    totalOfMartyrs: number;
+    numberOfMassacres: number;
+    numberOfUpdateRequests: number;
+    numberOfAddRequests: number;
+  };
 }
 
 export interface MartyrsMeta {
@@ -166,6 +183,11 @@ export interface ApiResponse {
     };
   };
 }
+export interface ApiRequestResponse {
+  success: boolean;
+  message: string;
+  data?: AddRequestResponse;
+}
 
 export async function addMartyr(martyr: AddMartyrType): Promise<ApiResponse> {
   try {
@@ -202,7 +224,8 @@ export async function addMartyr(martyr: AddMartyrType): Promise<ApiResponse> {
 
 export async function getAllMartyrs(
   limit: number = 10,
-  page: number = 1
+  page: number = 1,
+  isMissing: boolean = false
 ): Promise<GetMartyrsResponse> {
   const token = getAccessToken();
   console.log(token);
@@ -210,7 +233,7 @@ export async function getAllMartyrs(
   console.log(token);
 
   const res = await fetch(
-    `${apiUrl}/api/martyr/all?limit=${limit}&page=${page}`,
+    `${apiUrl}/api/martyr/all?limit=${limit}&page=${page}&isMissing=${isMissing}`,
     {
       method: "GET",
       headers: {
@@ -235,18 +258,6 @@ export async function getAllMartyrs(
   return data as GetMartyrsResponse;
 }
 
-export interface MartyrInfoResponse {
-  success: boolean;
-  message: string;
-  data: {
-    numberOfMartyrs: number;
-    totalOfMartyrs: number;
-    numberOfMassacres: number;
-    numberOfUpdateRequests: number;
-    numberOfAddRequests: number;
-  };
-}
-
 export async function getMartyrInfo(): Promise<MartyrInfoResponse> {
   const token = await refreshAccessTokenApi();
   try {
@@ -254,7 +265,7 @@ export async function getMartyrInfo(): Promise<MartyrInfoResponse> {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // ✅ send token in header
+        Authorization: `Bearer ${token}`,
       },
     });
 

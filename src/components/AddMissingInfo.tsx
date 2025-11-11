@@ -1,0 +1,271 @@
+"use client";
+import {
+  Building,
+  Building2,
+  Calendar,
+  HandFist,
+  Hourglass,
+  MapPin,
+  NotepadText,
+  Sword,
+} from "lucide-react";
+import { card } from "@/styles/Card.styles";
+import { useEffect, useState } from "react";
+import { GetMartyr } from "@/lib/martyrApi";
+import { MissingInfoType } from "@/types/MissingInfoType";
+
+interface AddMissingInfoProps {
+  onChange: (data: MissingInfoType) => void;
+  martyr?: GetMartyr;
+}
+
+const AddMissingInfo = ({ onChange, martyr }: AddMissingInfoProps) => {
+  const [dateMartyrdom, setDateMartyrdom] = useState<string>("");
+  const [age, setAge] = useState<string>("");
+  const [ageStatus, setAgeStatus] = useState<string>("");
+  const [dissident, setDissident] = useState<string>("true");
+  const [preRevolution, setPreRevolution] = useState<string>("true");
+  const [countryOfMartyrdom] = useState<string>("");
+  const [martyrdomGovernorate, setMartyrdomGovernorate] = useState<string>("");
+  const [cityOfMartyrdom, setCityOfMartyrdom] = useState<string>("");
+  const [martyrdomLocation, setMartyrdomLocation] = useState<string>("");
+  const [citationMethod, setCitationMethod] = useState<string>("");
+
+  // ✅ Pre-fill data when editing existing martyr
+  useEffect(() => {
+    if (martyr) {
+      setDateMartyrdom(martyr.dateOfMartyrdom || "");
+      setAge(martyr.age?.toString() || "");
+      setAgeStatus(martyr.ageStatus || "");
+      setDissident(String(martyr.dissident ?? "true"));
+      setPreRevolution(String(martyr.preRevolution ?? "true"));
+      // setCountryOfMartyrdom(martyr.countryOfMartyrdom || "");
+      setMartyrdomGovernorate(martyr.martyrdomGovernorate || "");
+      setCityOfMartyrdom(martyr.cityOfMartyrdom || "");
+      setMartyrdomLocation(martyr.martyrdomSite || "");
+      setCitationMethod(martyr.citationMethod || "");
+    }
+  }, [martyr]);
+
+  // ✅ Update parent whenever state changes
+  useEffect(() => {
+    onChange({
+      dateMartyrdom,
+      age,
+      ageStatus,
+      dissident,
+      preRevolution,
+      countryOfMartyrdom,
+      martyrdomGovernorate,
+      cityOfMartyrdom,
+      martyrdomLocation,
+      citationMethod,
+    });
+  }, [
+    dateMartyrdom,
+    age,
+    ageStatus,
+    dissident,
+    preRevolution,
+    countryOfMartyrdom,
+    martyrdomGovernorate,
+    cityOfMartyrdom,
+    martyrdomLocation,
+    citationMethod,
+    onChange,
+  ]);
+
+  return (
+    <div className={`${card} card-shadow bg-[#fbfdff]`}>
+      {/* Header */}
+      <div className="bg-[var(--mainGreen)] px-7 py-8 sm:text-right text-center text-white">
+        <h2 className="text-xl font-bold">معلومات الاختفاء</h2>
+      </div>
+
+      {/* Body */}
+      <div className="px-7 py-8 text-[var(--textMain)]">
+        {/* Date of Martyrdom */}
+        <FieldRow icon={<Calendar />} label="تاريخ الاختفاء">
+          <input
+            value={dateMartyrdom}
+            type="date"
+            onChange={(e) => setDateMartyrdom(e.target.value)}
+            className="bg-gray-100 w-full p-2 rounded-md"
+          />
+        </FieldRow>
+
+        {/* Age */}
+        <FieldRow icon={<Hourglass />} label="العمر">
+          <input
+            value={age}
+            onChange={(e) =>
+              setAge(Math.max(0, Number(e.target.value)).toString())
+            }
+            type="number"
+            className="bg-gray-100 w-full p-2 rounded-md"
+          />
+        </FieldRow>
+
+        {/* Age Status */}
+        {/* <FieldRow icon={<SquareActivity />} label="الحالة العمرية">
+          <input
+            value={ageStatus}
+            onChange={(e) => setAgeStatus(e.target.value)}
+            type="text"
+            className="bg-gray-100 w-full p-2 rounded-md"
+          />
+        </FieldRow> */}
+
+        {/* Dissident */}
+        <FieldRow icon={<Sword />} label="منشق">
+          <RadioGroup
+            name="dissident"
+            value={dissident}
+            onChange={setDissident}
+          />
+        </FieldRow>
+
+        {/* Pre-Revolution */}
+        <FieldRow icon={<HandFist />} label="ما قبل الثورة">
+          <RadioGroup
+            name="preRevolution"
+            value={preRevolution}
+            onChange={setPreRevolution}
+          />
+        </FieldRow>
+
+        {/* Governorate */}
+        <div className="card-row mt-5 ">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
+            <div className="flex flex-row gap-2 ">
+              <Building />
+              <p>محافظة الاختفاء</p>
+            </div>
+            <p>:</p>
+          </div>
+          <div className="flex-1 flex items-center">
+            <select
+              value={martyrdomGovernorate}
+              onChange={(e) => setMartyrdomGovernorate(e.target.value)}
+              className="bg-gray-100 w-full p-2 rounded-md"
+            >
+              <option value="">اختر المحافظة</option>
+              <option value="إدلب">إدلب</option>
+              <option value="الحسكة">الحسكة</option>
+              <option value="الرقة">الرقة</option>
+              <option value="السويداء">السويداء</option>
+              <option value="القنيطرة">القنيطرة</option>
+              <option value="اللاذقية">اللاذقية</option>
+              <option value="حلب">حلب</option>
+              <option value="حماة">حماة</option>
+              <option value="حمص">حمص</option>
+              <option value="درعا">درعا</option>
+              <option value="دمشق">دمشق</option>
+              <option value="دير الزور">دير الزور</option>
+              <option value="ريف دمشق">ريف دمشق</option>
+              <option value="طرطوس">طرطوس</option>
+            </select>
+          </div>
+        </div>
+
+        {/* City */}
+        <FieldRow icon={<Building2 />} label="مدينة الاختفاء">
+          <input
+            value={cityOfMartyrdom}
+            onChange={(e) => setCityOfMartyrdom(e.target.value)}
+            type="text"
+            className="bg-gray-100 w-full p-2 rounded-md"
+          />
+        </FieldRow>
+
+        {/* Location */}
+        <FieldRow icon={<MapPin />} label="اخر موقع ظهور">
+          <input
+            value={martyrdomLocation}
+            onChange={(e) => setMartyrdomLocation(e.target.value)}
+            type="text"
+            className="bg-gray-100 w-full p-2 rounded-md"
+          />
+        </FieldRow>
+      </div>
+
+      {/* Footer */}
+      <div className="px-5 pb-8 flex flex-col">
+        <div className="flex flex-row justify-between mb-2">
+          <div className="flex flex-row gap-2 text-gray-700">
+            <NotepadText />
+            <p>طريقة الاختفاء</p>
+          </div>
+        </div>
+        <div className="pr-8">
+          <textarea
+            value={citationMethod}
+            onChange={(e) => setCitationMethod(e.target.value)}
+            placeholder="اكتب طريقة الاختفاء ..."
+            rows={5}
+            className="w-full bg-gray-100 p-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AddMissingInfo;
+
+/* 🔹 Small helper components for cleaner layout */
+const FieldRow = ({
+  icon,
+  label,
+  children,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  children: React.ReactNode;
+}) => (
+  <div className="card-row mt-5">
+    <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
+      <div className="flex flex-row gap-2 text-[var(--textMain)]">
+        {icon}
+        <p>{label}</p>
+      </div>
+      <p className="text-gray-700">:</p>
+    </div>
+    <div className="flex-1 flex items-center">{children}</div>
+  </div>
+);
+
+const RadioGroup = ({
+  name,
+  value,
+  onChange,
+}: {
+  name: string;
+  value: string;
+  onChange: (v: string) => void;
+}) => (
+  <div className="flex flex-row gap-6 text-[var(--textMain)] pr-5">
+    <label className="flex items-center gap-2 cursor-pointer">
+      <input
+        type="radio"
+        name={name}
+        value="true"
+        checked={value === "true"}
+        onChange={() => onChange("true")}
+        className="accent-blue-600"
+      />
+      نعم
+    </label>
+    <label className="flex items-center gap-2 cursor-pointer">
+      <input
+        type="radio"
+        name={name}
+        value="false"
+        checked={value === "false"}
+        onChange={() => onChange("false")}
+        className="accent-red-600"
+      />
+      لا
+    </label>
+  </div>
+);

@@ -155,7 +155,7 @@ export default function EditMassacrePage() {
       cancelled = true;
       if (photoUrl) URL.revokeObjectURL(photoUrl);
     };
-  }, [massacre?.photoId]);
+  }, [massacre?.photoId, photoUrl]);
 
   // const handleSave = async () => {
   //   // if (!massacre) return;

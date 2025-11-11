@@ -5,6 +5,13 @@
   --lightBlue: rgba(44, 134, 208, 0.376);
   --mainBlue: #234764;
   --hoverBlue: #1a3d5a;
+  --mainGreen: #0b2523;
+  --darkGreen: #081c1b;
+  --lightGold: #d4c495;
+  --mainGold: #b6a981;
+  --darkGold: #867a58;
+  --bgGold: #eeeeee;
+  --textMain: #222222;
 }
 /* :root {
   --background: #ffffff;
@@ -46,7 +53,7 @@ body {
 }
 
 .main-btn {
-  @apply text-white bg-[var(--mainBlue)] hover:bg-[var(--hoverBlue)];
+  @apply text-white bg-[var(--mainGreen)] hover:bg-[var(--darkGreen)];
 }
 
 .secondary-btn {
@@ -54,7 +61,7 @@ body {
 }
 
 .input {
-  @apply text-right w-full border border-gray-200 rounded-xl p-2 focus:ring-2 focus:ring-[var(--mainBlue)] focus:outline-none;
+  @apply text-right w-full border border-gray-200 rounded-xl p-2 focus:ring-2 focus:ring-[var(--mainGreen)] focus:outline-none;
 }
 
 .card-row {

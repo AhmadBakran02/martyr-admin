@@ -7,14 +7,13 @@ import {
   Hourglass,
   MapPin,
   NotepadText,
-  SquareActivity,
   Sword,
 } from "lucide-react";
 import { card } from "@/styles/Card.styles";
 import { useEffect, useState } from "react";
 import MartyrdomPicker from "./MartyrdomPicker";
 import { GetMartyr } from "@/lib/martyrApi";
-import { CitationInfoType } from "@/app/(dashboard)/edit-martys/[id]/page";
+import { CitationInfoType } from "@/types/CitationInfoIDType";
 
 interface AddCitationInfoProps {
   onChange: (data: CitationInfoType) => void;
@@ -86,17 +85,18 @@ const AddCitationInfo = ({ onChange, martyr }: AddCitationInfoProps) => {
     citationMethod,
     massacre,
     massacreId,
+    onChange,
   ]);
 
   return (
     <div className={`${card} card-shadow bg-[#fbfdff]`}>
       {/* Header */}
-      <div className="bg-[var(--mainBlue)] px-7 py-8 sm:text-right text-center text-white">
+      <div className="bg-[var(--mainGreen)] px-7 py-8 sm:text-right text-center text-white">
         <h2 className="text-xl font-bold">معلومات الاستشهاد</h2>
       </div>
 
       {/* Body */}
-      <div className="px-7 py-8 text-[#8B0000]">
+      <div className="px-7 py-8 text-[var(--textMain)]">
         {/* Date of Martyrdom */}
         <FieldRow icon={<Calendar />} label="تاريخ الاستشهاد">
           <input
@@ -130,14 +130,14 @@ const AddCitationInfo = ({ onChange, martyr }: AddCitationInfoProps) => {
         </FieldRow>
 
         {/* Age Status */}
-        <FieldRow icon={<SquareActivity />} label="الحالة العمرية">
+        {/* <FieldRow icon={<SquareActivity />} label="الحالة العمرية">
           <input
             value={ageStatus}
             onChange={(e) => setAgeStatus(e.target.value)}
             type="text"
             className="bg-gray-100 w-full p-2 rounded-md"
           />
-        </FieldRow>
+        </FieldRow> */}
 
         {/* Dissident */}
         <FieldRow icon={<Sword />} label="منشق">
@@ -158,12 +158,15 @@ const AddCitationInfo = ({ onChange, martyr }: AddCitationInfoProps) => {
         </FieldRow>
 
         {/* Massacre Picker */}
-        <MartyrdomPicker
-          value={massacre}
-          onChange={(v) => setMassacre(v)}
-          onChange2={(v) => setMassacreId(v)}
-          onAdd={async (name) => ({ id: String(Date.now()), name })}
-        />
+        <div className="relative">
+          <MartyrdomPicker
+            value={massacre}
+            onChange={(v) => setMassacre(v)}
+            onChange2={(v) => setMassacreId(v)}
+            onAdd={async (name) => ({ id: String(Date.now()), name })}
+          />
+        </div>
+
         {/* Country */}
         {/* 
         <FieldRow icon={<Earth />} label="دولة الاستشهاد">
@@ -176,14 +179,48 @@ const AddCitationInfo = ({ onChange, martyr }: AddCitationInfoProps) => {
         </FieldRow> */}
 
         {/* Governorate */}
-        <FieldRow icon={<Building />} label="محافظة الاستشهاد">
+        {/* <FieldRow icon={<Building />} label=">
           <input
             value={martyrdomGovernorate}
             onChange={(e) => setMartyrdomGovernorate(e.target.value)}
             type="text"
             className="bg-gray-100 w-full p-2 rounded-md"
           />
-        </FieldRow>
+        </FieldRow> */}
+
+        {/* Governorate */}
+        <div className="card-row mt-5 ">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
+            <div className="flex flex-row gap-2 ">
+              <Building />
+              <p>محافظة الاستشهاد</p>
+            </div>
+            <p>:</p>
+          </div>
+          <div className="flex-1 flex items-center">
+            <select
+              value={martyrdomGovernorate}
+              onChange={(e) => setMartyrdomGovernorate(e.target.value)}
+              className="bg-gray-100 w-full p-2 rounded-md"
+            >
+              <option value="">اختر المحافظة</option>
+              <option value="إدلب">إدلب</option>
+              <option value="الحسكة">الحسكة</option>
+              <option value="الرقة">الرقة</option>
+              <option value="السويداء">السويداء</option>
+              <option value="القنيطرة">القنيطرة</option>
+              <option value="اللاذقية">اللاذقية</option>
+              <option value="حلب">حلب</option>
+              <option value="حماة">حماة</option>
+              <option value="حمص">حمص</option>
+              <option value="درعا">درعا</option>
+              <option value="دمشق">دمشق</option>
+              <option value="دير الزور">دير الزور</option>
+              <option value="ريف دمشق">ريف دمشق</option>
+              <option value="طرطوس">طرطوس</option>
+            </select>
+          </div>
+        </div>
 
         {/* City */}
         <FieldRow icon={<Building2 />} label="مدينة الاستشهاد">
@@ -242,7 +279,7 @@ const FieldRow = ({
 }) => (
   <div className="card-row mt-5">
     <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-      <div className="flex flex-row gap-2 text-gray-700">
+      <div className="flex flex-row gap-2 text-[var(--textMain)]">
         {icon}
         <p>{label}</p>
       </div>
@@ -261,7 +298,7 @@ const RadioGroup = ({
   value: string;
   onChange: (v: string) => void;
 }) => (
-  <div className="flex flex-row gap-6 text-gray-700 pr-5">
+  <div className="flex flex-row gap-6 text-[var(--textMain)] pr-5">
     <label className="flex items-center gap-2 cursor-pointer">
       <input
         type="radio"

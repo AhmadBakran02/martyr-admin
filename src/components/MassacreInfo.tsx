@@ -82,7 +82,7 @@ const MassacreInfo = ({ item, id }: MassacreCardProps) => {
   return (
     <div className={`${card} card-shadow bg-[#fbfdff]`}>
       {/* Header */}
-      <div className="bg-[var(--mainBlue)] px-7 py-8 sm:text-right text-center text-white flex flex-row justify-between">
+      <div className="bg-[var(--mainGreen)] px-7 py-8 sm:text-right text-center text-white flex flex-row justify-between">
         <h2 className="text-xl font-bold">المعلومات المجزرة</h2>
         <div className="flex gap-5 items-center justify-center">
           <button

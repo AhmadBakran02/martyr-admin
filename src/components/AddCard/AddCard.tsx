@@ -46,7 +46,7 @@ const AddCard = ({
     }
   }, [martyr]);
 
-  // ✅ Notify parent whenever any field changes
+  //  Notify parent whenever any field changes
   useEffect(() => {
     onChange?.({
       anonymous,
@@ -54,9 +54,9 @@ const AddCard = ({
       imageFile,
       preview,
     });
-  }, [anonymous, nationalIdNumber, imageFile, preview]);
+  }, [anonymous, nationalIdNumber, imageFile, preview, onChange]);
 
-  // ✅ Handle image upload
+  //  Handle image upload
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
     if (file) {
@@ -69,7 +69,7 @@ const AddCard = ({
   return (
     <div className={`${card} card-shadow`}>
       {/* Header */}
-      <div className="bg-[var(--mainBlue)] px-7 py-8 text-right text-white flex flex-row justify-between">
+      <div className="bg-[var(--mainGreen)] px-7 py-8 text-right text-white flex flex-row justify-between">
         <h2 className="text-xl font-bold">بيانات الاستشهاد</h2>
       </div>
 

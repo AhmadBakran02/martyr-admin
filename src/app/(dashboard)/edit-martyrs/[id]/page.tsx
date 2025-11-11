@@ -13,39 +13,9 @@ import AddCard, { AddCardValues } from "@/components/AddCard/AddCard";
 import AddPersonalInfo from "@/components/AddPersonalInfo";
 import AddCitationInfo from "@/components/AddCitationInfo";
 import { uploadImage } from "@/lib/uploadImage";
+import { PersonalInfoType } from "@/types/PersonalInfoIDType";
+import { CitationInfoType } from "@/types/CitationInfoIDType";
 
-export interface PersonalInfoType {
-  name?: string;
-  fatherName?: string;
-  motherName?: string;
-  lastName?: string;
-  dateOfBirth: string;
-  gender: string;
-  maritalStatus: string;
-  numberOfChildren: string;
-  profession: string;
-  country: string;
-  city: string;
-  governorate: string;
-  neighborhood: string;
-  ethnicAffiliation: string;
-  overview: string;
-}
-export interface CitationInfoType {
-  dateMartyrdom: string;
-  burialDate: string;
-  age: string;
-  ageStatus: string;
-  dissident: string;
-  preRevolution: string;
-  martyrdomGovernorate: string;
-  countryOfMartyrdom: string;
-  cityOfMartyrdom: string;
-  martyrdomLocation: string;
-  citationMethod: string;
-  massacreId: string | null;
-  massacre: string;
-}
 export default function EditMartyPage() {
   const { id } = useParams<{ id: string }>();
   const [fullName, setFullName] = useState<string>("");

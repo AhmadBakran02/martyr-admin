@@ -1,5 +1,6 @@
 .main {
   background: linear-gradient(180deg, var(--bg), #eef2f4);
   color: #263238;
+  /* color: #b6a981; */
   -webkit-font-smoothing: antialiased;
 }

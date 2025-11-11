@@ -63,7 +63,7 @@ export default function MassacrePage() {
     return () => {
       if (photoUrl) URL.revokeObjectURL(photoUrl);
     };
-  }, [massacre?.photoId]);
+  }, [massacre?.photoId, photoUrl]);
 
   // Conditional UI rendering (AFTER all hooks)
   if (loading)
