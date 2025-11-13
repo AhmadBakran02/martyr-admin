@@ -1,5 +1,4 @@
 "use client";
-import Loading2 from "@/components/Loading2/Loading2";
 import MassacreCard from "@/components/MassacreCard";
 import MassacreCardSkeleton from "@/components/MassacreCardSkeleton";
 import { getAllMassacres, Massacre } from "@/lib/massacreApi";

@@ -1,6 +1,6 @@
 import { apiUrl } from "@/config/apiUrl";
 import { refreshAccessTokenApi } from "./auth";
-import { AddRequestResponse } from "@/types/RequestApi";
+import { AddRequestByIdResponse } from "@/types/RequestApi";
 
 // interface GetMartyrResponse {
 //   success: boolean;
@@ -15,7 +15,7 @@ import { AddRequestResponse } from "@/types/RequestApi";
  */
 export async function getRequestMartyrById(
   id: string
-): Promise<AddRequestResponse> {
+): Promise<AddRequestByIdResponse> {
   const token = await refreshAccessTokenApi();
 
   try {
@@ -32,7 +32,7 @@ export async function getRequestMartyrById(
       throw new Error(`Failed to fetch martyr: ${res.status}`);
     }
 
-    const data = (await res.json()) as AddRequestResponse;
+    const data = (await res.json()) as AddRequestByIdResponse;
     return data;
   } catch (err: unknown) {
     if (err instanceof Error) {

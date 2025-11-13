@@ -3,7 +3,7 @@
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { getRequestMartyrById } from "@/lib/getRequestMartyrById";
-import { AddRequestResponse } from "@/types/RequestApi";
+import { AddRequestByIdResponse } from "@/types/RequestApi";
 import CardRequest from "@/components/CardRequest/CardRequest";
 import PersonalInfoRequest from "@/components/PersonalInfoRequest";
 import CitationInfoRequest from "@/components/CitationInfoRequest";
@@ -17,7 +17,7 @@ export default function MartyrPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
 
-  const [martyr, setMartyr] = useState<AddRequestResponse | null>(null);
+  const [martyr, setMartyr] = useState<AddRequestByIdResponse>();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
   const [actionLoading, setActionLoading] = useState<string | null>(null); // for approve/reject buttons

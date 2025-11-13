@@ -13,8 +13,14 @@ RUN npm ci --legacy-peer-deps
 # Copy rest of the project
 COPY . .
 
-# Expose port (default for most frameworks)
+# Build Next.js
+RUN npm run build
+
+# Set Next.js port to 3001
+ENV PORT=3001
+
+# Expose the port
 EXPOSE 3001
 
-# Run the dev server
-CMD ["npm", "run", "dev"]
+# Start production server
+CMD ["npm", "start"]

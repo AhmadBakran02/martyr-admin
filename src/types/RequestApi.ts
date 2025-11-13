@@ -45,6 +45,11 @@ export interface RequestMastyrData {
   requestId: string;
   __v: number;
 }
+export interface AddRequestByIdResponse {
+  success: boolean;
+  message: string;
+  data: RequestMastyrData;
+}
 
 export interface Pagination {
   page: number;
