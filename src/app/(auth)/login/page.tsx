@@ -17,8 +17,6 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    console.log(email);
-    console.log(password);
 
     try {
       const res = await loginApi(email, password);

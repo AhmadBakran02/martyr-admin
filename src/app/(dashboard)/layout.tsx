@@ -11,7 +11,7 @@ const cairo = Cairo({
 
 export const metadata: Metadata = {
   title: "Dashboard",
-  description: "Dashboard Layout",
+  description: "Dashboard",
 };
 
 export default function RootLayout({
