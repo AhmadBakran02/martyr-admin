@@ -14,7 +14,7 @@ RUN npm ci --legacy-peer-deps
 COPY . .
 
 # Expose port (default for most frameworks)
-EXPOSE 443
+EXPOSE 3001
 
 # Run the dev server
 CMD ["npm", "run", "dev"]
