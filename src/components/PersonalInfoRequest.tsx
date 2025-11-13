@@ -56,7 +56,7 @@ const PersonalInfoRequest = ({ item }: MastyrCardProps) => {
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item?.nationalIdNumber || ""}</p>
+              <p>{item?.nationalIdNumber || "---"}</p>
             </div>
           </div>
           <div className="card-row mt-2">
@@ -80,7 +80,7 @@ const PersonalInfoRequest = ({ item }: MastyrCardProps) => {
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item?.fatherName || ""}</p>
+              <p>{item?.fatherName || "---"}</p>
             </div>
           </div>
           <div className="card-row mt-2">
@@ -92,7 +92,7 @@ const PersonalInfoRequest = ({ item }: MastyrCardProps) => {
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item?.motherName || ""}</p>
+              <p>{item?.motherName || "---"}</p>
             </div>
           </div>
           <div className="card-row mt-2">
@@ -104,7 +104,7 @@ const PersonalInfoRequest = ({ item }: MastyrCardProps) => {
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item?.lastName || ""}</p>
+              <p>{item?.lastName || "---"}</p>
             </div>
           </div>
           <div className="card-row mt-2">
@@ -116,7 +116,7 @@ const PersonalInfoRequest = ({ item }: MastyrCardProps) => {
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item?.dateOfBirth || ""}</p>
+              <p>{item?.dateOfBirth || "---"}</p>
             </div>
           </div>
           <div className="card-row mt-2">
@@ -140,7 +140,7 @@ const PersonalInfoRequest = ({ item }: MastyrCardProps) => {
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item?.maritalStatus || "----"}</p>
+              <p>{item?.maritalStatus || "---"}</p>
             </div>
           </div>
           <div className="card-row mt-2">
@@ -152,7 +152,7 @@ const PersonalInfoRequest = ({ item }: MastyrCardProps) => {
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item?.numberOfChildren || "----"}</p>
+              <p>{item?.numberOfChildren || "---"}</p>
             </div>
           </div>
           <div className="card-row mt-2">
@@ -164,7 +164,7 @@ const PersonalInfoRequest = ({ item }: MastyrCardProps) => {
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item?.profession || "----"}</p>
+              <p>{item?.profession || "---"}</p>
             </div>
           </div>
           <div className="card-row mt-2">
@@ -176,7 +176,7 @@ const PersonalInfoRequest = ({ item }: MastyrCardProps) => {
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item?.country || "----"}</p>
+              <p>{item?.country || "---"}</p>
             </div>
           </div>
           <div className="card-row mt-2">
@@ -188,7 +188,7 @@ const PersonalInfoRequest = ({ item }: MastyrCardProps) => {
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item?.governorate || "----"}</p>
+              <p>{item?.governorate || "---"}</p>
             </div>
           </div>
           <div className="card-row mt-2">
@@ -200,7 +200,7 @@ const PersonalInfoRequest = ({ item }: MastyrCardProps) => {
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item?.city || "----"}</p>
+              <p>{item?.city || "---"}</p>
             </div>
           </div>
           <div className="card-row mt-2">
@@ -212,7 +212,7 @@ const PersonalInfoRequest = ({ item }: MastyrCardProps) => {
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item?.neighborhood || "----"}</p>
+              <p>{item?.neighborhood || "---"}</p>
             </div>
           </div>
           <div className="card-row mt-2">
@@ -224,7 +224,7 @@ const PersonalInfoRequest = ({ item }: MastyrCardProps) => {
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item?.ethnicAffiliation || "----"}</p>
+              <p>{item?.ethnicAffiliation || "---"}</p>
             </div>
           </div>
         </div>

@@ -49,7 +49,7 @@ const AddCitationInfo = ({ onChange, martyr }: AddCitationInfoProps) => {
       setCityOfMartyrdom(martyr.cityOfMartyrdom || "");
       setMartyrdomLocation(martyr.martyrdomSite || "");
       setCitationMethod(martyr.citationMethod || "");
-      setMassacre(martyr.massacreId || "");
+      // setMassacre(martyr.massacre || "");
       setMassacreId(martyr.massacreId || null);
     }
   }, [martyr]);

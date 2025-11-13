@@ -13,7 +13,10 @@ export default function AddRequsetPage() {
   const fetchRequests = async () => {
     try {
       const res = await getAllAddRequset(100, 1);
-      setRequestsList(res.data ? [res.data] : []);
+      console.log(res.data);
+      console.log([res.data]);
+
+      setRequestsList(res.data.addRequests);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "حدث خطأ في التحميل");
     } finally {
@@ -24,6 +27,8 @@ export default function AddRequsetPage() {
   useEffect(() => {
     fetchRequests();
   }, []);
+
+  console.log("123123");
 
   const skeletons = Array(3).fill(0);
 

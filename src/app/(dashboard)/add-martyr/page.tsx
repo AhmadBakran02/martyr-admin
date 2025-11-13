@@ -37,16 +37,14 @@ export default function AddMartyr() {
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [showToast, setShowToast] = useState<boolean>(false);
+
   const handleUploadComplete = (media: MediaInput[]) => {
     setUploadedMedia(media);
   };
+
   const handleCardChange = useCallback((values: AddCardValues) => {
     setCardValues(values);
   }, []);
-
-  // console.log(cardValues);
-  console.log(citationInfo);
-  console.log(personalInfo);
 
   const handleCitationChange = useCallback((values: CitationInfoType) => {
     setCitationInfo(values);
@@ -96,6 +94,7 @@ export default function AddMartyr() {
       dissident: citationInfo?.dissident,
       preRevolution: citationInfo?.preRevolution,
       massacreId: citationInfo?.massacreId || null,
+      // massacre: citationInfo?.massacre || null,
       martyrdomGovernorate: citationInfo?.martyrdomGovernorate,
       cityOfMartyrdom: citationInfo?.cityOfMartyrdom,
       martyrdomSite: citationInfo?.martyrdomLocation,
@@ -125,6 +124,10 @@ export default function AddMartyr() {
 
     setLoading(false);
   };
+
+  // console.log(cardValues);
+  console.log(citationInfo);
+  console.log(personalInfo);
 
   return (
     <div className="relative p-10 flex justify-center items-center">

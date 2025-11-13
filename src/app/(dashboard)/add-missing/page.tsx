@@ -45,12 +45,10 @@ export default function AddMartyr() {
   const handleUploadComplete = useCallback((media: MediaInput[]) => {
     setUploadedMedia(media);
   }, []);
+
   const handleCardChange = useCallback((values: AddCardMissingValues) => {
     setCardMissingValues(values);
   }, []);
-
-  console.log(cardMissingValues);
-  console.log(personalInfoMissing);
 
   const handleCitationChange = useCallback((values: MissingInfoType) => {
     setMissingInfo(values);
@@ -61,6 +59,9 @@ export default function AddMartyr() {
     setPersonalInfoMissing(data);
     setFullName(`${data.name} ${data.fatherName} ${data.lastName}`);
   }, []);
+
+  console.log(cardMissingValues);
+  console.log(personalInfoMissing);
 
   const handleSave = async () => {
     setLoading(true);

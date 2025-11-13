@@ -1,5 +1,8 @@
+import { output } from "framer-motion/client";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: "standalone",
   images: {
     remotePatterns: [
       {

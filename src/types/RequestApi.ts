@@ -1,3 +1,4 @@
+import { Massacre } from "@/lib/massacreApi";
 import { MediaItem } from "./MediaItemResponse";
 
 export interface RequestMastyrData {
@@ -10,7 +11,7 @@ export interface RequestMastyrData {
   dateOfMartyrdom: string | null;
   burialDate: string | null;
   nationalIdNumber: string | null;
-  anonymous: false;
+  anonymous: boolean;
   name: string;
   fatherName: string | null;
   motherName: string | null;
@@ -37,7 +38,7 @@ export interface RequestMastyrData {
   like: number;
   photoId: string | null;
   media: MediaItem[];
-  massacreId: string | null;
+  massacreId: Massacre | null;
   status: string;
   createdAt: string;
   updatedAt: string;
@@ -45,8 +46,18 @@ export interface RequestMastyrData {
   __v: number;
 }
 
+export interface Pagination {
+  page: number;
+  limit: number;
+  total: number;
+  pages: number;
+}
+
 export interface AddRequestResponse {
   success: boolean;
   message: string;
-  data: RequestMastyrData;
+  data: {
+    addRequests: RequestMastyrData[];
+    pagination: Pagination;
+  };
 }

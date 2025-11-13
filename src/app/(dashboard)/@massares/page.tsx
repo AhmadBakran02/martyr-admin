@@ -127,18 +127,25 @@ export default function MassaresDashboard() {
                 </p>
               </div>
               <div className="flex gap-2">
-                <button className="px-3 py-1 rounded bg-yellow-300 text-sm text-gray-700 hover:bg-yellow-400">
-                  <Link href={`/edit-massacre/${mm._id}`}>تعديل</Link>
-                </button>
-                <button
-                  className="px-3 py-1 rounded bg-red-500 text-white text-sm hover:bg-red-600"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDelete(mm._id ?? "");
-                  }}
-                >
-                  حذف
-                </button>
+                {/* Buttons */}
+                <div className="flex gap-2 sm:ml-auto">
+                  <Link
+                    href={`/edit-martyrs/${mm._id}`}
+                    onClick={(e) => e.stopPropagation()}
+                    className="px-4 py-1.5 rounded-lg border border-yellow-400 text-yellow-700 text-sm font-medium bg-yellow-50 hover:bg-yellow-100 hover:scale-105 transition"
+                  >
+                    تعديل
+                  </Link>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(mm._id || "");
+                    }}
+                    className="px-4 py-1.5 rounded-lg border border-red-500 text-red-600 text-sm font-medium bg-red-50 hover:bg-red-100 hover:scale-105 transition"
+                  >
+                    حذف
+                  </button>
+                </div>
               </div>
             </li>
           ))}

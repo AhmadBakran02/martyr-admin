@@ -15,6 +15,7 @@ import {
 import { card } from "@/styles/Card.styles";
 import { useState } from "react";
 import { GetMartyrResponse } from "@/lib/getMastyrById";
+import Image from "next/image";
 
 interface MastyrCardProps {
   item: GetMartyrResponse;
@@ -127,6 +128,19 @@ const CitationInfo = ({ item }: MastyrCardProps) => {
               <p>{item.data.martyr.cu}</p>
             </div>
           </div> */}
+          <div className="card-row mt-5">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
+              <div className="flex flex-row gap-2 text-gray-700">
+                <Image src={"/kill.svg"} alt="" width={29} height={29} />
+                <p>مجزرة</p>
+              </div>
+              <p className="text-gray-700">:</p>
+            </div>
+            <div>
+              <p>{item.data.martyr.massacreId?.name || "لايوجد"}</p>
+            </div>
+          </div>
+
           <div className="card-row mt-5">
             <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">

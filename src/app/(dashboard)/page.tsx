@@ -123,11 +123,13 @@ export default function Dashboard(): JSX.Element {
   // useEffect(() => {
   //   fetchMartyrs();
   // }, []);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getMartyrInfo()
       .then((res) => setInfo(res.data))
-      .catch(() => setError("Failed to fetch martyr info."));
+      .catch(() => setError("Failed to fetch martyr info."))
+      .finally(() => setLoading(false));
   }, []);
 
   const cards = [
@@ -136,15 +138,20 @@ export default function Dashboard(): JSX.Element {
       count: info?.numberOfAddRequests || 0,
       subtitle: "طلبات اضافة شهيد",
     },
-    {
-      title: "طلبات التصحيح",
-      count: info?.numberOfUpdateRequests || 0,
-      subtitle: "طلبات تصحيح",
-    },
+    // {
+    //   title: "طلبات التصحيح",
+    //   count: info?.numberOfUpdateRequests || 0,
+    //   subtitle: "طلبات تصحيح",
+    // },
     {
       title: "الشهداء",
       count: info?.numberOfMartyrs || 0,
       subtitle: "مجموع الشهداء",
+    },
+    {
+      title: "المفقودين",
+      count: info?.numberOfMissingMartyrs || 0,
+      subtitle: "مجموع المفقودين",
     },
     {
       title: "المجازر",
@@ -166,7 +173,11 @@ export default function Dashboard(): JSX.Element {
             >
               <h3 className="font-semibold text-gray-700">{card.title}</h3>
               <p className="text-3xl font-bold text-gray-900 mt-1">
-                <AnimatedCounter value={card.count} duration={1200} />
+                <AnimatedCounter
+                  value={card.count}
+                  loading={loading}
+                  duration={1200}
+                />
               </p>
               <p className="text-sm text-gray-500">{card.subtitle}</p>
             </div>

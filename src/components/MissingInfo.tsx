@@ -78,7 +78,7 @@ const MissingInfo = ({ item }: MastyrCardProps) => {
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item.data.martyr.ageStatus}</p>
+              <p>{item.data.martyr.ageStatus || "----"}</p>
             </div>
           </div>
 
@@ -155,7 +155,7 @@ const MissingInfo = ({ item }: MastyrCardProps) => {
             </div>
           </div>
           <div className="pr-8">
-            <p>{item.data.martyr.stateOfMartyrdom}</p>
+            <p>{item.data.martyr.stateOfMartyrdom || "----"}</p>
           </div>
         </div>
       </div>

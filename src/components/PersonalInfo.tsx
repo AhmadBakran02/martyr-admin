@@ -68,7 +68,7 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item.data.martyr.name || ""}</p>
+              <p>{item.data.martyr.name || "----"}</p>
             </div>
           </div>
           <div className="card-row mt-2">
@@ -80,7 +80,7 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item.data.martyr.fatherName || ""}</p>
+              <p>{item.data.martyr.fatherName || "----"}</p>
             </div>
           </div>
           <div className="card-row mt-2">
@@ -92,7 +92,7 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item.data.martyr.motherName || ""}</p>
+              <p>{item.data.martyr.motherName || "----"}</p>
             </div>
           </div>
           <div className="card-row mt-2">
@@ -104,7 +104,7 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item.data.martyr.lastName || ""}</p>
+              <p>{item.data.martyr.lastName || "----"}</p>
             </div>
           </div>
           <div className="card-row mt-2">

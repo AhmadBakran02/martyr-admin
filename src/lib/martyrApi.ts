@@ -1,6 +1,6 @@
 import { apiUrl } from "@/config/apiUrl";
 import { getAccessToken, refreshAccessTokenApi } from "./auth";
-import { MediaInput } from "./massacreApi";
+import { Massacre, MediaInput } from "./massacreApi";
 import { AddRequestResponse } from "./getRequestApi";
 
 // ===============================
@@ -48,7 +48,7 @@ export interface GetMartyr {
   like: number;
   photoId?: string;
   media: MartyrMedia[];
-  massacreId?: string;
+  massacreId?: Massacre | null;
   otherFields?: string;
   createdAt: string;
   updatedAt: string;
@@ -92,6 +92,7 @@ export interface AddMartyrType {
   dissident?: string;
   preRevolution?: string;
   massacreId?: string | null;
+  // massacreName?: string | null;
 
   isMissing?: boolean;
 
@@ -110,6 +111,7 @@ export interface MartyrInfoResponse {
     numberOfMassacres: number;
     numberOfUpdateRequests: number;
     numberOfAddRequests: number;
+    numberOfMissingMartyrs: number;
   };
 }
 

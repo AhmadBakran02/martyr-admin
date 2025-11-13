@@ -13,12 +13,15 @@ export default function RequestsDashboard() {
   const [requestsList, setRequestsList] = useState<RequestMastyrData[]>([]);
   const [error, setError] = useState<string>("");
   const [loadingRequests, setLoadingRequests] = useState<boolean>(true);
-  const [loadingId, setLoadingId] = useState<string | null>(null);
+
+  // ✅ Separate loading states for each button type
+  const [loadingApproveId, setLoadingApproveId] = useState<string | null>(null);
+  const [loadingRejectId, setLoadingRejectId] = useState<string | null>(null);
 
   const fetchRequests = async () => {
     try {
       const res = await getAllAddRequset(5, 1);
-      setRequestsList(res.data ? [res.data] : []);
+      setRequestsList(res.data.addRequests);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "حدث خطأ في التحميل");
     } finally {
@@ -36,8 +39,6 @@ export default function RequestsDashboard() {
       if (!confirmReject) return;
     }
 
-    setLoadingId(id);
-
     try {
       const result = await editRequsetStatus(id, status);
       if (result.success) {
@@ -46,6 +47,10 @@ export default function RequestsDashboard() {
             ? "✅ تم قبول الطلب بنجاح"
             : "🚫 تم رفض الطلب بنجاح"
         );
+        // ✅ Update only the changed request locally
+        setRequestsList((prev) =>
+          prev.map((req) => (req._id === id ? { ...req, status } : req))
+        );
         setError("");
       } else {
         setError(result.message);
@@ -53,7 +58,8 @@ export default function RequestsDashboard() {
     } catch {
       setError("حدث خطأ أثناء تحديث الحالة");
     } finally {
-      setLoadingId(null);
+      setLoadingApproveId(null);
+      setLoadingRejectId(null);
     }
   };
 
@@ -108,9 +114,9 @@ export default function RequestsDashboard() {
             </tr>
           </thead>
           <tbody>
-            {requestsList.map((r: RequestMastyrData) => (
+            {requestsList.map((r: RequestMastyrData, i) => (
               <tr
-                key={r._id}
+                key={r._id || i}
                 className="border-b border-gray-200 hover:bg-gray-50 cursor-pointer"
                 onClick={() => router.push(`/add-request/${r._id}`)}
               >
@@ -118,29 +124,36 @@ export default function RequestsDashboard() {
                 <td className="py-2 px-3">{r.fullName}</td>
                 <td className="py-2 px-3">{r.requesterName}</td>
                 <td className="py-2 px-3">
-                  {r.status == "approved" ? "مقبول" : "مرفوض"}
+                  {r.status === "approved"
+                    ? "مقبول"
+                    : r.status === "rejected"
+                    ? "مرفوض"
+                    : "قيد الانتظار"}
                 </td>
                 <td className="py-2 px-3 flex gap-2 justify-end">
+                  {/* ✅ Approve Button */}
                   <button
-                    disabled={loadingId === r._id || r.status === "approved"}
+                    disabled={
+                      loadingApproveId === r._id || r.status === "approved"
+                    }
                     onClick={(e) => {
                       e.stopPropagation();
+                      setLoadingApproveId(r._id);
                       handleEditStatus(r._id, "approved");
                     }}
-                    className={`flex items-center justify-center gap-1 px-3 py-1 rounded text-xs font-medium transition-all duration-200
-    ${
-      loadingId === r._id
-        ? "bg-green-300 text-white cursor-wait opacity-70"
-        : r.status === "approved"
-        ? "bg-gray-200 text-gray-500 cursor-not-allowed border border-gray-300"
-        : "bg-green-500 text-white hover:bg-green-600 active:scale-[0.97]"
-    }
-  `}
+                    className={`flex items-center justify-center gap-1 px-4 py-1.5 rounded-lg text-sm font-medium transition-all duration-200
+                      ${
+                        loadingApproveId === r._id
+                          ? "bg-green-300 text-white cursor-wait opacity-70"
+                          : r.status === "approved"
+                          ? "bg-gray-200 text-gray-500 cursor-not-allowed border border-gray-300"
+                          : "border border-green-500 text-green-600 bg-green-50 hover:bg-green-100 hover:scale-105"
+                      }`}
                   >
-                    {loadingId === r._id ? (
+                    {loadingApproveId === r._id ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
-                        <span>جاري المعالجة...</span>
+                        <span>جاري القبول...</span>
                       </>
                     ) : r.status === "approved" ? (
                       "تم القبول ✅"
@@ -149,23 +162,26 @@ export default function RequestsDashboard() {
                     )}
                   </button>
 
+                  {/* ❌ Reject Button */}
                   <button
-                    disabled={loadingId === r._id || r.status === "rejected"}
+                    disabled={
+                      loadingRejectId === r._id || r.status === "rejected"
+                    }
                     onClick={(e) => {
                       e.stopPropagation();
+                      setLoadingRejectId(r._id);
                       handleEditStatus(r._id, "rejected");
                     }}
-                    className={`flex items-center justify-center gap-1 px-3 py-1 rounded text-xs font-medium transition-all duration-200
-    ${
-      loadingId === r._id
-        ? "bg-red-300 text-white cursor-wait opacity-70"
-        : r.status === "rejected"
-        ? "bg-gray-200 text-gray-500 cursor-not-allowed border border-gray-300"
-        : "bg-red-500 text-white hover:bg-red-600 active:scale-[0.97]"
-    }
-  `}
+                    className={`flex items-center justify-center gap-1 px-4 py-1.5 rounded-lg text-sm font-medium transition-all duration-200
+                      ${
+                        loadingRejectId === r._id
+                          ? "bg-red-300 text-white cursor-wait opacity-70"
+                          : r.status === "rejected"
+                          ? "bg-gray-200 text-gray-500 cursor-not-allowed border border-gray-300"
+                          : "border border-red-500 text-red-600 bg-red-50 hover:bg-red-100 hover:scale-105"
+                      }`}
                   >
-                    {loadingId === r._id ? (
+                    {loadingRejectId === r._id ? (
                       <>
                         <Loader2 className="w-4 h-4 animate-spin" />
                         <span>جاري الرفض...</span>
