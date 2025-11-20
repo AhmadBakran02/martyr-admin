@@ -138,7 +138,7 @@ const Card = ({ item }: MastyrCardProps) => {
               <p className="text-[#8391a0]">الرقم التسلسلي</p>
               <p className="text-[#8391a0]">:</p>
             </div>
-            <div className="w-2/3 text-[#8B0000]">321</div>
+            <div className="w-2/3 text-[#8B0000]">----</div>
           </div>
           <div className="flex flex-row gap-2 border-gray-200 pb-5 border-b mt-5">
             <div className=" w-1/3 flex flex-row justify-between">

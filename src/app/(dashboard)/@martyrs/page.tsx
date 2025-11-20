@@ -14,6 +14,7 @@ export default function MartyrsDashboard() {
   const [error, setError] = useState<string>("");
 
   const fetchMartyrs = async () => {
+    setLoadingMartyrs(true);
     try {
       const res = await getAllMartyrs(5, 1);
       const cleanList = (res.data.martyrs || []).filter(
@@ -57,7 +58,7 @@ export default function MartyrsDashboard() {
 
       if (res.ok) {
         alert("تم حذف الشهيد بنجاح ✅");
-        router.back();
+        fetchMartyrs();
       } else {
         const err = await res.json();
         console.error("Delete failed:", err);
@@ -112,7 +113,7 @@ export default function MartyrsDashboard() {
               onClick={() => router.push(`/martyrs-section/${martyr._id}`)}
             >
               <div>
-                <p className="font-medium">{martyr.name}</p>
+                <p className="font-medium">{martyr.fullName}</p>
                 <p className="text-sm text-gray-500">
                   {martyr.dateOfMartyrdom} • {martyr.martyrdomGovernorate}
                 </p>

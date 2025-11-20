@@ -8,10 +8,14 @@ export interface PersonalInfoType {
   maritalStatus: string;
   numberOfChildren: string;
   profession: string;
+  study: string;
   country: string;
   city: string;
   governorate: string;
   neighborhood: string;
   ethnicAffiliation: string;
   overview: string;
+  organizationalaffiliation: string;
+  sectarianAffiliation: string;
+  religiousAffiliation: string;
 }

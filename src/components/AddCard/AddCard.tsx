@@ -6,6 +6,7 @@ import "./style.css";
 import { useEffect, useState } from "react";
 import { GetMartyr } from "@/lib/martyrApi";
 import { apiUrl } from "@/config/apiUrl";
+import { uploadImage } from "@/lib/uploadImage";
 
 export interface AddCardValues {
   anonymous: boolean;
@@ -16,6 +17,8 @@ export interface AddCardValues {
 
 interface AddCardProps {
   onChange?: (values: AddCardValues) => void;
+  onImageUploaded?: (fileId: string) => void;
+  onUploadingChange?: (state: boolean) => void; // 👈 NEW
   fullName: string;
   dateMartyrdom: string;
   martyr?: GetMartyr;
@@ -23,8 +26,10 @@ interface AddCardProps {
 
 const AddCard = ({
   onChange,
+  onImageUploaded, // ✅ MUST BE ADDED HERE
   fullName,
   dateMartyrdom,
+  onUploadingChange,
   martyr,
 }: AddCardProps) => {
   const [anonymous, setAnonymous] = useState<boolean>(false);
@@ -32,13 +37,14 @@ const AddCard = ({
   const [preview, setPreview] = useState<string>("");
   const [imageFile, setImageFile] = useState<File | null>(null);
 
-  // ✅ Set initial values when martyr is loaded or changes
+  const [uploading, setUploading] = useState<boolean>(false); // ⬅ NEW
+
+  // Load initial values
   useEffect(() => {
     if (martyr) {
       setAnonymous(martyr.anonymous ?? false);
       setNationalIdNumber(martyr.nationalIdNumber ?? "");
 
-      // If martyr already has a photo, get the URL from API
       if (martyr.photoId) {
         const url = `${apiUrl}/api/file?fileID=${martyr.photoId}`;
         setPreview(url);
@@ -46,7 +52,6 @@ const AddCard = ({
     }
   }, [martyr]);
 
-  //  Notify parent whenever any field changes
   useEffect(() => {
     onChange?.({
       anonymous,
@@ -56,24 +61,43 @@ const AddCard = ({
     });
   }, [anonymous, nationalIdNumber, imageFile, preview, onChange]);
 
-  //  Handle image upload
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Upload image when selected
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setImageFile(file);
-      setPreview(url);
+    if (!file) return;
+
+    // Preview
+    const url = URL.createObjectURL(file);
+    setImageFile(file);
+    setPreview(url);
+
+    // 🔵 Notify parent: start uploading
+    onUploadingChange?.(true);
+    setUploading(true);
+
+    try {
+      const fileId = await uploadImage(file);
+
+      // send fileId to parent
+      onImageUploaded?.(fileId);
+    } catch (err) {
+      console.error("Upload failed:", err);
     }
+
+    // 🟢 Notify parent: upload finished
+    setUploading(false);
+    onUploadingChange?.(false);
   };
 
   return (
     <div className={`${card} card-shadow`}>
-      {/* Header */}
       <div className="bg-[var(--mainGreen)] px-7 py-8 text-right text-white flex flex-row justify-between">
         <h2 className="text-xl font-bold">بيانات الاستشهاد</h2>
+
+        {/* ⬅ SHOW UPLOADING STATUS */}
+        {uploading && <p className="text-yellow-300">جاري رفع الصورة...</p>}
       </div>
 
-      {/* Body */}
       <div className="flex bg-[#fbfdff] sm:flex-row flex-col flex-wrap justify-center">
         {/* Image */}
         <div className="min-w-50 sm:w-1/3 px-7 py-8 flex justify-center items-start avatar">
@@ -84,6 +108,7 @@ const AddCard = ({
               onChange={handleImageChange}
               className="hidden"
             />
+
             {preview ? (
               <Image
                 src={preview}
@@ -100,7 +125,7 @@ const AddCard = ({
           </label>
         </div>
 
-        {/* Info Section */}
+        {/* Info */}
         <div className="min-w-80 sm:w-2/3 px-7 py-8 flex-1">
           {/* Full Name */}
           <div className="card-row">
@@ -114,10 +139,8 @@ const AddCard = ({
             <div className="w-2/3">
               <input
                 value={fullName || ""}
-                id="fullname"
-                type="text"
-                className="bg-gray-100 w-full p-2 rounded-md"
                 disabled
+                className="bg-gray-100 w-full p-2 rounded-md"
               />
             </div>
           </div>
@@ -134,8 +157,6 @@ const AddCard = ({
             <div className="w-2/3">
               <input
                 value={dateMartyrdom || ""}
-                id="date"
-                type="text"
                 disabled
                 className="bg-gray-100 w-full p-2 rounded-md"
               />
@@ -155,8 +176,6 @@ const AddCard = ({
               <input
                 value={nationalIdNumber}
                 onChange={(e) => setNationalIdNumber(e.target.value)}
-                id="id"
-                type="text"
                 className="bg-gray-100 w-full p-2 rounded-md"
               />
             </div>
@@ -193,7 +212,7 @@ const AddCard = ({
                   className="hidden"
                 />
                 <SquareX
-                  className={anonymous ? "text-gray-400" : "text-red-500"}
+                  className={!anonymous ? "text-red-500" : "text-gray-400"}
                 />
                 <span>لا</span>
               </label>

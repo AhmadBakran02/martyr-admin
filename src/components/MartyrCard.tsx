@@ -67,11 +67,12 @@ const MartyrCard = ({ martyr, isMissing }: MartyrCardProps) => {
         <div className="w-full sm:w-1/3 flex justify-center items-center">
           {photoUrl ? (
             <Image
-              width={160}
-              height={160}
               src={photoUrl}
+              width={0}
+              height={0}
               alt={martyr.fullName}
-              className="w-40 h-40 object-cover rounded-xl border border-gray-200 shadow-sm"
+              sizes="100vw"
+              className="h-auto w-48 rounded-md card-shadow"
             />
           ) : (
             <div className="w-40 h-40 flex justify-center items-center bg-gray-50 rounded-xl border border-gray-200 text-gray-400">

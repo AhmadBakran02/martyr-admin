@@ -3,7 +3,6 @@ import { useCallback, useState } from "react";
 import { addMartyr, AddMartyrType } from "@/lib/martyrApi";
 import FileUploader from "@/components/FileUploader";
 import { MediaInput } from "@/lib/massacreApi";
-import { uploadImage } from "@/lib/uploadImage";
 import AddMissingInfo from "@/components/AddMissingInfo";
 import { PersonalInfoType } from "@/types/PersonalInfoIDType";
 import { MissingInfoType } from "@/types/MissingInfoType";
@@ -32,15 +31,21 @@ export default function AddMartyr() {
       maritalStatus: "",
       numberOfChildren: "",
       profession: "",
+      study: "",
       country: "",
       city: "",
       governorate: "",
       neighborhood: "",
       ethnicAffiliation: "",
       overview: "",
+      organizationalaffiliation: "",
+      sectarianAffiliation: "",
+      religiousAffiliation: "",
     });
   const [loading, setLoading] = useState<boolean>(false);
   const [showToast, setShowToast] = useState<boolean>(false);
+  const [photoId, setPhotoId] = useState<string | null>(null);
+  const [uploading, setUploading] = useState<boolean>(false);
 
   const handleUploadComplete = useCallback((media: MediaInput[]) => {
     setUploadedMedia(media);
@@ -60,21 +65,25 @@ export default function AddMartyr() {
     setFullName(`${data.name} ${data.fatherName} ${data.lastName}`);
   }, []);
 
-  console.log(cardMissingValues);
-  console.log(personalInfoMissing);
+  // console.log(cardMissingValues);
+  // console.log(personalInfoMissing);
 
   const handleSave = async () => {
-    setLoading(true);
-    let fileID = "";
-
-    if (cardMissingValues?.imageFile) {
-      fileID = await uploadImage(cardMissingValues.imageFile);
+    if (uploading) {
+      alert("جارِ رفع الصورة… الرجاء الانتظار");
+      return;
     }
 
-    console.log(fileID);
+    await SaveMissing();
+  };
+
+  const SaveMissing = async () => {
+    setLoading(true);
+
+    // console.log(fileID);
 
     const martyr: AddMartyrType = {
-      photoId: fileID || null,
+      photoId: photoId,
       fullName: fullName,
       dateOfMartyrdom: missingInfo?.dateMartyrdom,
       nationalIdNumber: cardMissingValues?.nationalIdNumber,
@@ -88,12 +97,16 @@ export default function AddMartyr() {
       maritalStatus: personalInfoMissing?.maritalStatus,
       numberOfChildren: Number(personalInfoMissing?.numberOfChildren || "0"),
       profession: personalInfoMissing?.profession,
+      study: personalInfoMissing?.study,
       country: personalInfoMissing?.country,
       governorate: personalInfoMissing?.governorate,
       city: personalInfoMissing?.city,
       neighborhood: personalInfoMissing?.neighborhood,
       ethnicAffiliation: personalInfoMissing?.ethnicAffiliation,
       overview: personalInfoMissing?.overview ?? "",
+      organizationalaffiliation: personalInfoMissing?.organizationalaffiliation,
+      religiousAffiliation: personalInfoMissing?.religiousAffiliation,
+      sectarianAffiliation: personalInfoMissing?.sectarianAffiliation,
 
       age: missingInfo?.age,
       ageStatus: missingInfo?.ageStatus,
@@ -109,8 +122,7 @@ export default function AddMartyr() {
 
       media: uploadedMedia ?? [],
     };
-
-    console.log(martyr);
+    // console.log(martyr);
 
     const result = await addMartyr(martyr);
 
@@ -119,7 +131,9 @@ export default function AddMartyr() {
       setMessage(" ✅ تمت الإضافة بنجاح");
       setError(false);
       setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000); // Hide toast after 3 seconds
+
+      setTimeout(() => setShowToast(false), 4000);
+      setTimeout(() => window.location.reload(), 4000);
     } else {
       setMessage("حدث خطأ");
       setError(true);
@@ -129,6 +143,14 @@ export default function AddMartyr() {
     }
 
     setLoading(false);
+  };
+
+  const handleUploadingChange = (state: boolean) => {
+    setUploading(state);
+  };
+
+  const handleImageUploaded = (id: string) => {
+    setPhotoId(id);
   };
 
   return (
@@ -148,6 +170,8 @@ export default function AddMartyr() {
       <div className="w-[95%] sm:w-[80%]">
         <AddCardMissing
           onChange={handleCardChange}
+          onImageUploaded={handleImageUploaded}
+          onUploadingChange={handleUploadingChange}
           fullName={fullName == undefined ? "" : fullName}
           dateMartyrdom={dateMartyrdom}
         />
@@ -161,27 +185,36 @@ export default function AddMartyr() {
         <div className="my-5"></div>
         <FileUploader onUploadComplete={handleUploadComplete} />
 
-        <button
-          disabled={fullName.length < 3 || loading}
-          onClick={handleSave}
-          className={`mt-8 w-full sm:w-auto px-8 py-2.5 rounded-lg font-semibold text-white transition-all duration-300
-            ${loading ? "cursor-wait" : ""}
-            ${
-              fullName.length < 3 || loading
-                ? "bg-blue-300 cursor-not-allowed opacity-70"
-                : "bg-blue-600 hover:bg-blue-700 active:scale-[0.97] shadow-md hover:shadow-lg"
-            }
-          `}
-        >
-          {loading ? (
-            <div className="flex items-center justify-center gap-2">
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              <span>جاري الحفظ...</span>
-            </div>
-          ) : (
-            <p>حفظ</p>
-          )}
-        </button>
+        <div className="flex items-center mt-8 gap-5">
+          <button
+            disabled={fullName.length < 3 || loading}
+            onClick={handleSave}
+            className={` w-full sm:w-auto px-8 py-2.5 rounded-lg font-semibold text-white transition-all duration-300
+    ${loading ? "cursor-wait" : ""}
+    ${
+      fullName.length < 3 || loading
+        ? "bg-blue-300 cursor-not-allowed opacity-70"
+        : "bg-blue-600 hover:bg-blue-700 active:scale-[0.97] shadow-md hover:shadow-lg"
+    }
+  `}
+          >
+            {loading ? (
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>جاري الحفظ...</span>
+              </div>
+            ) : (
+              <p>حفظ</p>
+            )}
+          </button>
+
+          <button
+            onClick={() => window.location.reload()}
+            className="w-full sm:w-auto px-8 py-2.5 rounded-lg font-semibold bg-gray-300 text-gray-800 hover:bg-gray-400 active:scale-[0.97] transition-all"
+          >
+            تصفية الحقول
+          </button>
+        </div>
       </div>
 
       {/* Animation for toast */}

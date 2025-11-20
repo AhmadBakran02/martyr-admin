@@ -6,6 +6,7 @@ import "./style.css";
 import { useEffect, useState } from "react";
 import { GetMartyr } from "@/lib/martyrApi";
 import { apiUrl } from "@/config/apiUrl";
+import { uploadImage } from "@/lib/uploadImage";
 
 export interface AddCardMissingValues {
   anonymous: boolean;
@@ -16,6 +17,8 @@ export interface AddCardMissingValues {
 
 interface AddCardMissingProps {
   onChange?: (values: AddCardMissingValues) => void;
+  onImageUploaded?: (fileId: string) => void;
+  onUploadingChange?: (state: boolean) => void;
   fullName: string;
   dateMartyrdom: string;
   martyr?: GetMartyr;
@@ -23,14 +26,17 @@ interface AddCardMissingProps {
 
 const AddCardMissing = ({
   onChange,
+  onImageUploaded,
   fullName,
   dateMartyrdom,
+  onUploadingChange,
   martyr,
 }: AddCardMissingProps) => {
   const [anonymous, setAnonymous] = useState<boolean>(false);
   const [nationalIdNumber, setNationalIdNumber] = useState<string>("");
   const [preview, setPreview] = useState<string>("");
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState<boolean>(false); // ⬅ NEW
 
   // ✅ Set initial values when martyr is loaded or changes
   useEffect(() => {
@@ -56,14 +62,32 @@ const AddCardMissing = ({
     });
   }, [anonymous, nationalIdNumber, imageFile, preview, onChange]);
 
-  // ✅ Handle image upload
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Upload image when selected
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setImageFile(file);
-      setPreview(url);
+    if (!file) return;
+
+    // Preview
+    const url = URL.createObjectURL(file);
+    setImageFile(file);
+    setPreview(url);
+
+    // 🔵 Notify parent: start uploading
+    onUploadingChange?.(true);
+    setUploading(true);
+
+    try {
+      const fileId = await uploadImage(file);
+
+      // send fileId to parent
+      onImageUploaded?.(fileId);
+    } catch (err) {
+      console.error("Upload failed:", err);
     }
+
+    // 🟢 Notify parent: upload finished
+    setUploading(false);
+    onUploadingChange?.(false);
   };
 
   return (
@@ -71,6 +95,7 @@ const AddCardMissing = ({
       {/* Header */}
       <div className="bg-[var(--mainGreen)] px-7 py-8 text-right text-white flex flex-row justify-between">
         <h2 className="text-xl font-bold">بيانات المفقود</h2>
+        {uploading && <p className="text-yellow-300">جاري رفع الصورة...</p>}
       </div>
 
       {/* Body */}
@@ -84,6 +109,7 @@ const AddCardMissing = ({
               onChange={handleImageChange}
               className="hidden"
             />
+
             {preview ? (
               <Image
                 src={preview}

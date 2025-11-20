@@ -1,5 +1,7 @@
 "use client";
 import {
+  Badge,
+  BookOpen,
   BriefcaseBusiness,
   Building2,
   Calendar,
@@ -47,6 +49,7 @@ const PersonalInfoMissing = ({ item }: MastyrCardProps) => {
       >
         {/* Body */}
         <div className="px-7 py-8 text-[#8B0000]">
+          {/* National ID Number */}
           <div className="card-row">
             <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
@@ -59,6 +62,7 @@ const PersonalInfoMissing = ({ item }: MastyrCardProps) => {
               <p>{item.data.martyr.nationalIdNumber || "----"}</p>
             </div>
           </div>
+          {/* Name */}
           <div className="card-row mt-2">
             <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
@@ -71,6 +75,7 @@ const PersonalInfoMissing = ({ item }: MastyrCardProps) => {
               <p>{item.data.martyr.name || "----"}</p>
             </div>
           </div>
+          {/* fatherName */}
           <div className="card-row mt-2">
             <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
@@ -83,6 +88,7 @@ const PersonalInfoMissing = ({ item }: MastyrCardProps) => {
               <p>{item.data.martyr.fatherName || "----"}</p>
             </div>
           </div>
+          {/* motherName */}
           <div className="card-row mt-2">
             <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
@@ -95,6 +101,7 @@ const PersonalInfoMissing = ({ item }: MastyrCardProps) => {
               <p>{item.data.martyr.motherName || "----"}</p>
             </div>
           </div>
+          {/* LastName */}
           <div className="card-row mt-2">
             <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
@@ -107,6 +114,7 @@ const PersonalInfoMissing = ({ item }: MastyrCardProps) => {
               <p>{item.data.martyr.lastName || "----"}</p>
             </div>
           </div>
+          {/* dateOfBirth */}
           <div className="card-row mt-2">
             <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
@@ -119,6 +127,7 @@ const PersonalInfoMissing = ({ item }: MastyrCardProps) => {
               <p>{item.data.martyr.dateOfBirth || ""}</p>
             </div>
           </div>
+          {/* Gender */}
           <div className="card-row mt-2">
             <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
@@ -128,9 +137,10 @@ const PersonalInfoMissing = ({ item }: MastyrCardProps) => {
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item.data.martyr.gender == "female" ? "ذكر" : "انثى"}</p>
+              <p>{item.data.martyr.gender == "male" ? "ذكر" : "انثى"}</p>
             </div>
           </div>
+          {/* Marital Status */}
           <div className="card-row mt-2">
             <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
@@ -143,6 +153,7 @@ const PersonalInfoMissing = ({ item }: MastyrCardProps) => {
               <p>{item.data.martyr.maritalStatus || "----"}</p>
             </div>
           </div>
+          {/* NumberOfChildren */}
           <div className="card-row mt-2">
             <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
@@ -155,6 +166,20 @@ const PersonalInfoMissing = ({ item }: MastyrCardProps) => {
               <p>{item.data.martyr.numberOfChildren || "----"}</p>
             </div>
           </div>
+          {/* Study */}
+          <div className="card-row mt-2">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
+              <div className="flex flex-row gap-2 text-gray-700">
+                <BookOpen />
+                <p>الدراسة</p>
+              </div>
+              <p className="text-gray-700">:</p>
+            </div>
+            <div>
+              <p>{item.data.martyr.study || "----"}</p>
+            </div>
+          </div>
+          {/* Profession */}
           <div className="card-row mt-2">
             <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
@@ -167,6 +192,7 @@ const PersonalInfoMissing = ({ item }: MastyrCardProps) => {
               <p>{item.data.martyr.profession || "----"}</p>
             </div>
           </div>
+          {/* Country */}
           <div className="card-row mt-2">
             <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
@@ -179,6 +205,7 @@ const PersonalInfoMissing = ({ item }: MastyrCardProps) => {
               <p>{item.data.martyr.country || "----"}</p>
             </div>
           </div>
+          {/* Governorate */}
           <div className="card-row mt-2">
             <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
@@ -191,6 +218,7 @@ const PersonalInfoMissing = ({ item }: MastyrCardProps) => {
               <p>{item.data.martyr.governorate || "----"}</p>
             </div>
           </div>
+          {/* City */}
           <div className="card-row mt-2">
             <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
@@ -203,6 +231,7 @@ const PersonalInfoMissing = ({ item }: MastyrCardProps) => {
               <p>{item.data.martyr.city || "----"}</p>
             </div>
           </div>
+          {/* Neighborhood */}
           <div className="card-row mt-2">
             <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
@@ -215,6 +244,7 @@ const PersonalInfoMissing = ({ item }: MastyrCardProps) => {
               <p>{item.data.martyr.neighborhood || "----"}</p>
             </div>
           </div>
+          {/* EthnicAffiliation */}
           <div className="card-row mt-2">
             <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
@@ -230,13 +260,39 @@ const PersonalInfoMissing = ({ item }: MastyrCardProps) => {
           <div className="card-row mt-2">
             <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
               <div className="flex flex-row gap-2 text-gray-700">
-                <GrGroup className="w-6 h-6" />
+                <Badge className="w-6 h-6" />
                 <p>الإنتماء التنظيمي</p>
               </div>
               <p className="text-gray-700">:</p>
             </div>
             <div>
-              <p>{item.data.martyr.organizationalAffiliation || "----"}</p>
+              <p>{item.data.martyr.organizationalaffiliation || "----"}</p>
+            </div>
+          </div>
+          {/* Religiousal affiliation */}
+          <div className="card-row mt-2">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
+              <div className="flex flex-row gap-2 text-gray-700">
+                <GrGroup className="w-6 h-6" />
+                <p>الإنتماء الديني</p>
+              </div>
+              <p className="text-gray-700">:</p>
+            </div>
+            <div>
+              <p>{item.data.martyr.religiousAffiliation || "----"}</p>
+            </div>
+          </div>
+          {/* Sectarian affiliation */}
+          <div className="card-row mt-2">
+            <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
+              <div className="flex flex-row gap-2 text-gray-700">
+                <Badge className="w-6 h-6" />
+                <p>الإنتماء الطائفي</p>
+              </div>
+              <p className="text-gray-700">:</p>
+            </div>
+            <div>
+              <p>{item.data.martyr.sectarianAffiliation || "----"}</p>
             </div>
           </div>
         </div>

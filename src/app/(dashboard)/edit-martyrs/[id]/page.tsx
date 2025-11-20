@@ -12,7 +12,6 @@ import { AddMartyrType, EditMartyrApi, GetMartyr } from "@/lib/martyrApi";
 import AddCard, { AddCardValues } from "@/components/AddCard/AddCard";
 import AddPersonalInfo from "@/components/AddPersonalInfo";
 import AddCitationInfo from "@/components/AddCitationInfo";
-import { uploadImage } from "@/lib/uploadImage";
 import { PersonalInfoType } from "@/types/PersonalInfoIDType";
 import { CitationInfoType } from "@/types/CitationInfoIDType";
 
@@ -36,19 +35,25 @@ export default function EditMartyPage() {
     maritalStatus: "",
     numberOfChildren: "",
     profession: "",
+    study: "",
     country: "",
     city: "",
     governorate: "",
     neighborhood: "",
     ethnicAffiliation: "",
+    organizationalaffiliation: "",
+    religiousAffiliation: "",
+    sectarianAffiliation: "",
     overview: "",
   });
   const [cardValues, setCardValues] = useState<AddCardValues>();
   const [citationInfo, setCitationInfo] = useState<CitationInfoType>();
+  const [photoId, setPhotoId] = useState<string | null>(null);
+  const [uploading, setUploading] = useState<boolean>(false);
 
-  const handleCardChange = (values: AddCardValues) => {
+  const handleCardChange = useCallback((values: AddCardValues) => {
     setCardValues(values);
-  };
+  }, []);
 
   const handleUploadComplete = (media: MediaInput[]) => {
     setUploadedMedia(media);
@@ -162,20 +167,22 @@ export default function EditMartyPage() {
   // };
 
   const handleSave = async () => {
-    // if (!massacre) return;
-    setLoadingUpdate(true);
-
-    const mergedMedia = [...(martyr?.media ?? []), ...(uploadedMedia ?? [])];
-
-    let fileID = "";
-
-    if (cardValues?.imageFile) {
-      fileID = await uploadImage(cardValues.imageFile);
+    if (uploading) {
+      alert("جارِ رفع الصورة… الرجاء الانتظار");
+      return;
     }
 
-    console.log(fileID);
+    await SaveMartyr();
+  };
+
+  const SaveMartyr = async () => {
+    setLoadingUpdate(true);
+    const mergedMedia = [...(martyr?.media ?? []), ...(uploadedMedia ?? [])];
+
+    // console.log(fileID);
+
     const martyr2: AddMartyrType = {
-      photoId: fileID || martyr?.photoId,
+      photoId: photoId,
       fullName: fullName,
       dateOfMartyrdom: citationInfo?.dateMartyrdom,
       nationalIdNumber: cardValues?.nationalIdNumber,
@@ -188,12 +195,16 @@ export default function EditMartyPage() {
       gender: personalInfo?.gender,
       maritalStatus: personalInfo?.maritalStatus,
       numberOfChildren: Number(personalInfo?.numberOfChildren || "0"),
+      study: personalInfo?.study,
       profession: personalInfo?.profession,
       country: personalInfo?.country,
       governorate: personalInfo?.governorate,
       city: personalInfo?.city,
       neighborhood: personalInfo?.neighborhood,
       ethnicAffiliation: personalInfo?.ethnicAffiliation,
+      organizationalaffiliation: personalInfo?.organizationalaffiliation,
+      religiousAffiliation: personalInfo?.religiousAffiliation,
+      sectarianAffiliation: personalInfo?.sectarianAffiliation,
       overview: personalInfo?.overview ?? "",
 
       burialDate: citationInfo?.burialDate,
@@ -213,7 +224,6 @@ export default function EditMartyPage() {
 
     const result = await EditMartyrApi(martyr2, id);
 
-    console.log(result);
     if (result.success) {
       console.log("✅ Added successfully:");
       setShowToast(true);
@@ -256,6 +266,15 @@ export default function EditMartyPage() {
   // =====================
   // UI
   // =====================
+
+  const handleUploadingChange = (state: boolean) => {
+    setUploading(state);
+  };
+
+  const handleImageUploaded = (id: string) => {
+    setPhotoId(id);
+  };
+
   return (
     <div className="my-5 p-4 sm:p-10 max-w-6xl mx-auto bg-white shadow-md rounded-xl">
       {/* ✅ Floating success toast */}
@@ -267,6 +286,15 @@ export default function EditMartyPage() {
 
       <AddCard
         onChange={handleCardChange}
+        fullName={martyr.fullName || ""}
+        dateMartyrdom={martyr.dateOfMartyrdom || ""}
+        martyr={martyr}
+      />
+
+      <AddCard
+        onChange={handleCardChange}
+        onImageUploaded={handleImageUploaded}
+        onUploadingChange={handleUploadingChange}
         fullName={martyr.fullName || ""}
         dateMartyrdom={martyr.dateOfMartyrdom || ""}
         martyr={martyr}

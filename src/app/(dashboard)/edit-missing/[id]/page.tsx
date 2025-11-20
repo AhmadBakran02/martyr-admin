@@ -25,12 +25,16 @@ export interface PersonalInfoType {
   gender: string;
   maritalStatus: string;
   numberOfChildren: string;
+  study: string;
   profession: string;
   country: string;
   city: string;
   governorate: string;
   neighborhood: string;
   ethnicAffiliation: string;
+  organizationalaffiliation: string;
+  religiousAffiliation: string;
+  sectarianAffiliation: string;
   overview: string;
 }
 export interface CitationInfoType {
@@ -68,20 +72,26 @@ export default function EditMartyPage() {
     gender: "",
     maritalStatus: "",
     numberOfChildren: "",
+    study: "",
     profession: "",
     country: "",
     city: "",
     governorate: "",
     neighborhood: "",
     ethnicAffiliation: "",
+    organizationalaffiliation: "",
+    religiousAffiliation: "",
+    sectarianAffiliation: "",
     overview: "",
   });
   const [cardValues, setCardValues] = useState<AddCardValues>();
   const [missingInfo, setMissingInfo] = useState<MissingInfoType>();
+  const [photoId, setPhotoId] = useState<string | null>(null);
+  const [uploading, setUploading] = useState<boolean>(false);
 
-  const handleCardChange = (values: AddCardValues) => {
+  const handleCardChange = useCallback((values: AddCardValues) => {
     setCardValues(values);
-  };
+  }, []);
 
   const handleUploadComplete = (media: MediaInput[]) => {
     setUploadedMedia(media);
@@ -89,7 +99,6 @@ export default function EditMartyPage() {
 
   const handleMissingChange = useCallback((values: MissingInfoType) => {
     setMissingInfo(values);
-    // setDateMartyrdom(values.dateMartyrdom);
   }, []);
 
   const handlePersonlChange = useCallback((data: PersonalInfoType) => {
@@ -165,50 +174,23 @@ export default function EditMartyPage() {
     };
   }, [martyr?.media, mediaUrls]);
 
-  // =====================
-  // Handlers
-  // =====================
-  // const handleDeleteOldMedia = (mediaID: string) => {
-  //   if (!massacre) return;
-  //   setMassacre({
-  //     ...massacre,
-  //     media: massacre.media?.filter((m) => m.mediaID !== mediaID) ?? [],
-  //   });
-
-  //   if (mediaUrls[mediaID]) {
-  //     URL.revokeObjectURL(mediaUrls[mediaID]);
-  //     const { [mediaID]: _, ...rest } = mediaUrls;
-  //     setMediaUrls(rest);
-  //   }
-  // };
-
-  // const handleNewFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files) {
-  //     setNewFiles((prev) => [...prev, ...Array.from(e.target.files ?? [])]);
-  //   }
-  // };
-
-  // const handleRemoveNewFile = (index: number) => {
-  //   const newList = [...newFiles];
-  //   newList.splice(index, 1);
-  //   setNewFiles(newList);
-  // };
-
   const handleSave = async () => {
-    // if (!massacre) return;
-    setLoadingUpdate(true);
-
-    const mergedMedia = [...(martyr?.media ?? []), ...(uploadedMedia ?? [])];
-
-    let fileID = "";
-
-    if (cardValues?.imageFile) {
-      fileID = await uploadImage(cardValues.imageFile);
+    if (uploading) {
+      alert("جارِ رفع الصورة… الرجاء الانتظار");
+      return;
     }
 
-    console.log(fileID);
+    await SaveMissing();
+  };
+
+  const SaveMissing = async () => {
+    setLoadingUpdate(true);
+
+    // console.log(fileID);
+    const mergedMedia = [...(martyr?.media ?? []), ...(uploadedMedia ?? [])];
+
     const martyr2: AddMartyrType = {
-      photoId: fileID || martyr?.photoId,
+      photoId: photoId,
       fullName: fullName,
       dateOfMartyrdom: missingInfo?.dateMartyrdom,
       nationalIdNumber: cardValues?.nationalIdNumber,
@@ -221,12 +203,16 @@ export default function EditMartyPage() {
       gender: personalInfo?.gender,
       maritalStatus: personalInfo?.maritalStatus,
       numberOfChildren: Number(personalInfo?.numberOfChildren || "0"),
+      study: personalInfo?.study,
       profession: personalInfo?.profession,
       country: personalInfo?.country,
       governorate: personalInfo?.governorate,
       city: personalInfo?.city,
       neighborhood: personalInfo?.neighborhood,
       ethnicAffiliation: personalInfo?.ethnicAffiliation,
+      organizationalaffiliation: personalInfo?.organizationalaffiliation,
+      religiousAffiliation: personalInfo?.religiousAffiliation,
+      sectarianAffiliation: personalInfo?.sectarianAffiliation,
       overview: personalInfo?.overview ?? "",
 
       age: missingInfo?.age,
@@ -271,6 +257,14 @@ export default function EditMartyPage() {
     }
   };
 
+  const handleUploadingChange = (state: boolean) => {
+    setUploading(state);
+  };
+
+  const handleImageUploaded = (id: string) => {
+    setPhotoId(id);
+  };
+
   // =====================
   // Render Logic
   // =====================
@@ -298,6 +292,8 @@ export default function EditMartyPage() {
 
       <AddCardMissing
         onChange={handleCardChange}
+        onImageUploaded={handleImageUploaded}
+        onUploadingChange={handleUploadingChange}
         fullName={martyr.fullName || ""}
         dateMartyrdom={martyr.dateOfMartyrdom || ""}
         martyr={martyr}

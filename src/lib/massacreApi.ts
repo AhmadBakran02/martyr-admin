@@ -2,8 +2,8 @@ import { apiUrl } from "@/config/apiUrl";
 import { getAccessToken, refreshAccessTokenApi } from "./auth";
 
 export interface MediaItem {
-  mediaId: string;
   mediaType: "image" | "video";
+  mediaId: string;
   _id: string;
 }
 

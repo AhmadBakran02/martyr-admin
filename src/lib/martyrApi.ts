@@ -14,7 +14,7 @@ export interface MartyrMedia {
 }
 
 export interface GetMartyr {
-  _id: string;
+  _id?: string;
   fullName: string;
   dateOfMartyrdom?: string;
   burialDate?: string;
@@ -29,12 +29,15 @@ export interface GetMartyr {
   maritalStatus?: string;
   numberOfChildren?: number | null;
   profession?: string;
+  study?: string;
   country?: string;
   governorate?: string;
   city?: string;
   neighborhood?: string;
   ethnicAffiliation?: string;
-  organizationalAffiliation?: string;
+  organizationalaffiliation?: string;
+  sectarianAffiliation?: string;
+  religiousAffiliation?: string;
   age?: string;
   overview: string;
   ageStatus?: string;
@@ -45,15 +48,15 @@ export interface GetMartyr {
   cityOfMartyrdom?: string;
   martyrdomSite?: string;
   citationMethod?: string;
-  like: number;
-  photoId?: string;
+  like?: number;
+  photoId?: string | null;
   media: MartyrMedia[];
   massacreId?: Massacre | null;
   otherFields?: string;
-  createdAt: string;
-  updatedAt: string;
-  seq: number;
-  __v: number;
+  createdAt?: string;
+  updatedAt?: string;
+  seq?: number;
+  __v?: number;
   isMissing?: boolean;
 }
 
@@ -73,7 +76,12 @@ export interface AddMartyrType {
   maritalStatus?: string;
   numberOfChildren?: number;
   profession?: string;
+  study?: string;
+
   ethnicAffiliation?: string;
+  organizationalaffiliation?: string;
+  religiousAffiliation?: string;
+  sectarianAffiliation?: string;
 
   // Location Info
   country?: string;
@@ -289,6 +297,8 @@ export async function EditMartyrApi(
 ): Promise<ApiResponse> {
   const token = await refreshAccessTokenApi();
   console.log(token);
+  console.log(martyr);
+  console.log(id);
   // console.log("-----");
   if (!token) throw new Error("No access token found. Please login.");
 

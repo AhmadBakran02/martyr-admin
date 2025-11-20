@@ -1,4 +1,6 @@
-export default function AuthLayout({
+"use client";
+
+export default function ClientPageWrapper({
   children,
 }: {
   children: React.ReactNode;

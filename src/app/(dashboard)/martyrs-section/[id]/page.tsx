@@ -21,6 +21,7 @@ export default function MartyrPage() {
       try {
         const res = await getMartyrById(id);
         setMartyr(res);
+        console.log(res);
       } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message);

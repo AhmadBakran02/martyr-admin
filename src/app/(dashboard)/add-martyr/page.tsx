@@ -6,7 +6,6 @@ import AddPersonalInfo from "@/components/AddPersonalInfo";
 import { addMartyr, AddMartyrType } from "@/lib/martyrApi";
 import FileUploader from "@/components/FileUploader";
 import { MediaInput } from "@/lib/massacreApi";
-import { uploadImage } from "@/lib/uploadImage";
 import { CitationInfoType } from "@/types/CitationInfoIDType";
 import { PersonalInfoType } from "@/types/PersonalInfoIDType";
 
@@ -18,6 +17,9 @@ export default function AddMartyr() {
   const [cardValues, setCardValues] = useState<AddCardValues>();
   const [citationInfo, setCitationInfo] = useState<CitationInfoType>();
   const [uploadedMedia, setUploadedMedia] = useState<MediaInput[]>([]);
+  const [photoId, setPhotoId] = useState<string | null>(null);
+  const [uploading, setUploading] = useState<boolean>(false);
+
   const [personalInfo, setPersonalInfo] = useState<PersonalInfoType>({
     name: "",
     fatherName: "",
@@ -28,12 +30,16 @@ export default function AddMartyr() {
     maritalStatus: "",
     numberOfChildren: "",
     profession: "",
+    study: "",
     country: "",
     city: "",
     governorate: "",
     neighborhood: "",
     ethnicAffiliation: "",
     overview: "",
+    organizationalaffiliation: "",
+    sectarianAffiliation: "",
+    religiousAffiliation: "",
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [showToast, setShowToast] = useState<boolean>(false);
@@ -57,17 +63,21 @@ export default function AddMartyr() {
   }, []);
 
   const handleSave = async () => {
-    setLoading(true);
-    let fileID = "";
-
-    if (cardValues?.imageFile) {
-      fileID = await uploadImage(cardValues.imageFile);
+    if (uploading) {
+      alert("جارِ رفع الصورة… الرجاء الانتظار");
+      return;
     }
 
-    console.log(fileID);
+    await SaveMartyr();
+  };
+
+  const SaveMartyr = async () => {
+    setLoading(true);
+
+    // console.log(fileID);
 
     const martyr: AddMartyrType = {
-      photoId: fileID || null,
+      photoId: photoId,
       fullName: fullName,
       dateOfMartyrdom: citationInfo?.dateMartyrdom,
       nationalIdNumber: cardValues?.nationalIdNumber,
@@ -81,12 +91,16 @@ export default function AddMartyr() {
       maritalStatus: personalInfo?.maritalStatus,
       numberOfChildren: Number(personalInfo?.numberOfChildren || "0"),
       profession: personalInfo?.profession,
+      study: personalInfo?.study,
       country: personalInfo?.country,
       governorate: personalInfo?.governorate,
       city: personalInfo?.city,
       neighborhood: personalInfo?.neighborhood,
       ethnicAffiliation: personalInfo?.ethnicAffiliation,
       overview: personalInfo?.overview ?? "",
+      organizationalaffiliation: personalInfo?.organizationalaffiliation,
+      religiousAffiliation: personalInfo?.religiousAffiliation,
+      sectarianAffiliation: personalInfo?.sectarianAffiliation,
 
       burialDate: citationInfo?.burialDate,
       age: citationInfo?.age,
@@ -103,7 +117,6 @@ export default function AddMartyr() {
 
       media: uploadedMedia ?? [],
     };
-
     console.log(martyr);
 
     const result = await addMartyr(martyr);
@@ -113,7 +126,9 @@ export default function AddMartyr() {
       setMessage(" ✅ تمت الإضافة بنجاح");
       setError(false);
       setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000); // Hide toast after 3 seconds
+
+      setTimeout(() => setShowToast(false), 4000);
+      setTimeout(() => window.location.reload(), 4000);
     } else {
       setMessage("حدث خطأ");
       setError(true);
@@ -126,8 +141,15 @@ export default function AddMartyr() {
   };
 
   // console.log(cardValues);
-  console.log(citationInfo);
-  console.log(personalInfo);
+  // console.log(citationInfo);
+  // console.log(personalInfo);
+  const handleUploadingChange = (state: boolean) => {
+    setUploading(state);
+  };
+
+  const handleImageUploaded = (id: string) => {
+    setPhotoId(id);
+  };
 
   return (
     <div className="relative p-10 flex justify-center items-center">
@@ -146,9 +168,14 @@ export default function AddMartyr() {
       <div className="w-[95%] sm:w-[80%]">
         <AddCard
           onChange={handleCardChange}
-          fullName={fullName == undefined ? "" : fullName}
+          onImageUploaded={handleImageUploaded}
+          onUploadingChange={handleUploadingChange}
+          fullName={fullName}
           dateMartyrdom={dateMartyrdom}
         />
+
+        <div className="my-5"></div>
+        <FileUploader onUploadComplete={handleUploadComplete} />
 
         <div className="my-5"></div>
         <AddPersonalInfo onChange={handlePersonlChange} />
@@ -156,30 +183,36 @@ export default function AddMartyr() {
         <div className="my-5"></div>
         <AddCitationInfo onChange={handleCitationChange} />
 
-        <div className="my-5"></div>
-        <FileUploader onUploadComplete={handleUploadComplete} />
+        <div className="flex items-center mt-8 gap-5">
+          <button
+            disabled={fullName.length < 3 || loading}
+            onClick={handleSave}
+            className={` w-full sm:w-auto px-8 py-2.5 rounded-lg font-semibold text-white transition-all duration-300
+    ${loading ? "cursor-wait" : ""}
+    ${
+      fullName.length < 3 || loading
+        ? "bg-blue-300 cursor-not-allowed opacity-70"
+        : "bg-blue-600 hover:bg-blue-700 active:scale-[0.97] shadow-md hover:shadow-lg"
+    }
+  `}
+          >
+            {loading ? (
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>جاري الحفظ...</span>
+              </div>
+            ) : (
+              <p>حفظ</p>
+            )}
+          </button>
 
-        <button
-          disabled={fullName.length < 3 || loading}
-          onClick={handleSave}
-          className={`mt-8 w-full sm:w-auto px-8 py-2.5 rounded-lg font-semibold text-white transition-all duration-300
-            ${loading ? "cursor-wait" : ""}
-            ${
-              fullName.length < 3 || loading
-                ? "bg-blue-300 cursor-not-allowed opacity-70"
-                : "bg-blue-600 hover:bg-blue-700 active:scale-[0.97] shadow-md hover:shadow-lg"
-            }
-          `}
-        >
-          {loading ? (
-            <div className="flex items-center justify-center gap-2">
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              <span>جاري الحفظ...</span>
-            </div>
-          ) : (
-            <p>حفظ</p>
-          )}
-        </button>
+          <button
+            onClick={() => window.location.reload()}
+            className="w-full sm:w-auto px-8 py-2.5 rounded-lg font-semibold bg-gray-300 text-gray-800 hover:bg-gray-400 active:scale-[0.97] transition-all"
+          >
+            تصفية الحقول
+          </button>
+        </div>
       </div>
 
       {/* Animation for toast */}

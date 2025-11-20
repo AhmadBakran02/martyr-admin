@@ -1,5 +1,7 @@
 "use client";
 import {
+  Badge,
+  BookOpen,
   BriefcaseBusiness,
   Building2,
   Calendar,
@@ -29,19 +31,21 @@ interface PersonalInfoProps {
     maritalStatus: string;
     numberOfChildren: string;
     profession: string;
+    study: string;
     country: string;
     city: string;
     governorate: string;
     neighborhood: string;
     ethnicAffiliation: string;
-    organizationalAffiliation: string;
+    organizationalaffiliation: string;
+    religiousAffiliation: string;
+    sectarianAffiliation: string;
     overview: string;
   }) => void;
   martyr?: GetMartyr;
 }
 
 const AddPersonalInfoMissing = ({ onChange, martyr }: PersonalInfoProps) => {
-  // 🧩 State setup
   const [name, setName] = useState<string>("");
   const [fatherName, setFatherName] = useState<string>("");
   const [motherName, setMotherName] = useState<string>("");
@@ -51,14 +55,17 @@ const AddPersonalInfoMissing = ({ onChange, martyr }: PersonalInfoProps) => {
   const [maritalStatus, setMaritalStatus] = useState<string>("");
   const [numberOfChildren, setNumberOfChildren] = useState<string>("");
   const [profession, setProfession] = useState<string>("");
+  const [study, setStudy] = useState<string>("");
   const [country, setCountry] = useState<string>("");
   const [city, setCity] = useState<string>("");
   const [governorate, setGovernorate] = useState<string>("");
   const [neighborhood, setNeighborhood] = useState<string>("");
   const [ethnicAffiliation, setEthnicAffiliation] = useState<string>("");
   const [overview, setOverview] = useState<string>("");
-  const [organizationalAffiliation, setOrganizationalAffiliation] =
+  const [organizationalaffiliation, setOrganizationalaffiliation] =
     useState<string>("");
+  const [religiousAffiliation, setReligiousAffiliation] = useState<string>("");
+  const [sectarianAffiliation, setSectarianAffiliation] = useState<string>("");
 
   // ✅ Initialize fields when martyr data is available (edit mode)
   useEffect(() => {
@@ -77,12 +84,15 @@ const AddPersonalInfoMissing = ({ onChange, martyr }: PersonalInfoProps) => {
           : ""
       );
       setProfession(martyr.profession ?? "");
+      setStudy(martyr.study ?? "");
       setCountry(martyr.country ?? "");
       setGovernorate(martyr.governorate ?? "");
       setCity(martyr.city ?? "");
       setNeighborhood(martyr.neighborhood ?? "");
       setEthnicAffiliation(martyr.ethnicAffiliation ?? "");
-      setOrganizationalAffiliation(martyr.organizationalAffiliation ?? "");
+      setOrganizationalaffiliation(martyr.organizationalaffiliation ?? "");
+      setReligiousAffiliation(martyr.religiousAffiliation ?? "");
+      setSectarianAffiliation(martyr.sectarianAffiliation ?? "");
       setOverview(martyr.overview ?? "");
     }
   }, [martyr]);
@@ -98,12 +108,15 @@ const AddPersonalInfoMissing = ({ onChange, martyr }: PersonalInfoProps) => {
       maritalStatus,
       numberOfChildren,
       profession,
+      study,
       country,
       city,
       governorate,
       neighborhood,
       ethnicAffiliation,
-      organizationalAffiliation,
+      organizationalaffiliation,
+      religiousAffiliation,
+      sectarianAffiliation,
       overview,
     });
   }, [
@@ -117,12 +130,15 @@ const AddPersonalInfoMissing = ({ onChange, martyr }: PersonalInfoProps) => {
     maritalStatus,
     numberOfChildren,
     profession,
+    study,
     country,
     city,
     governorate,
     neighborhood,
     ethnicAffiliation,
-    organizationalAffiliation,
+    organizationalaffiliation,
+    religiousAffiliation,
+    sectarianAffiliation,
     overview,
   ]);
 
@@ -305,6 +321,25 @@ const AddPersonalInfoMissing = ({ onChange, martyr }: PersonalInfoProps) => {
           </div>
         </div>
 
+        {/* Study */}
+        <div className="card-row mt-5">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
+            <div className="flex flex-row gap-2 text-gray-700">
+              <BookOpen />
+              <p>الدراسة</p>
+            </div>
+            <p className="text-gray-700">:</p>
+          </div>
+          <div className="flex-1 flex items-center ">
+            <input
+              value={study}
+              onChange={(e) => setStudy(e.target.value)}
+              type="text"
+              className="bg-gray-100 w-full p-2 rounded-md"
+            />
+          </div>
+        </div>
+
         {/* Profession */}
         <div className="card-row mt-5">
           <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
@@ -430,8 +465,46 @@ const AddPersonalInfoMissing = ({ onChange, martyr }: PersonalInfoProps) => {
           </div>
           <div className="flex-1 flex items-center ">
             <input
-              value={organizationalAffiliation}
-              onChange={(e) => setOrganizationalAffiliation(e.target.value)}
+              value={organizationalaffiliation}
+              onChange={(e) => setOrganizationalaffiliation(e.target.value)}
+              type="text"
+              className="bg-gray-100 w-full p-2 rounded-md"
+            />
+          </div>
+        </div>
+
+        {/* Religious Affiliation */}
+        <div className="card-row mt-5">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
+            <div className="flex flex-row gap-2 text-gray-700">
+              <Badge className="w-6 h-6" />
+              <p>الإنتماء الديني</p>
+            </div>
+            <p className="text-gray-700">:</p>
+          </div>
+          <div className="flex-1 flex items-center ">
+            <input
+              value={religiousAffiliation}
+              onChange={(e) => setReligiousAffiliation(e.target.value)}
+              type="text"
+              className="bg-gray-100 w-full p-2 rounded-md"
+            />
+          </div>
+        </div>
+
+        {/* Sectarian Affiliation */}
+        <div className="card-row mt-5">
+          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
+            <div className="flex flex-row gap-2 text-gray-700">
+              <Badge className="w-6 h-6" />
+              <p>الإنتماء الطائفي</p>
+            </div>
+            <p className="text-gray-700">:</p>
+          </div>
+          <div className="flex-1 flex items-center ">
+            <input
+              value={sectarianAffiliation}
+              onChange={(e) => setSectarianAffiliation(e.target.value)}
               type="text"
               className="bg-gray-100 w-full p-2 rounded-md"
             />

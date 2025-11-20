@@ -50,7 +50,8 @@ export default function AddMassacre() {
     if (result.success) {
       console.log("✅ Added successfully:", result.data);
       setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000); // Hide toast after 3s
+      setTimeout(() => setShowToast(false), 4000);
+      setTimeout(() => window.location.reload(), 4000);
     } else {
       console.error("❌ Error:", result.message);
     }
@@ -82,28 +83,36 @@ export default function AddMassacre() {
 
         <FileUploader onUploadComplete={handleUploadComplete} />
 
-        <button
-          disabled={
-            !massacreInfo?.name || massacreInfo.name.length < 1 || loading
-          }
-          onClick={handleSave}
-          className={`mt-8 px-8 py-2.5 rounded-lg font-semibold text-white transition-all duration-300
+        <div className="flex items-center mt-8 gap-5">
+          <button
+            disabled={
+              !massacreInfo?.name || massacreInfo.name.length < 1 || loading
+            }
+            onClick={handleSave}
+            className={`px-8 py-2.5 rounded-lg font-semibold text-white transition-all duration-300
             ${loading ? "cursor-wait" : ""}
             ${
               !massacreInfo?.name || massacreInfo.name.length < 1 || loading
                 ? "bg-[var(--lightGold)] cursor-not-allowed opacity-70"
                 : "bg-[var(--mainGold)] hover:bg-[var(--darkGold)] active:scale-[0.97] shadow-md hover:shadow-lg"
             }`}
-        >
-          {loading ? (
-            <div className="flex items-center justify-center gap-2">
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              <span>جاري الحفظ...</span>
-            </div>
-          ) : (
-            <p>حفظ</p>
-          )}
-        </button>
+          >
+            {loading ? (
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>جاري الحفظ...</span>
+              </div>
+            ) : (
+              <p>حفظ</p>
+            )}
+          </button>
+          <button
+            onClick={() => window.location.reload()}
+            className="w-full sm:w-auto px-8 py-2.5 rounded-lg font-semibold bg-gray-300 text-gray-800 hover:bg-gray-400 active:scale-[0.97] transition-all"
+          >
+            تصفية الحقول
+          </button>
+        </div>
       </div>
 
       {/* ✅ Toast animation style */}
