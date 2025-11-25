@@ -10,15 +10,19 @@ import { CitationInfoType } from "@/types/CitationInfoIDType";
 import { PersonalInfoType } from "@/types/PersonalInfoIDType";
 
 export default function AddMartyr() {
-  const [fullName, setFullName] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
-  const [error, setError] = useState<boolean>(false);
-  const [dateMartyrdom, setDateMartyrdom] = useState<string>("");
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
+  const [fullName, setFullName] = useState("");
+  const [dateMartyrdom, setDateMartyrdom] = useState("");
+
   const [cardValues, setCardValues] = useState<AddCardValues>();
   const [citationInfo, setCitationInfo] = useState<CitationInfoType>();
   const [uploadedMedia, setUploadedMedia] = useState<MediaInput[]>([]);
   const [photoId, setPhotoId] = useState<string | null>(null);
-  const [uploading, setUploading] = useState<boolean>(false);
 
   const [personalInfo, setPersonalInfo] = useState<PersonalInfoType>({
     name: "",
@@ -41,12 +45,14 @@ export default function AddMartyr() {
     sectarianAffiliation: "",
     religiousAffiliation: "",
   });
-  const [loading, setLoading] = useState<boolean>(false);
-  const [showToast, setShowToast] = useState<boolean>(false);
 
-  const handleUploadComplete = (media: MediaInput[]) => {
+  // --------------------------------------------------
+  // STABLE CALLBACKS (Fix focus problems!)
+  // --------------------------------------------------
+
+  const handleUploadComplete = useCallback((media: MediaInput[]) => {
     setUploadedMedia(media);
-  };
+  }, []);
 
   const handleCardChange = useCallback((values: AddCardValues) => {
     setCardValues(values);
@@ -62,45 +68,47 @@ export default function AddMartyr() {
     setFullName(`${data.name} ${data.fatherName} ${data.lastName}`);
   }, []);
 
-  const handleSave = async () => {
-    if (uploading) {
-      alert("جارِ رفع الصورة… الرجاء الانتظار");
-      return;
-    }
+  const handleUploadingChange = useCallback((state: boolean) => {
+    setUploading(state);
+  }, []);
 
-    await SaveMartyr();
-  };
+  const handleImageUploaded = useCallback((id: string) => {
+    setPhotoId(id);
+  }, []);
 
-  const SaveMartyr = async () => {
+  // --------------------------------------------------
+  // SAVE LOGIC
+  // --------------------------------------------------
+
+  const SaveMartyr = useCallback(async () => {
     setLoading(true);
 
-    // console.log(fileID);
-
     const martyr: AddMartyrType = {
-      photoId: photoId,
-      fullName: fullName,
+      photoId,
+      fullName,
       dateOfMartyrdom: citationInfo?.dateMartyrdom,
       nationalIdNumber: cardValues?.nationalIdNumber,
       anonymous: cardValues?.anonymous || false,
-      name: personalInfo?.name,
-      fatherName: personalInfo?.fatherName,
-      motherName: personalInfo?.motherName,
-      lastName: personalInfo?.lastName,
-      dateOfBirth: personalInfo?.dateOfBirth,
-      gender: personalInfo?.gender,
-      maritalStatus: personalInfo?.maritalStatus,
-      numberOfChildren: Number(personalInfo?.numberOfChildren || "0"),
-      profession: personalInfo?.profession,
-      study: personalInfo?.study,
-      country: personalInfo?.country,
-      governorate: personalInfo?.governorate,
-      city: personalInfo?.city,
-      neighborhood: personalInfo?.neighborhood,
-      ethnicAffiliation: personalInfo?.ethnicAffiliation,
-      overview: personalInfo?.overview ?? "",
-      organizationalaffiliation: personalInfo?.organizationalaffiliation,
-      religiousAffiliation: personalInfo?.religiousAffiliation,
-      sectarianAffiliation: personalInfo?.sectarianAffiliation,
+
+      name: personalInfo.name,
+      fatherName: personalInfo.fatherName,
+      motherName: personalInfo.motherName,
+      lastName: personalInfo.lastName,
+      dateOfBirth: personalInfo.dateOfBirth,
+      gender: personalInfo.gender,
+      maritalStatus: personalInfo.maritalStatus,
+      numberOfChildren: Number(personalInfo.numberOfChildren || "0"),
+      profession: personalInfo.profession,
+      study: personalInfo.study,
+      country: personalInfo.country,
+      governorate: personalInfo.governorate,
+      city: personalInfo.city,
+      neighborhood: personalInfo.neighborhood,
+      ethnicAffiliation: personalInfo.ethnicAffiliation,
+      overview: personalInfo.overview ?? "",
+      organizationalaffiliation: personalInfo.organizationalaffiliation,
+      religiousAffiliation: personalInfo.religiousAffiliation,
+      sectarianAffiliation: personalInfo.sectarianAffiliation,
 
       burialDate: citationInfo?.burialDate,
       age: citationInfo?.age,
@@ -108,22 +116,18 @@ export default function AddMartyr() {
       dissident: citationInfo?.dissident,
       preRevolution: citationInfo?.preRevolution,
       massacreId: citationInfo?.massacreId || null,
-      // massacre: citationInfo?.massacre || null,
       martyrdomGovernorate: citationInfo?.martyrdomGovernorate,
       cityOfMartyrdom: citationInfo?.cityOfMartyrdom,
       martyrdomSite: citationInfo?.martyrdomLocation,
       citationMethod: citationInfo?.citationMethod,
       stateOfMartyrdom: citationInfo?.citationMethod,
-
       media: uploadedMedia ?? [],
     };
-    console.log(martyr);
 
     const result = await addMartyr(martyr);
 
     if (result.success) {
-      console.log("✅ Added successfully:", result.data);
-      setMessage(" ✅ تمت الإضافة بنجاح");
+      setMessage(" تمت الإضافة بنجاح");
       setError(false);
       setShowToast(true);
 
@@ -133,28 +137,30 @@ export default function AddMartyr() {
       setMessage("حدث خطأ");
       setError(true);
       setShowToast(true);
-      setTimeout(() => setShowToast(false), 3000); // Hide toast after 3 seconds
+      setTimeout(() => setShowToast(false), 3000);
       console.error("Error:", result.message);
     }
 
     setLoading(false);
-  };
+  }, [
+    photoId,
+    fullName,
+    citationInfo,
+    cardValues,
+    personalInfo,
+    uploadedMedia,
+  ]);
 
-  // console.log(cardValues);
-  // console.log(citationInfo);
-  // console.log(personalInfo);
-  const handleUploadingChange = (state: boolean) => {
-    setUploading(state);
-  };
-
-  const handleImageUploaded = (id: string) => {
-    setPhotoId(id);
-  };
+  const handleSave = useCallback(async () => {
+    if (uploading) {
+      alert("جارِ رفع الصورة… الرجاء الانتظار");
+      return;
+    }
+    await SaveMartyr();
+  }, [uploading, SaveMartyr]);
 
   return (
     <div className="relative p-10 flex justify-center items-center">
-      {/* ✅ Floating success toast */}
-
       {showToast && (
         <div
           className={`fixed top-5 right-5 ${
@@ -188,13 +194,13 @@ export default function AddMartyr() {
             disabled={fullName.length < 3 || loading}
             onClick={handleSave}
             className={` w-full sm:w-auto px-8 py-2.5 rounded-lg font-semibold text-white transition-all duration-300
-    ${loading ? "cursor-wait" : ""}
-    ${
-      fullName.length < 3 || loading
-        ? "bg-blue-300 cursor-not-allowed opacity-70"
-        : "bg-blue-600 hover:bg-blue-700 active:scale-[0.97] shadow-md hover:shadow-lg"
-    }
-  `}
+              ${loading ? "cursor-wait" : ""}
+              ${
+                fullName.length < 3 || loading
+                  ? "bg-blue-300 cursor-not-allowed opacity-70"
+                  : "bg-blue-600 hover:bg-blue-700 active:scale-[0.97] shadow-md hover:shadow-lg"
+              }
+            `}
           >
             {loading ? (
               <div className="flex items-center justify-center gap-2">
@@ -215,7 +221,6 @@ export default function AddMartyr() {
         </div>
       </div>
 
-      {/* Animation for toast */}
       <style jsx>{`
         @keyframes fadeInOut {
           0% {

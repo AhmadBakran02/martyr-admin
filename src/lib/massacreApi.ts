@@ -37,7 +37,7 @@ export interface MassacreResponse {
   message: string;
   data: {
     massacres: Massacre[];
-    meta: MassacreMeta;
+    pagination: MassacreMeta;
   };
 }
 

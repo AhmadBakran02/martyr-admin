@@ -38,6 +38,7 @@ export default function AddMassacre() {
       endDate: massacreInfo.end,
       governorate: massacreInfo.governorate,
       city: massacreInfo.city,
+      location: massacreInfo.location,
       overview: massacreInfo.note,
       totalOfMartyrs: Number(massacreInfo.number || "0"),
       photoId: uploadedImage,

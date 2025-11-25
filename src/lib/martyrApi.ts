@@ -132,7 +132,7 @@ export interface MartyrsMeta {
 
 export interface MartyrsData {
   martyrs: GetMartyr[];
-  meta: MartyrsMeta;
+  pagination: MartyrsMeta;
 }
 
 export interface GetMartyrsResponse {
@@ -203,6 +203,7 @@ export async function addMartyr(martyr: AddMartyrType): Promise<ApiResponse> {
   try {
     const token = await refreshAccessTokenApi();
     console.log(token);
+    console.log(JSON.stringify({ martyr }));
 
     const response = await fetch(`${apiUrl}/api/martyr`, {
       method: "POST",

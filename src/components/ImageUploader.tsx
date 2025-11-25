@@ -20,6 +20,7 @@ export default function ImageUploader({ onUploadComplete }: FileUploaderProps) {
   // const inputRef = useRef<HTMLInputElement | null>(null);
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
+  const [uploaded, setUploaded] = useState<boolean>(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -48,9 +49,11 @@ export default function ImageUploader({ onUploadComplete }: FileUploaderProps) {
     setUploading(true);
 
     const res = await uploadFileApi(file.file);
-    const uploadedImage: string = res.data!.fileID;
+    const uploadedImage: string = res.data!.id;
 
     setUploading(false);
+    setUploaded(true);
+
     onUploadComplete(uploadedImage);
   };
 
@@ -103,6 +106,11 @@ export default function ImageUploader({ onUploadComplete }: FileUploaderProps) {
           </button>
         )}
       </div>
+      {uploaded && (
+        <div className="flex items-center gap-2 text-sm font-semibold text-green-700 bg-green-100 border border-green-200 rounded-lg px-4 py-3">
+          تمت عملية الرفع بنجاح
+        </div>
+      )}
     </div>
   );
 }

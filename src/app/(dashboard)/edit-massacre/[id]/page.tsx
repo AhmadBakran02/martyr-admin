@@ -64,7 +64,7 @@ export default function EditMassacrePage() {
       const map: Record<string, string> = {};
       for (const m of massacre.media ?? []) {
         try {
-          const res = await fetch(`${apiUrl}/api/file?fileID=${m.mediaId}`, {
+          const res = await fetch(`${apiUrl}/api/file?id=${m.mediaId}`, {
             method: "GET",
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -129,15 +129,12 @@ export default function EditMassacrePage() {
     let cancelled = false;
     const loadPhoto = async () => {
       try {
-        const res = await fetch(
-          `${apiUrl}/api/file?fileID=${massacre.photoId}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        const res = await fetch(`${apiUrl}/api/file?id=${massacre.photoId}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
 
         if (!res.ok) return;
 
@@ -212,9 +209,9 @@ export default function EditMassacrePage() {
 
         const data = await res.json();
         console.log(data);
-        if (data.success && data.data.fileID) {
-          newPhotoId = data.data.fileID;
-          console.log(data.data.fileID);
+        if (data.success && data.data.id) {
+          newPhotoId = data.data.id;
+          console.log(data.data.id);
           console.log(newPhotoFile);
         } else {
           console.error("Failed to upload new photo:", data.error);

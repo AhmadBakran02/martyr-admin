@@ -5,7 +5,10 @@ export interface UploadFileResponse {
   success: boolean;
   message: string;
   data?: {
-    fileID: string;
+    id: string;
+    originalName: string;
+    mimetype: string;
+    size: number;
   };
   error?: string;
 }

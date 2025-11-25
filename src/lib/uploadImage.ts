@@ -23,7 +23,7 @@ export const uploadImage = async (photo: File): Promise<string> => {
       throw new Error(data.message || "Upload failed");
     }
 
-    return data.data.fileID as string;
+    return data.data.id as string;
   } catch (err) {
     console.error(err);
     throw err;

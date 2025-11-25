@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import { Skull } from "lucide-react";
 import { addMassacreApi, getAllMassacres, Massacre } from "@/lib/massacreApi";
 import Loading2 from "./Loading2/Loading2";
 
@@ -29,6 +29,9 @@ export default function MartyrdomPicker({ value, onChange, onChange2 }: Props) {
   const [error, setError] = useState<string>("");
   const [loadingAddMassacre, setLoadingAddMassacre] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
+
+  const BORDER_COLOR = "border-[#0B3F3D]/20";
+  const TEXT_LABEL = "text-gray-600";
 
   const fetchMassacres = async () => {
     try {
@@ -117,23 +120,27 @@ export default function MartyrdomPicker({ value, onChange, onChange2 }: Props) {
 
   return (
     <div>
-      <div className="card-row mt-5">
-        <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-          <div className="flex flex-row gap-2 text-[var(--textMain)]">
-            <Image src={"/kill.svg"} alt="" width={29} height={29} />
+      <div
+        className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 mt-2`}
+      >
+        <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+          <div
+            className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+          >
+            <Skull className="w-5 h-5 text-[#0B3F3D]" />
             <p>مجزرة</p>
           </div>
-          <p>:</p>
+          <p className={TEXT_LABEL}>:</p>
         </div>
 
-        <div className="flex-1 flex items-center">
+        <div className="w-full sm:w-2/3">
           <input
             value={value}
             onChange={(e) => onChange(e.target.value)} // still allow typing
             onFocus={() => setOpen(true)}
             onClick={() => setOpen(true)}
             type="text"
-            className="bg-gray-100 w-full p-2 rounded-md cursor-pointer"
+            className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30 cursor-pointer"
             placeholder="اختر مجزرة أو اكتب لبحث..."
             readOnly={false} // keep editable if you want typing
           />

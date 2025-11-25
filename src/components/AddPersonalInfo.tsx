@@ -8,6 +8,8 @@ import {
   Earth,
   House,
   NotepadText,
+  ChevronDown,
+  ChevronUp,
   UserRound,
   Users,
   VenusAndMars,
@@ -16,9 +18,14 @@ import { FaChild } from "react-icons/fa";
 import { GrGroup } from "react-icons/gr";
 import { IoManOutline, IoWomanOutline } from "react-icons/io5";
 import { MdFamilyRestroom } from "react-icons/md";
-import { card } from "@/styles/Card.styles";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type FocusEvent } from "react";
 import { GetMartyr } from "@/lib/martyrApi";
+
+// Align styling with PersonalInfo.tsx
+const DARK_TEAL = "text-[#0B3F3D]";
+const LIGHT_BG = "bg-syrian-light";
+const BORDER_COLOR = "border-[#0B3F3D]/20";
+const TEXT_LABEL = "text-gray-600";
 
 interface PersonalInfoProps {
   onChange: (data: {
@@ -67,6 +74,24 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
     useState<string>("");
   const [religiousAffiliation, setReligiousAffiliation] = useState<string>("");
   const [sectarianAffiliation, setSectarianAffiliation] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const lastFocused = useRef<HTMLInputElement | HTMLTextAreaElement | null>(
+    null
+  );
+
+  const handleFocus = (
+    e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    lastFocused.current = e.target;
+  };
+
+  const handleBlur = (
+    e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    if (lastFocused.current === e.target) {
+      lastFocused.current = null;
+    }
+  };
 
   // ✅ Initialize fields when martyr data is available (edit mode)
   useEffect(() => {
@@ -143,391 +168,502 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
     overview,
   ]);
 
+  useEffect(() => {
+    if (lastFocused.current) {
+      lastFocused.current.focus({ preventScroll: true });
+    }
+  });
+
   return (
-    <div className={`${card} card-shadow bg-[#fbfdff]`}>
+    <div
+      className={`w-full max-w-4xl mx-auto rounded-2xl shadow-xl overflow-hidden bg-white border border-[#0B3F3D]/10`}
+    >
       {/* Header */}
-      <div className="bg-[var(--mainGreen)] px-7 py-8 sm:text-right text-center text-white">
-        <h2 className="text-xl font-bold">المعلومات الشخصية</h2>
+      <div
+        className="bg-[#0B3F3D] px-7 py-5 text-right text-white flex justify-between items-center cursor-pointer transition duration-300 hover:bg-[#0B3F3D]/90"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <h2 className="text-2xl font-extrabold text-[#C8A870]">
+          المعلومات الشخصية
+        </h2>
+        {isOpen ? (
+          <ChevronUp className="text-[#C8A870] w-6 h-6" />
+        ) : (
+          <ChevronDown className="text-[#C8A870] w-6 h-6" />
+        )}
       </div>
 
       {/* Body */}
-      <div className="px-7 py-8 text-[#8B0000]">
-        {/* Name */}
-        <div className="card-row">
-          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
-              <UserRound />
-              <p>الاسم</p>
-              <p className="text-red-500">*</p>
+      <div
+        className={`transition-all duration-300 ease-in-out overflow-hidden ${
+          isOpen ? "max-h-full opacity-100 p-7" : "max-h-0 opacity-0 p-0"
+        }`}
+      >
+        <div className={`text-right space-y-2 ${LIGHT_BG}`}>
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <UserRound className="w-5 h-5 text-[#0B3F3D]" />
+                <p>الاسم</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
             </div>
-            <p className="text-gray-700">:</p>
-          </div>
-          <div className="flex-1 flex items-center ">
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              type="text"
-              className="bg-gray-100 w-full p-2 rounded-md"
-            />
-          </div>
-        </div>
-
-        {/* Father */}
-        <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
-              <IoManOutline className="w-6 h-6" />
-              <p>اسم الأب</p>
-            </div>
-            <p className="text-gray-700">:</p>
-          </div>
-          <div className="flex-1 flex items-center ">
-            <input
-              value={fatherName}
-              onChange={(e) => setFatherName(e.target.value)}
-              type="text"
-              className="bg-gray-100 w-full p-2 rounded-md"
-            />
-          </div>
-        </div>
-
-        {/* Mother */}
-        <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
-              <IoWomanOutline className="w-6 h-6" />
-              <p>اسم الأم</p>
-            </div>
-            <p className="text-gray-700">:</p>
-          </div>
-          <div className="flex-1 flex items-center ">
-            <input
-              value={motherName}
-              onChange={(e) => setMotherName(e.target.value)}
-              type="text"
-              className="bg-gray-100 w-full p-2 rounded-md"
-            />
-          </div>
-        </div>
-
-        {/* Last Name */}
-        <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
-              <Users />
-              <p>الكنية</p>
-            </div>
-            <p className="text-gray-700">:</p>
-          </div>
-          <div className="flex-1 flex items-center ">
-            <input
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              type="text"
-              className="bg-gray-100 w-full p-2 rounded-md"
-            />
-          </div>
-        </div>
-
-        {/* Birthday */}
-        <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
-              <Calendar />
-              <p>تاريخ الميلاد</p>
-            </div>
-            <p className="text-gray-700">:</p>
-          </div>
-          <div className="flex-1 flex items-center ">
-            <input
-              value={dateOfBirth}
-              onChange={(e) => setDateOfBirth(e.target.value)}
-              type="date"
-              className="bg-gray-100 w-full p-2 rounded-md"
-            />
-          </div>
-        </div>
-
-        {/* Gender */}
-        <div className="card-row mt-5 flex items-center">
-          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
-              <VenusAndMars />
-              <p>الجنس</p>
-            </div>
-            <p className="text-gray-700">:</p>
-          </div>
-
-          {/* Radio Buttons */}
-          <div className="flex flex-row gap-6 text-gray-700 ">
-            <label className="flex items-center gap-2 cursor-pointer">
+            <div className="w-full sm:w-2/3">
               <input
-                type="radio"
-                name="gender"
-                value="male"
-                checked={gender === "male"}
-                onChange={() => setGender("male")}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                type="text"
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+                placeholder="أدخل الاسم"
               />
-              ذكر
-            </label>
+            </div>
+          </div>
 
-            <label className="flex items-center gap-2 cursor-pointer">
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <IoManOutline className="w-5 h-5 text-[#0B3F3D]" />
+                <p>الاسم الأب</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
+            </div>
+            <div className="w-full sm:w-2/3">
               <input
-                type="radio"
-                name="gender"
-                value="female"
-                checked={gender === "female"}
-                onChange={() => setGender("female")}
+                value={fatherName}
+                onChange={(e) => setFatherName(e.target.value)}
+                type="text"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
               />
-              أنثى
-            </label>
-          </div>
-        </div>
-
-        {/* Marital Status */}
-        <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
-              <MdFamilyRestroom className="w-6 h-6" />
-              <p>الحالة الاجتماعية</p>
             </div>
-            <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center ">
-            <input
-              value={maritalStatus}
-              onChange={(e) => setMaritalStatus(e.target.value)}
-              type="text"
-              className="bg-gray-100 w-full p-2 rounded-md"
-            />
-          </div>
-        </div>
 
-        {/* Number of Children */}
-        <div className="card-row mt-5 flex items-center">
-          <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
-              <FaChild className="w-6 h-6" />
-              <p>عدد الأطفال</p>
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <IoWomanOutline className="w-5 h-5 text-[#0B3F3D]" />
+                <p>الاسم الأم</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
             </div>
-            <p className="text-gray-700">:</p>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={motherName}
+                onChange={(e) => setMotherName(e.target.value)}
+                type="text"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
+            </div>
           </div>
-          <div className="flex-1 flex items-center ">
-            <input
-              value={numberOfChildren}
-              onChange={(e) => setNumberOfChildren(e.target.value)}
-              type="number"
-              className="bg-gray-100 w-full p-2 rounded-md"
-            />
-          </div>
-        </div>
 
-        {/* Study */}
-        <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
-              <BookOpen />
-              <p>الدراسة</p>
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <Users className="w-5 h-5 text-[#0B3F3D]" />
+                <p>الكنية</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
             </div>
-            <p className="text-gray-700">:</p>
-          </div>
-          <div className="flex-1 flex items-center ">
-            <input
-              value={study}
-              onChange={(e) => setStudy(e.target.value)}
-              type="text"
-              className="bg-gray-100 w-full p-2 rounded-md"
-            />
-          </div>
-        </div>
-        {/* Profession */}
-        <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
-              <BriefcaseBusiness />
-              <p>المهنة</p>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                type="text"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
             </div>
-            <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center ">
-            <input
-              value={profession}
-              onChange={(e) => setProfession(e.target.value)}
-              type="text"
-              className="bg-gray-100 w-full p-2 rounded-md"
-            />
-          </div>
-        </div>
 
-        {/* Country */}
-        <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
-              <Earth />
-              <p>الدولة</p>
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <Calendar className="w-5 h-5 text-[#0B3F3D]" />
+                <p>تاريخ الميلاد</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
             </div>
-            <p className="text-gray-700">:</p>
-          </div>
-          <div className="flex-1 flex items-center ">
-            <input
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-              type="text"
-              className="bg-gray-100 w-full p-2 rounded-md"
-            />
-          </div>
-        </div>
-
-        {/* Governorate */}
-        <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
-              <Earth />
-              <p>المحافظة</p>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={dateOfBirth}
+                onChange={(e) => setDateOfBirth(e.target.value)}
+                type="date"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
             </div>
-            <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center ">
-            <input
-              value={governorate}
-              onChange={(e) => setGovernorate(e.target.value)}
-              type="text"
-              className="bg-gray-100 w-full p-2 rounded-md"
-            />
-          </div>
-        </div>
 
-        {/* City */}
-        <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
-              <Building2 />
-              <p>المدينة</p>
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <VenusAndMars className="w-5 h-5 text-[#0B3F3D]" />
+                <p>الجنس</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
             </div>
-            <p className="text-gray-700">:</p>
-          </div>
-          <div className="flex-1 flex items-center ">
-            <input
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              type="text"
-              className="bg-gray-100 w-full p-2 rounded-md"
-            />
-          </div>
-        </div>
+            <div className="w-full sm:w-2/3">
+              <div className="flex gap-6 text-[#0B3F3D]">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="male"
+                    checked={gender === "male"}
+                    onChange={() => setGender("male")}
+                  />
+                  ذكر
+                </label>
 
-        {/* Neighborhood */}
-        <div className="card-row mt-5">
-          <div className="flex flex-row justify-between w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
-              <House />
-              <p>الحي</p>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="female"
+                    checked={gender === "female"}
+                    onChange={() => setGender("female")}
+                  />
+                  أنثى
+                </label>
+              </div>
             </div>
-            <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center ">
-            <input
-              value={neighborhood}
-              onChange={(e) => setNeighborhood(e.target.value)}
-              type="text"
-              className="bg-gray-100 w-full p-2 rounded-md"
-            />
-          </div>
-        </div>
 
-        {/* Ethnic Affiliation */}
-        <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
-              <GrGroup className="w-6 h-6" />
-              <p>الإنتماء العرقي</p>
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <MdFamilyRestroom className="w-5 h-5 text-[#0B3F3D]" />
+                <p>الحالة الاجتماعية</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
             </div>
-            <p className="text-gray-700">:</p>
-          </div>
-          <div className="flex-1 flex items-center ">
-            <input
-              value={ethnicAffiliation}
-              onChange={(e) => setEthnicAffiliation(e.target.value)}
-              type="text"
-              className="bg-gray-100 w-full p-2 rounded-md"
-            />
-          </div>
-        </div>
-
-        {/* Organizational Affiliation */}
-        <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
-              <GrGroup className="w-6 h-6" />
-              <p>الإنتماء التنظيمي</p>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={maritalStatus}
+                onChange={(e) => setMaritalStatus(e.target.value)}
+                type="text"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
             </div>
-            <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center ">
-            <input
-              value={organizationalaffiliation}
-              onChange={(e) => setOrganizationalaffiliation(e.target.value)}
-              type="text"
-              className="bg-gray-100 w-full p-2 rounded-md"
-            />
-          </div>
-        </div>
 
-        {/* Religious Affiliation */}
-        <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
-              <Badge className="w-6 h-6" />
-              <p>الإنتماء الديني</p>
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <FaChild className="w-5 h-5 text-[#0B3F3D]" />
+                <p>عدد الأطفال</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
             </div>
-            <p className="text-gray-700">:</p>
-          </div>
-          <div className="flex-1 flex items-center ">
-            <input
-              value={religiousAffiliation}
-              onChange={(e) => setReligiousAffiliation(e.target.value)}
-              type="text"
-              className="bg-gray-100 w-full p-2 rounded-md"
-            />
-          </div>
-        </div>
-
-        {/* Sectarian Affiliation */}
-        <div className="card-row mt-5">
-          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 text-gray-700">
-              <Badge className="w-6 h-6" />
-              <p>الإنتماء الطائفي</p>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={numberOfChildren}
+                onChange={(e) => setNumberOfChildren(e.target.value)}
+                type="number"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
             </div>
-            <p className="text-gray-700">:</p>
           </div>
-          <div className="flex-1 flex items-center ">
-            <input
-              value={sectarianAffiliation}
-              onChange={(e) => setSectarianAffiliation(e.target.value)}
-              type="text"
-              className="bg-gray-100 w-full p-2 rounded-md"
-            />
-          </div>
-        </div>
-      </div>
 
-      {/* Footer - Overview */}
-      <div className="px-5 pb-8 flex flex-col">
-        <div className="flex flex-row justify-between mb-2">
-          <div className="flex flex-row gap-2 text-gray-700">
-            <NotepadText />
-            <p>لمحة عن الشهيد</p>
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <BookOpen className="w-5 h-5 text-[#0B3F3D]" />
+                <p>الدراسة</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
+            </div>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={study}
+                onChange={(e) => setStudy(e.target.value)}
+                type="text"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
+            </div>
           </div>
-        </div>
-        <div className="pr-8">
-          <textarea
-            value={overview}
-            onChange={(e) => setOverview(e.target.value)}
-            placeholder="اكتب لمحة عن الشهيد..."
-            rows={5}
-            className="w-full bg-gray-100 p-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
-          />
+
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <BriefcaseBusiness className="w-5 h-5 text-[#0B3F3D]" />
+                <p>المهنة</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
+            </div>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={profession}
+                onChange={(e) => setProfession(e.target.value)}
+                type="text"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
+            </div>
+          </div>
+
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <Earth className="w-5 h-5 text-[#0B3F3D]" />
+                <p>الدولة</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
+            </div>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                type="text"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
+            </div>
+          </div>
+
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <Earth className="w-5 h-5 text-[#0B3F3D]" />
+                <p>المحافظة</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
+            </div>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={governorate}
+                onChange={(e) => setGovernorate(e.target.value)}
+                type="text"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
+            </div>
+          </div>
+
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <Building2 className="w-5 h-5 text-[#0B3F3D]" />
+                <p>المدينة</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
+            </div>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                type="text"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
+            </div>
+          </div>
+
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <House className="w-5 h-5 text-[#0B3F3D]" />
+                <p>الحي</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
+            </div>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={neighborhood}
+                onChange={(e) => setNeighborhood(e.target.value)}
+                type="text"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
+            </div>
+          </div>
+
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <GrGroup className="w-5 h-5 text-[#0B3F3D]" />
+                <p>الإنتماء العرقي</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
+            </div>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={ethnicAffiliation}
+                onChange={(e) => setEthnicAffiliation(e.target.value)}
+                type="text"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
+            </div>
+          </div>
+
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <GrGroup className="w-5 h-5 text-[#0B3F3D]" />
+                <p>الإنتماء التنظيمي</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
+            </div>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={organizationalaffiliation}
+                onChange={(e) => setOrganizationalaffiliation(e.target.value)}
+                type="text"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
+            </div>
+          </div>
+
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <Badge className="w-5 h-5 text-[#0B3F3D]" />
+                <p>الإنتماء الديني</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
+            </div>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={religiousAffiliation}
+                onChange={(e) => setReligiousAffiliation(e.target.value)}
+                type="text"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
+            </div>
+          </div>
+
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <Badge className="w-5 h-5 text-[#0B3F3D]" />
+                <p>الإنتماء الطائفي</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
+            </div>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={sectarianAffiliation}
+                onChange={(e) => setSectarianAffiliation(e.target.value)}
+                type="text"
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
+            </div>
+          </div>
+
+          {/* Overview */}
+          <div className="pt-5 mt-5 border-t border-[#0B3F3D]/10">
+            <div className="flex flex-row gap-3 items-center font-bold mb-3">
+              <NotepadText className="w-5 h-5 text-[#0B3F3D]" />
+              <p className={DARK_TEAL}>لمحة عن الشهيد</p>
+            </div>
+            <div className="pr-1 sm:pr-8 text-gray-700 leading-relaxed">
+              <textarea
+                value={overview}
+                onChange={(e) => setOverview(e.target.value)}
+                placeholder="اكتب لمحة عن الشهيد..."
+                rows={5}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30 resize-y"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>

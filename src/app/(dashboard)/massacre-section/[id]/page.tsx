@@ -42,9 +42,7 @@ export default function MassacrePage() {
       if (!massacre?.photoId) return;
 
       try {
-        const res = await fetch(
-          `${apiUrl}/api/file?fileID=${massacre.photoId}`
-        );
+        const res = await fetch(`${apiUrl}/api/file?id=${massacre.photoId}`);
         if (res.ok) {
           const blob = await res.blob();
           const objectUrl = URL.createObjectURL(blob);

@@ -22,33 +22,41 @@ interface MartyrCardProps {
 
 const MartyrCard = ({ martyr, isMissing }: MartyrCardProps) => {
   const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const photoID = martyr.photoId;
 
   // ✅ Fetch image blob from API
   useEffect(() => {
     const fetchPhoto = async () => {
-      if (!martyr.photoId) return;
+      if (!photoID) return;
+
+      let currentUrl: string | null = null;
 
       try {
-        const res = await fetch(`${apiUrl}/api/file?fileID=${martyr.photoId}`);
+        const res = await fetch(`${apiUrl}/api/file?id=${photoID}`);
         if (res.ok) {
           const blob = await res.blob();
-          const objectUrl = URL.createObjectURL(blob);
-          setPhotoUrl(objectUrl);
+          currentUrl = URL.createObjectURL(blob);
+          setPhotoUrl(currentUrl);
         } else {
           console.error("Failed to fetch image:", res.statusText);
         }
       } catch (error) {
         console.error("Error fetching image:", error);
       }
+
+      // Cleanup old blob URL upon component unmount or dependency change
+      return () => {
+        if (currentUrl) URL.revokeObjectURL(currentUrl);
+      };
     };
 
     fetchPhoto();
 
-    // Cleanup blob URL
+    // Cleanup old blob URLs when component unmounts
     return () => {
       if (photoUrl) URL.revokeObjectURL(photoUrl);
     };
-  }, [martyr.photoId, photoUrl]);
+  }, [photoID, photoUrl]);
 
   return (
     <motion.div

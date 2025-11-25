@@ -33,7 +33,7 @@ export default function MediaGalleryRequest({ media }: MediaGalleryProps) {
         const results: LoadedMedia[] = [];
         for (const m of media ?? []) {
           console.log(m.mediaId);
-          const res = await fetch(apiUrl + `/api/file?fileID=${m.mediaId}`, {
+          const res = await fetch(apiUrl + `/api/file?filename=${m.mediaId}`, {
             method: "GET",
           });
 

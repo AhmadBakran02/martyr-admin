@@ -2,19 +2,18 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { apiUrl } from "@/config/apiUrl";
-import Loading2 from "@/components/Loading2/Loading2";
 import { type MediaInput } from "@/lib/massacreApi";
 import Image from "next/image";
 import FileUploader from "@/components/FileUploader";
 import { getMartyrById } from "@/lib/getMastyrById";
 import { AddMartyrType, EditMartyrApi, GetMartyr } from "@/lib/martyrApi";
 import { AddCardValues } from "@/components/AddCard/AddCard";
-import { uploadImage } from "@/lib/uploadImage";
 import AddCardMissing from "@/components/AddCardMissing/AddCardMissing";
 import AddPersonalInfoMissing from "@/components/AddPersonalInfoMissing";
 import AddMissingInfo from "@/components/AddMissingInfo";
 import { MissingInfoType } from "@/types/MissingInfoType";
+import { AlertTriangle, CheckCircle2, Loader2 } from "lucide-react";
+import { apiUrl } from "@/config/apiUrl";
 
 export interface PersonalInfoType {
   name?: string;
@@ -114,6 +113,11 @@ export default function EditMartyPage() {
       try {
         const res = await getMartyrById(id);
         setMartyr(res.data.martyr);
+        setFullName(
+          `${res.data.martyr.name ?? ""} ${res.data.martyr.fatherName ?? ""} ${
+            res.data.martyr.lastName ?? ""
+          }`.trim()
+        );
       } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message);
@@ -140,11 +144,9 @@ export default function EditMartyPage() {
       const map: Record<string, string> = {};
       for (const m of martyr.media ?? []) {
         try {
-          const res = await fetch(`${apiUrl}/api/file?fileID=${m.mediaId}`, {
+          const res = await fetch(`${apiUrl}/api/file?id=${m.mediaId}`, {
             method: "GET",
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
+            headers: {},
           });
           if (!res.ok) continue;
 
@@ -186,7 +188,7 @@ export default function EditMartyPage() {
   const SaveMissing = async () => {
     setLoadingUpdate(true);
 
-    // console.log(fileID);
+    // console.log(id);
     const mergedMedia = [...(martyr?.media ?? []), ...(uploadedMedia ?? [])];
 
     const martyr2: AddMartyrType = {
@@ -263,6 +265,7 @@ export default function EditMartyPage() {
 
   const handleImageUploaded = (id: string) => {
     setPhotoId(id);
+    console.log(id);
   };
 
   // =====================
@@ -270,128 +273,192 @@ export default function EditMartyPage() {
   // =====================
   if (loading)
     return (
-      <div className="h-dvh flex justify-center items-center">
-        <Loading2 />
+      <div className="min-h-dvh flex flex-col items-center justify-center bg-gradient-to-br from-[#F7F7F0] via-white to-[#E8F1F0] px-4">
+        <div className="flex flex-col items-center gap-4 bg-white/70 backdrop-blur-md border border-[#0B3F3D]/10 rounded-2xl px-6 py-8 shadow-lg">
+          <Loader2 className="w-10 h-10 text-[#0B3F3D] animate-spin" />
+          <p className="text-lg font-semibold text-[#0B3F3D]">
+            جاري تحميل بيانات المفقود...
+          </p>
+        </div>
       </div>
     );
 
-  if (error) return <div className="text-red-500">{error}</div>;
-  if (!martyr) return <div>No data found</div>;
+  if (error)
+    return (
+      <div className="min-h-dvh flex items-center justify-center bg-gradient-to-br from-[#FDF5F5] via-white to-[#FBECEC] px-4">
+        <div className="max-w-lg w-full bg-white border border-red-200 rounded-2xl shadow-xl p-8 text-right">
+          <div className="flex items-center justify-end gap-3 text-red-700">
+            <p className="text-xl font-bold">تعذّر تحميل البيانات</p>
+            <AlertTriangle className="w-6 h-6" />
+          </div>
+          <p className="mt-3 text-gray-700 leading-relaxed">{error}</p>
+          <div className="mt-6 flex gap-3 justify-end">
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition"
+            >
+              إعادة المحاولة
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  if (!martyr)
+    return (
+      <div className="min-h-dvh flex items-center justify-center bg-[#F7F7F0]">
+        <div className="bg-white border border-[#0B3F3D]/10 rounded-2xl shadow-lg px-6 py-4 text-[#0B3F3D] font-semibold">
+          لا توجد بيانات متاحة
+        </div>
+      </div>
+    );
 
   // =====================
   // UI
   // =====================
   return (
-    <div className="my-5 p-4 sm:p-10 max-w-6xl mx-auto bg-white shadow-md rounded-xl">
-      {/* ✅ Floating success toast */}
-      {showToast && (
-        <div className="fixed top-5 right-5 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg transition-all duration-500 animate-fadeInOut z-50">
-          ✅ تمت التعديل بنجاح
-        </div>
-      )}
-
-      <AddCardMissing
-        onChange={handleCardChange}
-        onImageUploaded={handleImageUploaded}
-        onUploadingChange={handleUploadingChange}
-        fullName={martyr.fullName || ""}
-        dateMartyrdom={martyr.dateOfMartyrdom || ""}
-        martyr={martyr}
-      />
-      <div className="my-5"></div>
-      <AddPersonalInfoMissing onChange={handlePersonlChange} martyr={martyr} />
-
-      <AddMissingInfo onChange={handleMissingChange} martyr={martyr} />
-      <div className="my-5"></div>
-
-      {/* OLD MEDIA */}
-      <h2 className="text-lg font-semibold mb-4 text-gray-700">
-        الوسائط القديمة
-      </h2>
-      {martyr.media?.length ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-8">
-          {martyr.media.map((m) => (
-            <div
-              key={m._id}
-              className="relative border rounded-lg overflow-hidden"
-            >
-              {mediaUrls[m.mediaId] ? (
-                m.mediaType === "image" ? (
-                  <Image
-                    src={mediaUrls[m.mediaId]}
-                    alt=""
-                    width={300}
-                    height={200}
-                    className="w-full h-32 object-cover"
-                  />
-                ) : (
-                  <video
-                    controls
-                    className="w-full h-32 object-cover"
-                    src={mediaUrls[m.mediaId]}
-                  />
-                )
-              ) : (
-                <div className="w-full h-32 bg-gray-100 flex items-center justify-center text-gray-400">
-                  لا توجد وسائط
-                </div>
-              )}
-              <button
-                onClick={() => handleDeleteOldMedia(m.mediaId)}
-                className="absolute top-1 right-1 bg-red-600 text-white text-xs px-2 py-1 rounded hover:bg-red-700"
-              >
-                حذف
-              </button>
+    <div className="min-h-dvh bg-gradient-to-br from-[#F7F7F0] via-white to-[#E8F1F0] py-8 px-4">
+      <div className="max-w-6xl mx-auto space-y-6">
+        {/* Page header */}
+        <div className="bg-white border border-[#0B3F3D]/10 rounded-2xl shadow-md p-6 flex flex-col gap-3">
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <div className="text-right">
+              <p className="text-sm text-gray-500">تعديل بيانات المفقود</p>
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0B3F3D]">
+                {martyr.fullName || fullName || "—"}
+              </h1>
             </div>
-          ))}
+            <div className="flex items-center gap-2 px-3 py-2 bg-[#0B3F3D]/5 text-[#0B3F3D] rounded-lg">
+              <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+              <span className="text-sm font-semibold">وضع التحرير مفعّل</span>
+            </div>
+          </div>
+          <p className="text-gray-600 leading-relaxed">
+            حدّث بيانات المفقود والمعلومات الشخصية والوسائط. يمكنك إضافة وسائط
+            جديدة أو حذف القديمة قبل الحفظ.
+          </p>
         </div>
-      ) : (
-        <p className="text-gray-500 mb-8">لا توجد وسائط قديمة</p>
-      )}
 
-      <FileUploader onUploadComplete={handleUploadComplete} />
+        {/* ✅ Floating success toast */}
+        {showToast && (
+          <div className="fixed top-5 right-5 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg transition-all duration-500 animate-fadeInOut z-50 flex items-center gap-2">
+            <CheckCircle2 className="w-5 h-5" />
+            <span>تم تعديل البيانات بنجاح</span>
+          </div>
+        )}
 
-      {/* SAVE BUTTON */}
-      <div className="flex justify-center">
-        <button
-          onClick={handleSave}
-          disabled={!martyr?.name || martyr.name.trim() === ""}
-          className="mt-6 px-8 py-3 bg-[var(--mainBlue)] text-white rounded-md hover:bg-[var(--hoverBlue)] transition disabled:opacity-60 disabled:cursor-not-allowed"
-        >
-          {loadingUpdate ? (
-            <div className="flex items-center justify-center gap-2">
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              <span>جاري الحفظ...</span>
+        <AddCardMissing
+          onChange={handleCardChange}
+          onImageUploaded={handleImageUploaded}
+          onUploadingChange={handleUploadingChange}
+          fullName={martyr.fullName || ""}
+          dateMartyrdom={martyr.dateOfMartyrdom || ""}
+          martyr={martyr}
+        />
+        <div className="my-5"></div>
+        <AddPersonalInfoMissing
+          onChange={handlePersonlChange}
+          martyr={martyr}
+        />
+
+        <AddMissingInfo onChange={handleMissingChange} martyr={martyr} />
+        <div className="my-5"></div>
+
+        {/* OLD MEDIA */}
+        <div className="bg-white border border-[#0B3F3D]/10 rounded-2xl shadow-md p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-[#0B3F3D]">
+              الوسائط القديمة
+            </h2>
+            <span className="text-sm text-gray-500">
+              {martyr.media?.length || 0} ملف
+            </span>
+          </div>
+          {martyr.media?.length ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-4">
+              {martyr.media.map((m) => (
+                <div
+                  key={m._id}
+                  className="relative aspect-video rounded-lg overflow-hidden border-2 border-[#C8A870]/40 shadow-sm group"
+                >
+                  {mediaUrls[m.mediaId] ? (
+                    m.mediaType === "image" ? (
+                      <Image
+                        src={mediaUrls[m.mediaId]}
+                        alt=""
+                        width={500}
+                        height={300}
+                        className="w-full h-full object-cover group-hover:opacity-90 transition"
+                      />
+                    ) : (
+                      <video
+                        controls
+                        className="w-full h-full object-cover"
+                        src={mediaUrls[m.mediaId]}
+                      />
+                    )
+                  ) : (
+                    <div className="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">
+                      لا توجد وسائط
+                    </div>
+                  )}
+                  <button
+                    onClick={() => handleDeleteOldMedia(m.mediaId)}
+                    className="absolute top-2 right-2 bg-red-600 text-white text-xs px-2 py-1 rounded shadow-sm hover:bg-red-700 transition"
+                  >
+                    حذف
+                  </button>
+                </div>
+              ))}
             </div>
           ) : (
-            <p> حفظ التعديلات</p>
+            <p className="text-gray-500">لا توجد وسائط قديمة</p>
           )}
-        </button>
-      </div>
+        </div>
 
-      {/* ✅ Toast animation style */}
-      <style jsx>{`
-        @keyframes fadeInOut {
-          0% {
-            opacity: 0;
-            transform: translateY(-10px);
+        <FileUploader onUploadComplete={handleUploadComplete} />
+
+        {/* SAVE BUTTON */}
+        <div className="flex justify-center">
+          <button
+            onClick={handleSave}
+            disabled={!martyr?.name || martyr.name.trim() === ""}
+            className="mt-6 px-8 py-3 bg-[#0B3F3D] text-[#F7F7F0] rounded-lg hover:bg-[#0B3F3D]/90 transition disabled:opacity-60 disabled:cursor-not-allowed shadow-md"
+          >
+            {loadingUpdate ? (
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>جاري الحفظ...</span>
+              </div>
+            ) : (
+              <p> حفظ التعديلات</p>
+            )}
+          </button>
+        </div>
+
+        {/* ✅ Toast animation style */}
+        <style jsx>{`
+          @keyframes fadeInOut {
+            0% {
+              opacity: 0;
+              transform: translateY(-10px);
+            }
+            10% {
+              opacity: 1;
+              transform: translateY(0);
+            }
+            90% {
+              opacity: 1;
+            }
+            100% {
+              opacity: 0;
+              transform: translateY(-10px);
+            }
           }
-          10% {
-            opacity: 1;
-            transform: translateY(0);
+          .animate-fadeInOut {
+            animation: fadeInOut 3s ease-in-out;
           }
-          90% {
-            opacity: 1;
-          }
-          100% {
-            opacity: 0;
-            transform: translateY(-10px);
-          }
-        }
-        .animate-fadeInOut {
-          animation: fadeInOut 3s ease-in-out;
-        }
-      `}</style>
+        `}</style>
+      </div>
     </div>
   );
 }

@@ -7,13 +7,19 @@ import {
   Hourglass,
   MapPin,
   NotepadText,
+  ChevronDown,
+  ChevronUp,
   Sword,
 } from "lucide-react";
-import { card } from "@/styles/Card.styles";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ComponentType, type ReactNode } from "react";
 import MartyrdomPicker from "./MartyrdomPicker";
 import { GetMartyr } from "@/lib/martyrApi";
 import { CitationInfoType } from "@/types/CitationInfoIDType";
+
+// Match CitationInfo.tsx visual style
+const DARK_TEAL = "text-[#0B3F3D]";
+const BORDER_COLOR = "border-[#0B3F3D]/20";
+const TEXT_LABEL = "text-gray-600";
 
 interface AddCitationInfoProps {
   onChange: (data: CitationInfoType) => void;
@@ -34,6 +40,7 @@ const AddCitationInfo = ({ onChange, martyr }: AddCitationInfoProps) => {
   const [citationMethod, setCitationMethod] = useState<string>("");
   const [massacre, setMassacre] = useState<string>("");
   const [massacreId, setMassacreId] = useState<string | null>("");
+  const [isOpen, setIsOpen] = useState<boolean>(true);
 
   // ✅ Pre-fill data when editing existing martyr
   useEffect(() => {
@@ -50,7 +57,8 @@ const AddCitationInfo = ({ onChange, martyr }: AddCitationInfoProps) => {
       setMartyrdomLocation(martyr.martyrdomSite || "");
       setCitationMethod(martyr.citationMethod || "");
       // setMassacre(martyr.massacre || "");
-      setMassacreId(martyr.massacreId?.name || null);
+      setMassacre(martyr.massacreId?.name || "");
+      setMassacreId(martyr.massacreId?._id || martyr.massacreId?.name || null);
     }
   }, [martyr]);
 
@@ -89,119 +97,88 @@ const AddCitationInfo = ({ onChange, martyr }: AddCitationInfoProps) => {
   ]);
 
   return (
-    <div className={`${card} card-shadow bg-[#fbfdff]`}>
+    <div className="w-full max-w-4xl mx-auto rounded-2xl shadow-xl overflow-hidden bg-white border border-[#0B3F3D]/10">
       {/* Header */}
-      <div className="bg-[var(--mainGreen)] px-7 py-8 sm:text-right text-center text-white">
-        <h2 className="text-xl font-bold">معلومات الاستشهاد</h2>
+      <div
+        className="bg-[#0B3F3D] px-7 py-5 text-right text-white flex justify-between items-center cursor-pointer transition duration-300 hover:bg-[#0B3F3D]/90"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <h2 className="text-2xl font-extrabold text-[#C8A870]">
+          معلومات الاستشهاد
+        </h2>
+        {isOpen ? (
+          <ChevronUp className="text-[#C8A870] w-6 h-6" />
+        ) : (
+          <ChevronDown className="text-[#C8A870] w-6 h-6" />
+        )}
       </div>
 
       {/* Body */}
-      <div className="px-7 py-8 text-[var(--textMain)]">
-        {/* Date of Martyrdom */}
-        <FieldRow icon={<Calendar />} label="تاريخ الاستشهاد">
-          <input
-            value={dateMartyrdom}
-            type="date"
-            onChange={(e) => setDateMartyrdom(e.target.value)}
-            className="bg-gray-100 w-full p-2 rounded-md"
-          />
-        </FieldRow>
+      <div
+        className={`transition-all duration-300 ease-in-out overflow-hidden ${
+          isOpen ? "max-h-full opacity-100 p-7" : "max-h-0 opacity-0 p-0"
+        }`}
+      >
+        <div className="text-right space-y-2">
+          <FieldRow icon={Calendar} label="تاريخ الاستشهاد">
+            <input
+              value={dateMartyrdom}
+              type="date"
+              onChange={(e) => setDateMartyrdom(e.target.value)}
+              className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+            />
+          </FieldRow>
 
-        {/* Burial Date */}
-        <FieldRow icon={<Calendar />} label="تاريخ الدفن">
-          <input
-            value={burialDate}
-            onChange={(e) => setBurialDate(e.target.value)}
-            type="date"
-            className="bg-gray-100 w-full p-2 rounded-md"
-          />
-        </FieldRow>
+          <FieldRow icon={Calendar} label="تاريخ الدفن">
+            <input
+              value={burialDate}
+              onChange={(e) => setBurialDate(e.target.value)}
+              type="date"
+              className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+            />
+          </FieldRow>
 
-        {/* Age */}
-        <FieldRow icon={<Hourglass />} label="العمر">
-          <input
-            value={age}
-            onChange={(e) =>
-              setAge(Math.max(0, Number(e.target.value)).toString())
-            }
-            type="number"
-            className="bg-gray-100 w-full p-2 rounded-md"
-          />
-        </FieldRow>
+          <FieldRow icon={Hourglass} label="العمر">
+            <input
+              value={age}
+              onChange={(e) =>
+                setAge(Math.max(0, Number(e.target.value)).toString())
+              }
+              type="number"
+              className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+            />
+          </FieldRow>
 
-        {/* Age Status */}
-        {/* <FieldRow icon={<SquareActivity />} label="الحالة العمرية">
-          <input
-            value={ageStatus}
-            onChange={(e) => setAgeStatus(e.target.value)}
-            type="text"
-            className="bg-gray-100 w-full p-2 rounded-md"
-          />
-        </FieldRow> */}
+          {/* <FieldRow icon={SquareActivity} label="الحالة العمرية">
+            <input
+              value={ageStatus}
+              onChange={(e) => setAgeStatus(e.target.value)}
+              type="text"
+              className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+            />
+          </FieldRow> */}
 
-        {/* Dissident */}
-        <FieldRow icon={<Sword />} label="منشق">
-          <RadioGroup
-            name="dissident"
-            value={dissident}
-            onChange={setDissident}
-          />
-        </FieldRow>
+          <FieldRow icon={Sword} label="منشق">
+            <RadioGroup
+              name="dissident"
+              value={dissident}
+              onChange={setDissident}
+            />
+          </FieldRow>
 
-        {/* Pre-Revolution */}
-        <FieldRow icon={<HandFist />} label="ما قبل الثورة">
-          <RadioGroup
-            name="preRevolution"
-            value={preRevolution}
-            onChange={setPreRevolution}
-          />
-        </FieldRow>
+          <FieldRow icon={HandFist} label="ما قبل الثورة">
+            <RadioGroup
+              name="preRevolution"
+              value={preRevolution}
+              onChange={setPreRevolution}
+            />
+          </FieldRow>
 
-        {/* Massacre Picker */}
-        <div className="relative">
-          <MartyrdomPicker
-            value={massacre}
-            onChange={(v) => setMassacre(v)}
-            onChange2={(v) => setMassacreId(v)}
-            onAdd={async (name) => ({ id: String(Date.now()), name })}
-          />
-        </div>
-
-        {/* Country */}
-        {/* 
-        <FieldRow icon={<Earth />} label="دولة الاستشهاد">
-          <input
-            value={countryOfMartyrdom}
-            onChange={(e) => setCountryOfMartyrdom(e.target.value)}
-            type="text"
-            className="bg-gray-100 w-full p-2 rounded-md"
-          />
-        </FieldRow> */}
-
-        {/* Governorate */}
-        {/* <FieldRow icon={<Building />} label=">
-          <input
-            value={martyrdomGovernorate}
-            onChange={(e) => setMartyrdomGovernorate(e.target.value)}
-            type="text"
-            className="bg-gray-100 w-full p-2 rounded-md"
-          />
-        </FieldRow> */}
-
-        {/* Governorate */}
-        <div className="card-row mt-5 ">
-          <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-            <div className="flex flex-row gap-2 ">
-              <Building />
-              <p>محافظة الاستشهاد</p>
-            </div>
-            <p>:</p>
-          </div>
-          <div className="flex-1 flex items-center">
+          <FieldRow icon={Building} label="محافظة الاستشهاد">
             <select
               value={martyrdomGovernorate}
               onChange={(e) => setMartyrdomGovernorate(e.target.value)}
-              className="bg-gray-100 w-full p-2 rounded-md"
+              className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
             >
               <option value="">اختر المحافظة</option>
               <option value="إدلب">إدلب</option>
@@ -219,46 +196,52 @@ const AddCitationInfo = ({ onChange, martyr }: AddCitationInfoProps) => {
               <option value="ريف دمشق">ريف دمشق</option>
               <option value="طرطوس">طرطوس</option>
             </select>
+          </FieldRow>
+
+          <FieldRow icon={Building2} label="مدينة الاستشهاد">
+            <input
+              value={cityOfMartyrdom}
+              onChange={(e) => setCityOfMartyrdom(e.target.value)}
+              type="text"
+              className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+            />
+          </FieldRow>
+
+          <FieldRow icon={MapPin} label="موقع الاستشهاد">
+            <input
+              value={martyrdomLocation}
+              onChange={(e) => setMartyrdomLocation(e.target.value)}
+              type="text"
+              className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+            />
+          </FieldRow>
+
+          {/* Massacre Picker */}
+          <div className="relative">
+            <MartyrdomPicker
+              value={massacre}
+              onChange={(v) => setMassacre(v)}
+              onChange2={(v) => setMassacreId(v)}
+              onAdd={async (name) => ({ id: String(Date.now()), name })}
+            />
           </div>
         </div>
 
-        {/* City */}
-        <FieldRow icon={<Building2 />} label="مدينة الاستشهاد">
-          <input
-            value={cityOfMartyrdom}
-            onChange={(e) => setCityOfMartyrdom(e.target.value)}
-            type="text"
-            className="bg-gray-100 w-full p-2 rounded-md"
-          />
-        </FieldRow>
-
-        {/* Location */}
-        <FieldRow icon={<MapPin />} label="موقع الاستشهاد">
-          <input
-            value={martyrdomLocation}
-            onChange={(e) => setMartyrdomLocation(e.target.value)}
-            type="text"
-            className="bg-gray-100 w-full p-2 rounded-md"
-          />
-        </FieldRow>
-      </div>
-
-      {/* Footer */}
-      <div className="px-5 pb-8 flex flex-col">
-        <div className="flex flex-row justify-between mb-2">
-          <div className="flex flex-row gap-2 text-gray-700">
-            <NotepadText />
-            <p>طريقة الاستشهاد</p>
+        {/* Footer */}
+        <div className="pt-5 mt-5 border-t border-[#0B3F3D]/10">
+          <div className="flex flex-row gap-3 items-center font-bold mb-3">
+            <NotepadText className="w-5 h-5 text-[#0B3F3D]" />
+            <p className={DARK_TEAL}>طريقة الاستشهاد</p>
           </div>
-        </div>
-        <div className="pr-8">
-          <textarea
-            value={citationMethod}
-            onChange={(e) => setCitationMethod(e.target.value)}
-            placeholder="اكتب طريقة الاستشهاد ..."
-            rows={5}
-            className="w-full bg-gray-100 p-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-y"
-          />
+          <div className="pr-1 sm:pr-8 text-gray-700 leading-relaxed">
+            <textarea
+              value={citationMethod}
+              onChange={(e) => setCitationMethod(e.target.value)}
+              placeholder="اكتب طريقة الاستشهاد ..."
+              rows={5}
+              className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30 resize-y"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -273,21 +256,28 @@ const FieldRow = ({
   label,
   children,
 }: {
-  icon: React.ReactNode;
+  icon: ComponentType<{ className?: string }>;
   label: string;
-  children: React.ReactNode;
-}) => (
-  <div className="card-row mt-5">
-    <div className="flex flex-row justify-between items-center w-2/4 sm:w-1/3">
-      <div className="flex flex-row gap-2 text-[var(--textMain)]">
-        {icon}
-        <p>{label}</p>
+  children: ReactNode;
+}) => {
+  const Icon = icon;
+  return (
+    <div
+      className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+    >
+      <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+        <div
+          className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+        >
+          {Icon ? <Icon className="w-5 h-5 text-[#0B3F3D]" /> : null}
+          <p>{label}</p>
+        </div>
+        <p className={TEXT_LABEL}>:</p>
       </div>
-      <p className="text-gray-700">:</p>
+      <div className="w-full sm:w-2/3">{children}</div>
     </div>
-    <div className="flex-1 flex items-center">{children}</div>
-  </div>
-);
+  );
+};
 
 const RadioGroup = ({
   name,
@@ -298,7 +288,7 @@ const RadioGroup = ({
   value: string;
   onChange: (v: string) => void;
 }) => (
-  <div className="flex flex-row gap-6 text-[var(--textMain)] pr-5">
+  <div className="flex flex-row gap-6 text-[#0B3F3D] pr-1 sm:pr-5">
     <label className="flex items-center gap-2 cursor-pointer">
       <input
         type="radio"
@@ -306,7 +296,7 @@ const RadioGroup = ({
         value="true"
         checked={value === "true"}
         onChange={() => onChange("true")}
-        className="accent-blue-600"
+        className="accent-[#0B3F3D]"
       />
       نعم
     </label>
