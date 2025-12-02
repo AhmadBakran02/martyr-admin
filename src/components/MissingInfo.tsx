@@ -1,5 +1,6 @@
 "use client";
 import {
+  BookOpenCheck,
   Building,
   Building2,
   Calendar,
@@ -138,6 +139,11 @@ const CitationInfo = ({ item }: MastyrCardProps) => {
             icon={MapPin}
             label="موقع الاختفاء"
             value={martyr.martyrdomSite}
+          />
+          <InfoField
+            icon={BookOpenCheck}
+            label="مصدر المعلومات"
+            value={martyr.sourceOfInformation}
           />
         </div>
 

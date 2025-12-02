@@ -66,8 +66,8 @@ import { getMartyrById, GetMartyrResponse } from "@/lib/getMastyrById";
 import MediaGallery from "@/components/MediaGallery";
 import MartyrPageSkeleton from "@/components/skeletons/MartyrPageSkeleton";
 import CardMissing from "@/components/CardMissing/CardMissing";
-import PersonalInfoMissing from "@/components/PersonalInfoMissing";
 import MissingInfo from "@/components/MissingInfo";
+import PersonalInfo from "@/components/PersonalInfo";
 
 export default function MartyrPage() {
   const { id } = useParams<{ id: string }>();
@@ -148,7 +148,7 @@ export default function MartyrPage() {
           <CardMissing item={martyr} />
 
           {/* معلومات شخصية */}
-          <PersonalInfoMissing item={martyr} />
+          <PersonalInfo item={martyr} missing={true} />
 
           {/* معلومات الاستشهاد */}
           <MissingInfo item={martyr} />

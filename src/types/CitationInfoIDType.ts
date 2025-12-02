@@ -12,4 +12,5 @@ export interface CitationInfoType {
   citationMethod: string;
   massacreId: string | null;
   massacre: string;
+  sourceOfInformation?: string;
 }

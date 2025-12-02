@@ -7,6 +7,7 @@ import {
   Calendar,
   Earth,
   House,
+  MapPinHouse,
   NotepadText,
   ChevronDown,
   ChevronUp,
@@ -18,7 +19,7 @@ import { FaChild } from "react-icons/fa";
 import { GrGroup } from "react-icons/gr";
 import { IoManOutline, IoWomanOutline } from "react-icons/io5";
 import { MdFamilyRestroom } from "react-icons/md";
-import { useEffect, useRef, useState, type FocusEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GetMartyr } from "@/lib/martyrApi";
 
 // Align styling with PersonalInfo.tsx
@@ -48,11 +49,13 @@ interface PersonalInfoProps {
     religiousAffiliation: string;
     sectarianAffiliation: string;
     overview: string;
+    placeOfBirth?: string;
   }) => void;
   martyr?: GetMartyr;
+  missing?: boolean;
 }
 
-const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
+const AddPersonalInfo = ({ onChange, martyr, missing }: PersonalInfoProps) => {
   // 🧩 State setup
   const [name, setName] = useState<string>("");
   const [fatherName, setFatherName] = useState<string>("");
@@ -74,24 +77,11 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
     useState<string>("");
   const [religiousAffiliation, setReligiousAffiliation] = useState<string>("");
   const [sectarianAffiliation, setSectarianAffiliation] = useState<string>("");
+  const [placeOfBirth, setPlaceOfBirth] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const lastFocused = useRef<HTMLInputElement | HTMLTextAreaElement | null>(
     null
   );
-
-  const handleFocus = (
-    e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    lastFocused.current = e.target;
-  };
-
-  const handleBlur = (
-    e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    if (lastFocused.current === e.target) {
-      lastFocused.current = null;
-    }
-  };
 
   // ✅ Initialize fields when martyr data is available (edit mode)
   useEffect(() => {
@@ -101,6 +91,7 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
       setMotherName(martyr.motherName ?? "");
       setLastName(martyr.lastName ?? "");
       setDateOfBirth(martyr.dateOfBirth ?? "");
+      setPlaceOfBirth(martyr.placeOfBirth ?? "");
       setGender(martyr.gender ?? "male");
       setMaritalStatus(martyr.maritalStatus ?? "");
       setNumberOfChildren(
@@ -144,6 +135,7 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
       religiousAffiliation,
       sectarianAffiliation,
       overview,
+      placeOfBirth,
     });
   }, [
     onChange,
@@ -166,6 +158,7 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
     religiousAffiliation,
     sectarianAffiliation,
     overview,
+    placeOfBirth,
   ]);
 
   useEffect(() => {
@@ -200,6 +193,7 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
         }`}
       >
         <div className={`text-right space-y-2 ${LIGHT_BG}`}>
+          {/* Name */}
           <div
             className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
           >
@@ -222,9 +216,9 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
               />
             </div>
           </div>
-
+          {/* Father Name */}
           <div
-            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 justify-center items-center`}
           >
             <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
               <div
@@ -240,15 +234,13 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
                 value={fatherName}
                 onChange={(e) => setFatherName(e.target.value)}
                 type="text"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
                 className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
               />
             </div>
           </div>
-
+          {/* Mother Name */}
           <div
-            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 justify-center items-center`}
           >
             <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
               <div
@@ -264,15 +256,13 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
                 value={motherName}
                 onChange={(e) => setMotherName(e.target.value)}
                 type="text"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
                 className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
               />
             </div>
           </div>
-
+          {/* Last Name */}
           <div
-            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 justify-center items-center`}
           >
             <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
               <div
@@ -288,39 +278,13 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 type="text"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
                 className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
               />
             </div>
           </div>
-
+          {/* Gender */}
           <div
-            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
-          >
-            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
-              <div
-                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
-              >
-                <Calendar className="w-5 h-5 text-[#0B3F3D]" />
-                <p>تاريخ الميلاد</p>
-              </div>
-              <p className={TEXT_LABEL}>:</p>
-            </div>
-            <div className="w-full sm:w-2/3">
-              <input
-                value={dateOfBirth}
-                onChange={(e) => setDateOfBirth(e.target.value)}
-                type="date"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
-              />
-            </div>
-          </div>
-
-          <div
-            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 justify-center items-center`}
           >
             <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
               <div
@@ -357,105 +321,54 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
               </div>
             </div>
           </div>
-
+          {/* Date Of Birth */}
           <div
-            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 justify-center items-center`}
           >
             <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
               <div
                 className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
               >
-                <MdFamilyRestroom className="w-5 h-5 text-[#0B3F3D]" />
-                <p>الحالة الاجتماعية</p>
+                <Calendar className="w-5 h-5 text-[#0B3F3D]" />
+                <p>تاريخ الميلاد</p>
               </div>
               <p className={TEXT_LABEL}>:</p>
             </div>
             <div className="w-full sm:w-2/3">
               <input
-                value={maritalStatus}
-                onChange={(e) => setMaritalStatus(e.target.value)}
+                value={dateOfBirth}
+                onChange={(e) => setDateOfBirth(e.target.value)}
+                type="date"
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
+            </div>
+          </div>
+          {/* Place Of Birth */}
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 justify-center items-center`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <MapPinHouse className="w-5 h-5 text-[#0B3F3D]" />
+                <p>مكان الولادة</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
+            </div>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={placeOfBirth}
+                onChange={(e) => setPlaceOfBirth(e.target.value)}
                 type="text"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
                 className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
               />
             </div>
           </div>
 
+          {/* Country */}
           <div
-            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
-          >
-            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
-              <div
-                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
-              >
-                <FaChild className="w-5 h-5 text-[#0B3F3D]" />
-                <p>عدد الأطفال</p>
-              </div>
-              <p className={TEXT_LABEL}>:</p>
-            </div>
-            <div className="w-full sm:w-2/3">
-              <input
-                value={numberOfChildren}
-                onChange={(e) => setNumberOfChildren(e.target.value)}
-                type="number"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
-              />
-            </div>
-          </div>
-
-          <div
-            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
-          >
-            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
-              <div
-                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
-              >
-                <BookOpen className="w-5 h-5 text-[#0B3F3D]" />
-                <p>الدراسة</p>
-              </div>
-              <p className={TEXT_LABEL}>:</p>
-            </div>
-            <div className="w-full sm:w-2/3">
-              <input
-                value={study}
-                onChange={(e) => setStudy(e.target.value)}
-                type="text"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
-              />
-            </div>
-          </div>
-
-          <div
-            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
-          >
-            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
-              <div
-                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
-              >
-                <BriefcaseBusiness className="w-5 h-5 text-[#0B3F3D]" />
-                <p>المهنة</p>
-              </div>
-              <p className={TEXT_LABEL}>:</p>
-            </div>
-            <div className="w-full sm:w-2/3">
-              <input
-                value={profession}
-                onChange={(e) => setProfession(e.target.value)}
-                type="text"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
-              />
-            </div>
-          </div>
-
-          <div
-            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 justify-center items-center`}
           >
             <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
               <div
@@ -471,15 +384,13 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
                 type="text"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
                 className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
               />
             </div>
           </div>
-
+          {/* Governorate */}
           <div
-            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 justify-center items-center`}
           >
             <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
               <div
@@ -495,15 +406,14 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
                 value={governorate}
                 onChange={(e) => setGovernorate(e.target.value)}
                 type="text"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
                 className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
               />
             </div>
           </div>
 
+          {/* City */}
           <div
-            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 justify-center items-center`}
           >
             <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
               <div
@@ -519,15 +429,14 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 type="text"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
                 className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
               />
             </div>
           </div>
 
+          {/* Neighborhood */}
           <div
-            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 justify-center items-center`}
           >
             <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
               <div
@@ -543,15 +452,104 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
                 value={neighborhood}
                 onChange={(e) => setNeighborhood(e.target.value)}
                 type="text"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
                 className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
               />
             </div>
           </div>
 
+          {/* Study */}
           <div
-            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 justify-center items-center`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <BookOpen className="w-5 h-5 text-[#0B3F3D]" />
+                <p>الدراسة</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
+            </div>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={study}
+                onChange={(e) => setStudy(e.target.value)}
+                type="text"
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
+            </div>
+          </div>
+          {/* Profession */}
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 justify-center items-center`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <BriefcaseBusiness className="w-5 h-5 text-[#0B3F3D]" />
+                <p>المهنة</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
+            </div>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={profession}
+                onChange={(e) => setProfession(e.target.value)}
+                type="text"
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
+            </div>
+          </div>
+
+          {/* Marital Status */}
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 justify-center items-center`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <MdFamilyRestroom className="w-5 h-5 text-[#0B3F3D]" />
+                <p>الحالة الاجتماعية</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
+            </div>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={maritalStatus}
+                onChange={(e) => setMaritalStatus(e.target.value)}
+                type="text"
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
+            </div>
+          </div>
+          {/* Number Of Children */}
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 justify-center items-center`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <FaChild className="w-5 h-5 text-[#0B3F3D]" />
+                <p>عدد الأطفال</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
+            </div>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={numberOfChildren}
+                onChange={(e) => setNumberOfChildren(e.target.value)}
+                type="number"
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
+            </div>
+          </div>
+
+          {/* Ethnic Affiliation */}
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 justify-center items-center`}
           >
             <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
               <div
@@ -567,39 +565,14 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
                 value={ethnicAffiliation}
                 onChange={(e) => setEthnicAffiliation(e.target.value)}
                 type="text"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
                 className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
               />
             </div>
           </div>
 
+          {/* Religious Affiliation */}
           <div
-            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
-          >
-            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
-              <div
-                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
-              >
-                <GrGroup className="w-5 h-5 text-[#0B3F3D]" />
-                <p>الإنتماء التنظيمي</p>
-              </div>
-              <p className={TEXT_LABEL}>:</p>
-            </div>
-            <div className="w-full sm:w-2/3">
-              <input
-                value={organizationalaffiliation}
-                onChange={(e) => setOrganizationalaffiliation(e.target.value)}
-                type="text"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
-                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
-              />
-            </div>
-          </div>
-
-          <div
-            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 justify-center items-center`}
           >
             <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
               <div
@@ -615,15 +588,14 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
                 value={religiousAffiliation}
                 onChange={(e) => setReligiousAffiliation(e.target.value)}
                 type="text"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
                 className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
               />
             </div>
           </div>
 
+          {/* Sectarian Affiliation */}
           <div
-            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 justify-center items-center`}
           >
             <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
               <div
@@ -639,8 +611,29 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
                 value={sectarianAffiliation}
                 onChange={(e) => setSectarianAffiliation(e.target.value)}
                 type="text"
-                onFocus={handleFocus}
-                onBlur={handleBlur}
+                className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+              />
+            </div>
+          </div>
+
+          {/* Organizational affiliation */}
+          <div
+            className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 justify-center items-center`}
+          >
+            <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
+              <div
+                className={`flex flex-row gap-3 items-center font-medium ${TEXT_LABEL}`}
+              >
+                <GrGroup className="w-5 h-5 text-[#0B3F3D]" />
+                <p>الإنتماء التنظيمي</p>
+              </div>
+              <p className={TEXT_LABEL}>:</p>
+            </div>
+            <div className="w-full sm:w-2/3">
+              <input
+                value={organizationalaffiliation}
+                onChange={(e) => setOrganizationalaffiliation(e.target.value)}
+                type="text"
                 className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
               />
             </div>
@@ -650,16 +643,18 @@ const AddPersonalInfo = ({ onChange, martyr }: PersonalInfoProps) => {
           <div className="pt-5 mt-5 border-t border-[#0B3F3D]/10">
             <div className="flex flex-row gap-3 items-center font-bold mb-3">
               <NotepadText className="w-5 h-5 text-[#0B3F3D]" />
-              <p className={DARK_TEAL}>لمحة عن الشهيد</p>
+              <p className={DARK_TEAL}>
+                {missing ? " لمحة عن المفقود" : " لمحة عن الشهيد"}
+              </p>
             </div>
             <div className="pr-1 sm:pr-8 text-gray-700 leading-relaxed">
               <textarea
                 value={overview}
                 onChange={(e) => setOverview(e.target.value)}
-                placeholder="اكتب لمحة عن الشهيد..."
+                placeholder={
+                  missing ? "اكتب لمحة عن المفقود..." : "اكتب لمحة عن الشهيد..."
+                }
                 rows={5}
-                onFocus={handleFocus}
-                onBlur={handleBlur}
                 className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30 resize-y"
               />
             </div>

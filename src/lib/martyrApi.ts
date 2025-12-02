@@ -38,6 +38,8 @@ export interface GetMartyr {
   organizationalaffiliation?: string;
   sectarianAffiliation?: string;
   religiousAffiliation?: string;
+  placeOfBirth?: string;
+  sourceOfInformation?: string;
   age?: string;
   overview: string;
   ageStatus?: string;
@@ -77,6 +79,8 @@ export interface AddMartyrType {
   numberOfChildren?: number;
   profession?: string;
   study?: string;
+  placeOfBirth?: string;
+  sourceOfInformation?: string;
 
   ethnicAffiliation?: string;
   organizationalaffiliation?: string;

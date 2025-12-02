@@ -18,4 +18,5 @@ export interface PersonalInfoType {
   organizationalaffiliation: string;
   sectarianAffiliation: string;
   religiousAffiliation: string;
+  placeOfBirth?: string;
 }

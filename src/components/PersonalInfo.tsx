@@ -10,6 +10,7 @@ import {
   Earth,
   House,
   IdCard,
+  MapPinHouse,
   NotepadText,
   UserRound,
   Users,
@@ -32,9 +33,10 @@ const TEXT_VALUE = DARK_TEAL;
 
 interface MastyrCardProps {
   item: GetMartyrResponse;
+  missing?: boolean;
 }
 
-const PersonalInfo = ({ item }: MastyrCardProps) => {
+const PersonalInfo = ({ item, missing }: MastyrCardProps) => {
   // الافتراض هو أن البطاقة مفتوحة في البداية
   const [isOpen, setIsOpen] = useState(true);
 
@@ -116,17 +118,31 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
           />
           <InfoField icon={Users} label="الكنية" value={martyr.lastName} />
           <InfoField
+            icon={VenusAndMars}
+            label="الجنس"
+            value={martyr.gender == "male" ? "ذكر" : "أنثى"}
+          />
+          <InfoField
             icon={Calendar}
             label="تاريخ الميلاد"
             value={martyr.dateOfBirth}
           />
 
           <InfoField
-            icon={VenusAndMars}
-            label="الجنس"
-            value={martyr.gender == "male" ? "ذكر" : "أنثى"}
+            icon={MapPinHouse}
+            label="مكان الولادة"
+            value={martyr.placeOfBirth}
           />
-
+          <InfoField icon={Earth} label="الدولة" value={martyr.country} />
+          <InfoField icon={Earth} label="المحافظة" value={martyr.governorate} />
+          <InfoField icon={Building2} label="المدينة" value={martyr.city} />
+          <InfoField icon={House} label="الحي" value={martyr.neighborhood} />
+          <InfoField icon={BookOpen} label="الدراسة" value={martyr.study} />
+          <InfoField
+            icon={BriefcaseBusiness}
+            label="المهنة"
+            value={martyr.profession}
+          />
           <InfoField
             icon={MdFamilyRestroom}
             label="الحالة الاجتماعية"
@@ -137,26 +153,11 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
             label="عدد الأطفال"
             value={martyr.numberOfChildren || 0}
           />
-          <InfoField icon={BookOpen} label="الدراسة" value={martyr.study} />
-          <InfoField
-            icon={BriefcaseBusiness}
-            label="المهنة"
-            value={martyr.profession}
-          />
-          <InfoField icon={Earth} label="الدولة" value={martyr.country} />
-          <InfoField icon={Earth} label="المحافظة" value={martyr.governorate} />
-          <InfoField icon={Building2} label="المدينة" value={martyr.city} />
-          <InfoField icon={House} label="الحي" value={martyr.neighborhood} />
 
           <InfoField
             icon={GrGroup}
             label="الإنتماء العرقي"
             value={martyr.ethnicAffiliation}
-          />
-          <InfoField
-            icon={GrGroup}
-            label="الإنتماء التنظيمي"
-            value={martyr.organizationalaffiliation}
           />
           <InfoField
             icon={Badge}
@@ -168,12 +169,19 @@ const PersonalInfo = ({ item }: MastyrCardProps) => {
             label="الإنتماء الطائفي"
             value={martyr.sectarianAffiliation}
           />
+          <InfoField
+            icon={GrGroup}
+            label="الإنتماء التنظيمي"
+            value={martyr.organizationalaffiliation}
+          />
 
           {/* لمحة عن الشهيد (تذييل) */}
           <div className="pt-5 mt-5 border-t border-[#0B3F3D]/10">
             <div className="flex flex-row gap-3 items-center font-bold mb-3">
               <NotepadText className="w-5 h-5 text-[#0B3F3D]" />
-              <p className={DARK_TEAL}>لمحة عن الشهيد</p>
+              <p className={DARK_TEAL}>
+                {missing ? "لمحة عن المفقود" : "لمحة عن الشهيد"}
+              </p>
             </div>
             <div className="pr-8 text-gray-700 leading-relaxed">
               <p>{martyr.overview || "----"}</p>

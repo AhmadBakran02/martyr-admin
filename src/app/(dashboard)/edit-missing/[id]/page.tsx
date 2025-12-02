@@ -9,11 +9,11 @@ import { getMartyrById } from "@/lib/getMastyrById";
 import { AddMartyrType, EditMartyrApi, GetMartyr } from "@/lib/martyrApi";
 import { AddCardValues } from "@/components/AddCard/AddCard";
 import AddCardMissing from "@/components/AddCardMissing/AddCardMissing";
-import AddPersonalInfoMissing from "@/components/AddPersonalInfoMissing";
 import AddMissingInfo from "@/components/AddMissingInfo";
 import { MissingInfoType } from "@/types/MissingInfoType";
 import { AlertTriangle, CheckCircle2, Loader2 } from "lucide-react";
 import { apiUrl } from "@/config/apiUrl";
+import AddPersonalInfo from "@/components/AddPersonalInfo";
 
 export interface PersonalInfoType {
   name?: string;
@@ -355,9 +355,10 @@ export default function EditMartyPage() {
           martyr={martyr}
         />
         <div className="my-5"></div>
-        <AddPersonalInfoMissing
+        <AddPersonalInfo
           onChange={handlePersonlChange}
           martyr={martyr}
+          missing={true}
         />
 
         <AddMissingInfo onChange={handleMissingChange} martyr={martyr} />

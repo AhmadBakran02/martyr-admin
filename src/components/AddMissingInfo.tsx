@@ -10,6 +10,7 @@ import {
   ChevronDown,
   ChevronUp,
   Sword,
+  BookOpenCheck,
 } from "lucide-react";
 import { useEffect, useState, type ComponentType, type ReactNode } from "react";
 import { GetMartyr } from "@/lib/martyrApi";
@@ -37,6 +38,7 @@ const AddCitationInfo = ({ onChange, martyr }: AddCitationInfoProps) => {
   const [cityOfMartyrdom, setCityOfMartyrdom] = useState<string>("");
   const [martyrdomLocation, setMartyrdomLocation] = useState<string>("");
   const [citationMethod, setCitationMethod] = useState<string>("");
+  const [sourceOfInformation, setSourceOfInformation] = useState<string>("");
   const [massacre, setMassacre] = useState<string>("");
   const [massacreId, setMassacreId] = useState<string | null>("");
   const [isOpen, setIsOpen] = useState<boolean>(true);
@@ -77,6 +79,7 @@ const AddCitationInfo = ({ onChange, martyr }: AddCitationInfoProps) => {
       citationMethod,
       massacre,
       massacreId,
+      sourceOfInformation,
     });
   }, [
     dateMartyrdom,
@@ -93,6 +96,7 @@ const AddCitationInfo = ({ onChange, martyr }: AddCitationInfoProps) => {
     massacre,
     massacreId,
     onChange,
+    sourceOfInformation,
   ]);
 
   return (
@@ -214,6 +218,14 @@ const AddCitationInfo = ({ onChange, martyr }: AddCitationInfoProps) => {
               className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
             />
           </FieldRow>
+          <FieldRow icon={BookOpenCheck} label="مصدر المعلومات">
+            <input
+              value={sourceOfInformation}
+              onChange={(e) => setSourceOfInformation(e.target.value)}
+              type="text"
+              className="w-full bg-white border border-[#0B3F3D]/15 rounded-lg px-3 py-2 font-semibold text-[#0B3F3D] focus:outline-none focus:ring-2 focus:ring-[#0B3F3D]/30"
+            />
+          </FieldRow>
         </div>
 
         {/* Footer */}
@@ -252,7 +264,7 @@ const FieldRow = ({
   const Icon = icon;
   return (
     <div
-      className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0`}
+      className={`flex flex-col sm:flex-row gap-2 py-3 border-b ${BORDER_COLOR} last:border-b-0 justify-center items-center`}
     >
       <div className="flex flex-row justify-between w-full sm:w-1/3 min-w-[200px]">
         <div

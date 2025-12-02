@@ -109,7 +109,7 @@ export default function AddMartyr() {
       organizationalaffiliation: personalInfo.organizationalaffiliation,
       religiousAffiliation: personalInfo.religiousAffiliation,
       sectarianAffiliation: personalInfo.sectarianAffiliation,
-
+      placeOfBirth: personalInfo.placeOfBirth,
       burialDate: citationInfo?.burialDate,
       age: citationInfo?.age,
       ageStatus: citationInfo?.ageStatus,
@@ -121,6 +121,7 @@ export default function AddMartyr() {
       martyrdomSite: citationInfo?.martyrdomLocation,
       citationMethod: citationInfo?.citationMethod,
       stateOfMartyrdom: citationInfo?.citationMethod,
+      sourceOfInformation: citationInfo?.sourceOfInformation,
       media: uploadedMedia ?? [],
     };
 
@@ -181,13 +182,13 @@ export default function AddMartyr() {
         />
 
         <div className="my-5"></div>
-        <FileUploader onUploadComplete={handleUploadComplete} />
-
-        <div className="my-5"></div>
         <AddPersonalInfo onChange={handlePersonlChange} />
 
         <div className="my-5"></div>
         <AddCitationInfo onChange={handleCitationChange} />
+
+        <div className="my-5"></div>
+        <FileUploader onUploadComplete={handleUploadComplete} />
 
         <div className="flex items-center mt-8 gap-5">
           <button
@@ -200,7 +201,7 @@ export default function AddMartyr() {
                   ? "bg-blue-300 cursor-not-allowed opacity-70"
                   : "bg-blue-600 hover:bg-blue-700 active:scale-[0.97] shadow-md hover:shadow-lg"
               }
-            `}
+                `}
           >
             {loading ? (
               <div className="flex items-center justify-center gap-2">

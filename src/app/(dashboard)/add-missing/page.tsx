@@ -6,10 +6,10 @@ import { MediaInput } from "@/lib/massacreApi";
 import AddMissingInfo from "@/components/AddMissingInfo";
 import { PersonalInfoType } from "@/types/PersonalInfoIDType";
 import { MissingInfoType } from "@/types/MissingInfoType";
-import AddPersonalInfoMissing from "@/components/AddPersonalInfoMissing";
 import AddCardMissing, {
   AddCardMissingValues,
 } from "@/components/AddCardMissing/AddCardMissing";
+import AddPersonalInfo from "@/components/AddPersonalInfo";
 
 export default function AddMartyr() {
   const [fullName, setFullName] = useState<string>("");
@@ -41,6 +41,7 @@ export default function AddMartyr() {
       organizationalaffiliation: "",
       sectarianAffiliation: "",
       religiousAffiliation: "",
+      placeOfBirth: "",
     });
   const [loading, setLoading] = useState<boolean>(false);
   const [showToast, setShowToast] = useState<boolean>(false);
@@ -107,7 +108,7 @@ export default function AddMartyr() {
       organizationalaffiliation: personalInfoMissing?.organizationalaffiliation,
       religiousAffiliation: personalInfoMissing?.religiousAffiliation,
       sectarianAffiliation: personalInfoMissing?.sectarianAffiliation,
-
+      placeOfBirth: personalInfoMissing?.placeOfBirth,
       age: missingInfo?.age,
       ageStatus: missingInfo?.ageStatus,
       dissident: missingInfo?.dissident,
@@ -117,6 +118,7 @@ export default function AddMartyr() {
       martyrdomSite: missingInfo?.martyrdomLocation,
       citationMethod: missingInfo?.citationMethod,
       stateOfMartyrdom: missingInfo?.citationMethod,
+      sourceOfInformation: missingInfo?.sourceOfInformation,
 
       isMissing: true,
 
@@ -177,7 +179,7 @@ export default function AddMartyr() {
         />
 
         <div className="my-5"></div>
-        <AddPersonalInfoMissing onChange={handlePersonlChange} />
+        <AddPersonalInfo onChange={handlePersonlChange} missing={true} />
 
         <div className="my-5"></div>
         <AddMissingInfo onChange={handleCitationChange} />

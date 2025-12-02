@@ -9,4 +9,5 @@ export interface MissingInfoType {
   cityOfMartyrdom: string;
   martyrdomLocation: string;
   citationMethod: string;
+  sourceOfInformation?: string;
 }
